@@ -1,1629 +1,473 @@
-<!DOCTYPE html> 
-
-<html lang="fr"> 
-
-<head> 
-
-  <meta charset="UTF-8"> 
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> 
-
-  <title>LowkeyExpress — Shopping Tunis → Kinshasa</title> 
-
-   
-
-  <!-- ⚠️ LOGO ET PARTAGE (OPEN GRAPH) --> 
-
-  <!-- C'est ici que ton logo apparaîtra sur Safari et WhatsApp --> 
-
-  <link rel="icon" type="image/png" href="logo.png.JPG"> 
-
-  <link rel="apple-touch-icon" href="logo.png.JPG"> 
-
-  <meta property="og:title" content="LowkeyExpress — Import Tunis → Kinshasa"> 
-
-  <meta property="og:description" content="Achète tes articles préférés à Tunis et fais-toi livrer à Kinshasa."> 
-
-  <meta property="og:image" content="logo.png.JPG"> 
-
-  <meta property="og:type" content="website"> 
-
- 
-
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"> 
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> 
-
- 
-
-  <style> 
-
-    :root { 
-
-      --bg-app: #f7f6f2; 
-
-      --bg-card: #ffffff; 
-
-      --bg-beige: #f0ece3; 
-
-      --text-main: #111111; 
-
-      --text-muted: #888888; 
-
-      --black: #111111; 
-
-      --pink-light: #ffd6d6; 
-
-      --green-light: #e2f0d9; 
-
-      --gold: #d4af37; 
-
-      --bordeaux: #2b0006; 
-
-    } 
-
- 
-
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; } 
-
-    body { background-color: #e5e5e5; display: flex; justify-content: center; min-height: 100vh; } 
-
- 
-
-    .app-container { 
-
-      width: 100%; max-width: 414px; background: var(--bg-app); min-height: 100vh; 
-
-      position: relative; overflow-x: hidden; padding-bottom: 100px; 
-
-    } 
-
- 
-
-    /* Header */ 
-
-    header { 
-
-      display: flex; justify-content: space-between; align-items: center; 
-
-      padding: 15px 20px; background: var(--bg-app); position: sticky; top: 0; z-index: 10; 
-
-    } 
-
-    .header-logo { height: 35px; object-fit: contain; } 
-
-    .cart-icon-btn { position: relative; background: none; border: none; font-size: 22px; cursor: pointer; } 
-
-    .cart-badge { 
-
-      position: absolute; top: -4px; right: -6px; background: var(--black); color: white; 
-
-      font-size: 10px; font-weight: 700; width: 18px; height: 18px; border-radius: 50%; 
-
-      display: flex; align-items: center; justify-content: center; 
-
-    } 
-
- 
-
-    /* Vues */ 
-
-    .view-section { display: none; animation: fadeIn 0.3s ease; } 
-
-    .view-section.active { display: block; } 
-
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } } 
-
- 
-
-    /* --- VUE SHOP --- */ 
-
-    .hero-card { 
-
-      background: var(--bordeaux); border-radius: 24px; margin: 0 20px; padding: 24px; 
-
-      color: white; position: relative; overflow: hidden; height: 180px; display: flex; flex-direction: column; justify-content: flex-end; 
-
-    } 
-
-    .hero-content { position: relative; z-index: 2; } 
-
-    .hero-title { font-size: 22px; font-weight: 800; margin-bottom: 4px; color: var(--gold); } 
-
-    .hero-sub { font-size: 12px; color: #ccc; margin-bottom: 12px; } 
-
-    .btn-hero { background: rgba(255,255,255,0.1); border: 1px solid var(--gold); color: var(--gold); padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; backdrop-filter: blur(5px); cursor: pointer; } 
-
- 
-
-    /* Logos Boutiques */ 
-
-    .brands-row { display: flex; gap: 10px; padding: 20px; overflow-x: auto; scrollbar-width: none; } 
-
-    .brands-row::-webkit-scrollbar { display: none; } 
-
-    .brand-pill { background: white; border: 1px solid #eee; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 700; white-space: nowrap; color: var(--text-main); display: flex; align-items: center; gap: 8px; } 
-
- 
-
-    /* Recherche par lien */ 
-
-    .search-section { padding: 0 20px 20px; } 
-
-    .search-box { display: flex; background: white; border-radius: 16px; padding: 5px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); } 
-
-    .search-box input { flex: 1; border: none; padding: 12px 16px; font-size: 14px; outline: none; background: transparent; } 
-
-    .search-box button { background: var(--black); color: white; border: none; border-radius: 12px; padding: 0 20px; font-weight: 600; cursor: pointer; } 
-
- 
-
-    .section-title { padding: 0 20px; font-size: 18px; font-weight: 700; margin-bottom: 16px; } 
-
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 0 20px; } 
-
-    .product-card { background: var(--bg-beige); border-radius: 20px; padding: 12px; cursor: pointer; transition: transform 0.2s; } 
-
-    .product-card:active { transform: scale(0.97); } 
-
-    .product-img-wrapper { width: 100%; aspect-ratio: 1; border-radius: 16px; overflow: hidden; margin-bottom: 12px; background: white; position: relative; } 
-
-    .product-img-wrapper img { width: 100%; height: 100%; object-fit: cover; } 
-
-    .product-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; } 
-
-    .product-price { font-size: 14px; font-weight: 800; } 
-
-    .product-price span { font-size: 11px; color: var(--text-muted); font-weight: 500; text-decoration: line-through; margin-left: 4px; } 
-
- 
-
-    /* --- VUE PRODUIT (OVERLAY) --- */ 
-
-    .product-view { 
-
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-app); 
-
-      z-index: 100; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s; 
-
-      display: flex; flex-direction: column; overflow-y: auto; visibility: hidden; pointer-events: none; 
-
-    } 
-
-    .product-view.active { transform: translateY(0); visibility: visible; pointer-events: auto; } 
-
-    .product-header { display: flex; justify-content: space-between; padding: 20px; } 
-
-    .back-btn, .share-btn { background: white; border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05); } 
-
-    .product-main-img { width: 100%; height: 300px; object-fit: contain; background: white; margin-bottom: 20px; border-radius: 30px; } 
-
-    .product-info { padding: 0 24px; flex: 1; } 
-
-    .tag-discount { background: var(--green-light); color: #2e7d32; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; display: inline-block; margin-bottom: 12px; } 
-
-    .product-title-lg { font-size: 22px; font-weight: 800; margin-bottom: 4px; } 
-
-    .product-subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; } 
-
-    .size-header { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px; font-weight: 600; } 
-
-    .size-options { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; } 
-
-    .size-btn { min-width: 44px; height: 44px; padding: 0 10px; border-radius: 22px; border: 1px solid #ddd; background: transparent; font-weight: 600; font-size: 13px; cursor: pointer; } 
-
-    .size-btn.selected { background: var(--black); color: white; border-color: var(--black); } 
-
-    .qty-price-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; } 
-
-    .qty-control { display: flex; align-items: center; gap: 16px; background: white; padding: 8px 16px; border-radius: 24px; border: 1px solid #eee; } 
-
-    .qty-control button { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-main); } 
-
-    .price-block { text-align: right; } 
-
-    .price-block small { display: block; font-size: 11px; color: var(--text-muted); } 
-
-    .price-block strong { font-size: 20px; font-weight: 800; } 
-
-    .add-to-cart-btn { background: var(--black); color: white; border: none; padding: 18px; border-radius: 30px; font-size: 16px; font-weight: 600; width: calc(100% - 48px); margin: 0 24px 30px; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; } 
-
- 
-
-    /* --- VUE PANIER --- */ 
-
-    .cart-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px 20px; } 
-
-    .cart-title { font-size: 26px; font-weight: 800; } 
-
-    .cart-item { background: var(--bg-beige); border-radius: 20px; padding: 16px; margin-bottom: 16px; display: flex; gap: 16px; align-items: center; position: relative; } 
-
-    .item-img { width: 65px; height: 65px; border-radius: 12px; background: white; object-fit: cover; } 
-
-    .item-details { flex: 1; } 
-
-    .item-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; } 
-
-    .item-meta { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; } 
-
-    .item-price { font-size: 14px; font-weight: 700; } 
-
-    .item-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; } 
-
-    .qty-control-sm { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 13px; } 
-
-    .qty-btn-sm { width: 24px; height: 24px; border-radius: 50%; border: none; background: white; font-size: 14px; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.05); } 
-
-    .btn-delete { background: var(--pink-light); border: none; width: 32px; height: 32px; border-radius: 10px; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; } 
-
- 
-
-    /* Code Promo */ 
-
-    .promo-box { display: flex; background: #eaeaea; border-radius: 16px; padding: 4px; margin: 20px 0; } 
-
-    .promo-box input { flex: 1; background: transparent; border: none; padding: 12px 16px; font-size: 14px; outline: none; text-transform: uppercase; } 
-
-    .promo-box button { background: transparent; border: none; padding: 0 16px; font-weight: 600; color: var(--text-main); cursor: pointer; } 
-
- 
-
-    /* Récapitulatif & Formulaire */ 
-
-    .summary-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; color: var(--text-muted); font-weight: 500; } 
-
-    .summary-row.discount { color: #2e7d32; font-weight: 600; } 
-
-    .summary-row.total { font-size: 18px; font-weight: 800; color: var(--text-main); margin-top: 16px; padding-top: 16px; border-top: 1px dashed #ccc; } 
-
-    .usd-equivalent { font-size: 12px; font-weight: 500; color: var(--text-muted); text-align: right; margin-top: 4px; } 
-
-     
-
-    .form-group { margin-bottom: 12px; } 
-
-    .form-group input { width: 100%; padding: 16px; border-radius: 16px; border: 1px solid #ddd; background: white; font-size: 14px; outline: none; } 
-
-    .form-group input:focus { border-color: var(--black); } 
-
-     
-
-    .conditions-box { margin: 20px 0; background: white; padding: 16px; border-radius: 20px; } 
-
-    .condition-item { display: flex; gap: 10px; font-size: 12px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4; } 
-
-    .condition-item input { width: 18px; height: 18px; accent-color: var(--black); } 
-
- 
-
-    .checkout-btn { background: var(--black); color: white; width: 100%; padding: 18px; border-radius: 30px; font-size: 16px; font-weight: 700; border: none; cursor: pointer; margin-top: 10px; } 
-
-    .checkout-btn:disabled { background: #ccc; } 
-
- 
-
-    /* --- VUE SUIVI --- */ 
-
-    .tracking-view { padding: 20px; } 
-
-    .timeline { margin-top: 20px; border-left: 2px solid #ddd; padding-left: 20px; } 
-
-    .step { position: relative; margin-bottom: 24px; opacity: 0.5; } 
-
-    .step.done { opacity: 1; } 
-
-    .step.active { opacity: 1; } 
-
-    .step::before { content: ''; position: absolute; left: -27px; top: 2px; width: 12px; height: 12px; border-radius: 50%; background: #ddd; border: 2px solid var(--bg-app); } 
-
-    .step.done::before { background: #4caf50; } 
-
-    .step.active::before { background: var(--black); box-shadow: 0 0 0 4px rgba(0,0,0,0.1); } 
-
-    .step-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; } 
-
-    .step-desc { font-size: 12px; color: var(--text-muted); } 
-
- 
-
-    /* --- VUE PROFIL --- */ 
-
-    .profile-view { padding: 20px; text-align: center; } 
-
-    .profile-avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--bordeaux); color: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: bold; margin: 0 auto 16px; border: 3px solid var(--gold); } 
-
-    .profile-name { font-size: 20px; font-weight: 800; } 
-
-    .profile-email { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; } 
-
-    .profile-menu { background: white; border-radius: 20px; padding: 10px 20px; text-align: left; margin-bottom: 16px; } 
-
-    .menu-item { display: flex; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid #eee; font-size: 14px; font-weight: 600; } 
-
-    .menu-item:last-child { border-bottom: none; } 
-
-     
-
-    /* Nom du créateur */ 
-
-    .creator-credit { text-align: center; font-size: 10px; color: #aaa; margin-top: 30px; padding-bottom: 20px; letter-spacing: 1px; text-transform: uppercase; } 
-
- 
-
-    /* Navigation Bas */ 
-
-    .bottom-nav { 
-
-      position: fixed; bottom: 0; width: 100%; max-width: 414px; background: rgba(255,255,255,0.95); 
-
-      backdrop-filter: blur(10px); display: flex; justify-content: space-around; padding: 12px 0 25px; 
-
-      border-top: 1px solid #eee; z-index: 50; 
-
-    } 
-
-    .nav-item { background: none; border: none; font-size: 22px; color: #ccc; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; } 
-
-    .nav-item span { font-size: 10px; font-weight: 600; } 
-
-    .nav-item.active { color: var(--black); } 
-
- 
-
-    .alert { padding: 12px; border-radius: 12px; font-size: 12px; margin-bottom: 14px; font-weight: 600; display: none; } 
-
-    .alert-error { background: #fef2f2; color: #991b1b; } 
-
-    .alert-success { background: var(--green-light); color: #2e7d32; } 
-
-  </style> 
-
-</head> 
-
-<body> 
-
- 
-
-<div class="app-container"> 
-
- 
-
-  <!-- HEADER --> 
-
-  <header> 
-
-    <!-- L'image de ton logo bordeaux et doré --> 
-
-    <img src="logo.png" alt="LK Express" class="header-logo" onerror="this.outerHTML='<div style=\'font-weight:900;font-size:20px;color:var(--bordeaux)\'>LK Express.</div>'"> 
-
-     
-
-    <button class="cart-icon-btn" onclick="showView('cart')"> 
-
-      🛍️<span class="cart-badge" id="cart-count-badge" style="display:none;">0</span> 
-
-    </button> 
-
-  </header> 
-
- 
-
-  <!-- ================= VUE 1 : SHOP ================= --> 
-
-  <div id="view-shop" class="view-section active"> 
-
-     
-
-    <div class="hero-card"> 
-
-      <div class="hero-content"> 
-
-        <div class="hero-title">Import Tunis → Kin</div> 
-
-        <div class="hero-sub">Le luxe et la mode livrés chez toi en toute sécurité.</div> 
-
-      </div> 
-
-    </div> 
-
- 
-
-    <!-- Logos Boutiques Officielles --> 
-
-    <div class="brands-row"> 
-
-      <div class="brand-pill">🇹🇳 ZARA</div> 
-
-      <div class="brand-pill">🇹🇳 BERSHKA</div> 
-
-      <div class="brand-pill">🇹🇳 STRADIVARIUS</div> 
-
-      <div class="brand-pill">🇹🇳 PULL&BEAR</div> 
-
-    </div> 
-
- 
-
-    <!-- Moteur de recherche (Simulation) --> 
-
-    <div class="search-section"> 
-
-      <label style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-left:10px; margin-bottom:6px; display:block;">Acheter via Lien ou Réf</label> 
-
-      <div class="search-box"> 
-
-        <input type="text" id="input-ref" placeholder="Ex: 5039/472/800 ou lien Zara..."> 
-
-        <button onclick="verifyArticle()">🔍</button> 
-
-      </div> 
-
-      <div id="search-alert" class="alert"></div> 
-
-    </div> 
-
- 
-
-    <div class="section-title">Sélection Populaire</div> 
-
-    <div class="grid"> 
-
-      <!-- Produit 1 --> 
-
-      <div class="product-card" onclick="openProduct('5039/472/800')"> 
-
-        <div class="product-img-wrapper"> 
-
-          <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=500&auto=format&fit=crop" alt="Body"> 
-
-        </div> 
-
-        <div class="product-name">Body Foil Zara</div> 
-
-        <div class="product-price">109.00 TND</div> 
-
-      </div> 
-
-      <!-- Produit 2 --> 
-
-      <div class="product-card" onclick="openProduct('0110/518/999')"> 
-
-        <div class="product-img-wrapper"> 
-
-          <img src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=500&auto=format&fit=crop" alt="Parfum"> 
-
-        </div> 
-
-        <div class="product-name">Golden Decade</div> 
-
-        <div class="product-price">119.00 TND</div> 
-
-      </div> 
-
-    </div> 
-
-     
-
-    <!-- Signature --> 
-
-    <div class="creator-credit">Conçu par ACHOUMAT KHALFANI</div> 
-
-  </div> 
-
- 
-
-  <!-- ================= VUE 2 : PRODUIT (OVERLAY) ================= --> 
-
-  <div class="product-view" id="product-overlay"> 
-
-    <div class="product-header"> 
-
-      <button class="back-btn" onclick="closeProduct()">←</button> 
-
-      <button class="share-btn">↗</button> 
-
-    </div> 
-
-     
-
-    <img id="overlay-img" class="product-main-img" src="" alt="Produit"> 
-
-     
-
-    <div class="product-info"> 
-
-      <div class="tag-discount">Prix Boutique Tunis</div> 
-
-      <div class="product-title-lg" id="overlay-title">Nom du produit</div> 
-
-      <div class="product-subtitle" id="overlay-brand">Sélection Officielle</div> 
-
- 
-
-      <div class="size-header"><span>Taille / Format</span></div> 
-
-      <div class="size-options" id="overlay-sizes"></div> 
-
- 
-
-      <div class="qty-price-row"> 
-
-        <div class="qty-control"> 
-
-          <button onclick="updateQty(-1)">−</button> 
-
-          <span id="overlay-qty">1</span> 
-
-          <button onclick="updateQty(1)">+</button> 
-
-        </div> 
-
-        <div class="price-block"> 
-
-          <small>Prix de l'article</small> 
-
-          <strong id="overlay-price">0.00 TND</strong> 
-
-        </div> 
-
-      </div> 
-
-    </div> 
-
- 
-
-    <button class="add-to-cart-btn" onclick="addToCart()"> 
-
-      <span>🛍️</span> Ajouter au panier 
-
-    </button> 
-
-  </div> 
-
- 
-
-  <!-- ================= VUE 3 : PANIER ================= --> 
-
-  <div id="view-cart" class="view-section"> 
-
-    <div class="cart-header"> 
-
-      <div class="cart-title">Mon panier</div> 
-
-    </div> 
-
- 
-
-    <div id="cart-items-container" style="padding: 0 20px;"></div> 
-
- 
-
-    <!-- Section Formulaire (visible seulement si panier non vide) --> 
-
-    <div id="checkout-section" style="padding: 0 20px;"> 
-
-       
-
-      <!-- Code Promo --> 
-
-      <div class="promo-box"> 
-
-        <input type="text" id="promo-input" placeholder="Code promo (FIDA08)"> 
-
-        <button onclick="applyPromo()">Appliquer</button> 
-
-      </div> 
-
-      <div id="promo-alert" class="alert"></div> 
-
- 
-
-      <!-- Formulaire --> 
-
-      <div class="form-group"><input type="text" id="cust-nom" placeholder="Nom & Prénom *"></div> 
-
-      <div class="form-group"><input type="tel" id="cust-phone" placeholder="Téléphone (+243...) *"></div> 
-
-      <div class="form-group"><input type="text" id="cust-commune" placeholder="Commune (Gombe...) *"></div> 
-
-      <div class="form-group"><input type="text" id="cust-adresse" placeholder="Avenue & N° *"></div> 
-
- 
-
-      <div class="conditions-box"> 
-
-        <div class="condition-item"><input type="checkbox" class="cond-check"> <span>J'accepte de payer l'acompte de <b>70%</b> maintenant par Carte/Mobile Money.</span></div> 
-
-        <div class="condition-item"><input type="checkbox" class="cond-check"> <span>Je paierai les <b>30%</b> restants à la livraison à Kinshasa.</span></div> 
-
-        <div class="condition-item"><input type="checkbox" class="cond-check"> <span>Je confirme que les tailles et adresses sont exactes.</span></div> 
-
-        <div class="condition-item"><input type="checkbox" class="cond-check"> <span>J'accepte les conditions générales de vente.</span></div> 
-
-      </div> 
-
- 
-
-      <div class="summary-row"><span>Sous-total</span><span id="summary-articles">0.00 TND</span></div> 
-
-      <div class="summary-row"><span>Transport (Tunis → Kin)</span><span id="summary-transport">0.00 TND</span></div> 
-
-      <div class="summary-row"><span>Manutention & Service</span><span id="summary-manutention">0.00 TND</span></div> 
-
-      <div class="summary-row discount" id="promo-line" style="display:none;"><span>Code FIDA08 (-10%)</span><span id="summary-discount">0.00 TND</span></div> 
-
-       
-
-      <div class="summary-row total"><span>Total</span><span id="summary-total">0.00 TND</span></div> 
-
-      <div class="usd-equivalent" id="summary-usd">≈ 0.00 USD</div> 
-
-       
-
-      <div style="background: #fff3cd; padding: 12px; border-radius: 12px; margin-top: 12px; font-size: 12px; font-weight: 600; color: #856404; border: 1px solid #ffe69c;"> 
-
-        <span>À payer maintenant (70%) : <span id="summary-acompte">0.00 TND</span></span><br> 
-
-        <span>À payer à la livraison (30%) : <span id="summary-solde">0.00 TND</span></span> 
-
-      </div> 
-
- 
-
-      <button class="checkout-btn" id="btn-pay" disabled onclick="processPayment()"> 
-
-        Payer l'acompte (70%) 
-
-      </button> 
-
-    </div> 
-
-  </div> 
-
- 
-
-  <!-- ================= VUE 4 : SUIVI ================= --> 
-
-  <div id="view-tracking" class="view-section"> 
-
-    <div class="tracking-view"> 
-
-      <h2 style="font-size:24px; font-weight:800; margin-bottom:8px;">Suivi de commande</h2> 
-
-      <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;" id="tracking-ref">Aucune commande active</p> 
-
-      <div class="timeline" id="client-timeline"></div> 
-
-    </div> 
-
-  </div> 
-
- 
-
-  <!-- ================= VUE 5 : PROFIL ================= --> 
-
-  <div id="view-profile" class="view-section"> 
-
-    <div class="profile-view"> 
-
-      <div class="profile-avatar">LK</div> 
-
-      <div class="profile-name">Client Lowkey</div> 
-
-      <div class="profile-email">Bienvenue sur LK Express</div> 
-
- 
-
-      <div class="profile-menu"> 
-
-        <div class="menu-item"><span>👤 Mon Profil</span> <span>Modifier</span></div> 
-
-        <div class="menu-item"><span>🎁 Mes Points Fidélité</span> <span>0 pts</span></div> 
-
-        <div class="menu-item"><span>💳 Moyens de paiement</span> <span>M-Pesa</span></div> 
-
-        <div class="menu-item"><span>📞 Contacter le support</span> <span>WhatsApp</span></div> 
-
-      </div> 
-
-       
-
-      <!-- Signature --> 
-
-      <div class="creator-credit">Conçu par ACHOUMAT KHALFANI</div> 
-
-    </div> 
-
-  </div> 
-
- 
-
-  <!-- BOTTOM NAV --> 
-
-  <nav class="bottom-nav"> 
-
-    <button class="nav-item active" id="nav-shop" onclick="showView('shop')">🏠<span>Boutique</span></button> 
-
-    <button class="nav-item" id="nav-cart" onclick="showView('cart')">🛒<span>Panier</span></button> 
-
-    <button class="nav-item" id="nav-tracking" onclick="showView('tracking')">📦<span>Suivi</span></button> 
-
-    <button class="nav-item" id="nav-profile" onclick="showView('profile')">👤<span>Profil</span></button> 
-
-  </nav> 
-
- 
-
-</div> 
-
- 
-
-<!-- Chargement des variables Vercel --> 
-
-<script src="config.js"></script> 
-
- 
-
-<script> 
-
-  // ========================================== 
-
-  // CONFIGURATION SUPABASE 
-
-  // ========================================== 
-
-  const SUPABASE_URL = window.SUPABASE_URL || 'https://tjosujwaizawgtzmpfk.supabase.co'; 
-
-  const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || 'MET_TA_CLE_ICI'; 
-
-   
-
-  let supabase = null; 
-
-  if (window.supabase && SUPABASE_ANON_KEY !== 'MET_TA_CLE_ICI') { 
-
-    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); 
-
-  } 
-
- 
-
-  // ========================================== 
-
-  // CATALOGUE SIMULÉ (Pour l'auto-complétion) 
-
-  // ========================================== 
-
-  const catalog = { 
-
-    "5039/472/800": { 
-
-      brand: "Zara Tunis", title: "Body Foil Manches Courtes", priceTND: 109.00, 
-
-      img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=500&auto=format&fit=crop", 
-
-      sizes: ["XS", "S", "M", "L"] 
-
-    }, 
-
-    "0110/518/999": { 
-
-      brand: "Zara Tunis", title: "Golden Decade EDP 80ml", priceTND: 119.00, 
-
-      img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=500&auto=format&fit=crop", 
-
-      sizes: ["30 ml", "80 ml", "100 ml"] 
-
-    } 
-
-  }; 
-
- 
-
-  // ========================================== 
-
-  // ÉTAT GLOBAL 
-
-  // ========================================== 
-
-  let activeProduct = null; 
-
-  let selectedSize = ''; 
-
-  let currentQty = 1; 
-
-  let cart = JSON.parse(localStorage.getItem('lk_cart_v3')) || []; 
-
-  let currentOrderId = localStorage.getItem('lk_last_order') || null; 
-
-  let promoApplied = false; 
-
- 
-
-  const TAUX_USD = 0.33; // 1 TND = 0.33 USD 
-
-  const FRAIS_TRANSPORT = 15.00; // TND 
-
-  const FRAIS_MANUTENTION = 25.00; // TND 
-
- 
-
-  // ========================================== 
-
-  // NAVIGATION ENTRE LES VUES (Zéro bug) 
-
-  // ========================================== 
-
-  function showView(viewName) { 
-
-    document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active')); 
-
-    document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active')); 
-
- 
-
-    document.getElementById('view-' + viewName).classList.add('active'); 
-
-    document.getElementById('nav-' + viewName).classList.add('active'); 
-
-    window.scrollTo(0, 0); 
-
- 
-
-    if (viewName === 'cart') renderCart(); 
-
-    if (viewName === 'tracking') fetchTracking(); 
-
-  } 
-
- 
-
-  // ========================================== 
-
-  // RECHERCHE ARTICLE (Simulation API) 
-
-  // ========================================== 
-
-  function verifyArticle() { 
-
-    const inputRef = document.getElementById('input-ref').value.trim(); 
-
-    const alertBox = document.getElementById('search-alert'); 
-
-     
-
-    if (!inputRef) { 
-
-      alertBox.className = 'alert alert-error'; 
-
-      alertBox.style.display = 'block'; 
-
-      alertBox.innerText = 'Veuillez entrer une référence ou un lien.'; 
-
-      return; 
-
-    } 
-
- 
-
-    alertBox.className = 'alert alert-success'; 
-
-    alertBox.style.display = 'block'; 
-
-    alertBox.innerText = 'Recherche en cours sur le serveur de Tunis...'; 
-
- 
-
-    setTimeout(() => { 
-
-      // Si la réf existe dans notre catalogue test 
-
-      if (catalog[inputRef]) { 
-
-        alertBox.innerText = 'Article trouvé ! ✅'; 
-
-        setTimeout(() => { openProduct(inputRef); alertBox.style.display='none'; }, 500); 
-
-      } else { 
-
-        // Si c'est une nouvelle réf, on simule la récupération 
-
-        alertBox.className = 'alert alert-success'; 
-
-        alertBox.innerText = 'Article trouvé ! ✅ Ouverture de la fiche...'; 
-
-         
-
-        // On crée un produit "virtuel" basé sur la saisie 
-
-        const newProduct = { 
-
-          brand: "Boutique Officielle", 
-
-          title: "Article importé sur commande", 
-
-          priceTND: 89.00, // Prix fictif 
-
-          img: "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=500&auto=format&fit=crop", 
-
-          sizes: ["S", "M", "L", "XL"] 
-
-        }; 
-
-         
-
-        catalog[inputRef] = newProduct; 
-
-        setTimeout(() => { openProduct(inputRef); alertBox.style.display='none'; }, 800); 
-
-      } 
-
-    }, 1000); 
-
-  } 
-
- 
-
-  // ========================================== 
-
-  // PRODUIT 
-
-  // ========================================== 
-
-  function openProduct(ref) { 
-
-    if (!catalog[ref]) return; 
-
-    activeProduct = catalog[ref]; 
-
-    activeProduct.ref = ref; // Sauvegarde la ref 
-
-    currentQty = 1; 
-
-     
-
-    document.getElementById('overlay-img').src = activeProduct.img; 
-
-    document.getElementById('overlay-title').innerText = activeProduct.title; 
-
-    document.getElementById('overlay-brand').innerText = activeProduct.brand + " | Réf: " + ref; 
-
-    document.getElementById('overlay-qty').innerText = currentQty; 
-
-     
-
-    const sizeContainer = document.getElementById('overlay-sizes'); 
-
-    sizeContainer.innerHTML = ''; 
-
-    selectedSize = activeProduct.sizes[0]; 
-
-     
-
-    activeProduct.sizes.forEach((size, index) => { 
-
-      const btn = document.createElement('button'); 
-
-      btn.className = 'size-btn' + (index === 0 ? ' selected' : ''); 
-
-      btn.innerText = size; 
-
-      btn.onclick = (e) => { 
-
-        e.stopPropagation(); // Évite le bug de propagation 
-
-        document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected')); 
-
-        btn.classList.add('selected'); 
-
-        selectedSize = size; 
-
-      }; 
-
-      sizeContainer.appendChild(btn); 
-
-    }); 
-
- 
-
-    updateOverlayPrice(); 
-
-    document.getElementById('product-overlay').classList.add('active'); 
-
-  } 
-
- 
-
-  function closeProduct() { 
-
-    document.getElementById('product-overlay').classList.remove('active'); 
-
-  } 
-
- 
-
-  function updateQty(change) { 
-
-    if (currentQty + change < 1) return; 
-
-    currentQty += change; 
-
-    document.getElementById('overlay-qty').innerText = currentQty; 
-
-    updateOverlayPrice(); 
-
-  } 
-
- 
-
-  function updateOverlayPrice() { 
-
-    const total = activeProduct.priceTND * currentQty; 
-
-    document.getElementById('overlay-price').innerText = total.toFixed(2) + " TND"; 
-
-  } 
-
- 
-
-  // ========================================== 
-
-  // PANIER 
-
-  // ========================================== 
-
-  function addToCart() { 
-
-    if (!activeProduct) return; 
-
- 
-
-    const itemTotalTND = activeProduct.priceTND * currentQty; 
-
- 
-
-    // On vérifie si l'article existe déjà avec la même taille 
-
-    const existingItemIndex = cart.findIndex(item => item.ref === activeProduct.ref && item.size === selectedSize); 
-
- 
-
-    if (existingItemIndex > -1) { 
-
-      cart[existingItemIndex].qty += currentQty; 
-
-    } else { 
-
-      cart.push({ 
-
-        title: activeProduct.title, 
-
-        ref: activeProduct.ref, 
-
-        size: selectedSize, 
-
-        qty: currentQty, 
-
-        priceTND: activeProduct.priceTND, 
-
-        totalTND: itemTotalTND, 
-
-        img: activeProduct.img 
-
-      }); 
-
-    } 
-
- 
-
-    saveCart(); 
-
-    closeProduct(); 
-
-    showView('cart'); 
-
-  } 
-
- 
-
-  function saveCart() { 
-
-    localStorage.setItem('lk_cart_v3', JSON.stringify(cart)); 
-
-    updateCartBadge(); 
-
-  } 
-
- 
-
-  function updateCartBadge() { 
-
-    const totalItems = cart.reduce((sum, item) => sum + item.qty, 0); 
-
-    const badge = document.getElementById('cart-count-badge'); 
-
-    badge.innerText = totalItems; 
-
-    badge.style.display = totalItems > 0 ? 'flex' : 'none'; 
-
-  } 
-
- 
-
-  function updateCartQty(index, change) { 
-
-    cart[index].qty += change; 
-
-    cart[index].totalTND = cart[index].priceTND * cart[index].qty; 
-
-    if (cart[index].qty <= 0) { 
-
-      removeFromCart(index); 
-
-    } else { 
-
-      saveCart(); 
-
-      renderCart(); 
-
-    } 
-
-  } 
-
- 
-
-  function removeFromCart(index) { 
-
-    cart.splice(index, 1); 
-
-    saveCart(); 
-
-    renderCart(); 
-
-  } 
-
- 
-
-  function renderCart() { 
-
-    const container = document.getElementById('cart-items-container'); 
-
-    const checkoutSection = document.getElementById('checkout-section'); 
-
-    container.innerHTML = ''; 
-
-     
-
-    if (cart.length === 0) { 
-
-      container.innerHTML = '<p style="text-align:center; padding: 40px 0; color: #888;">Votre panier est vide.</p>'; 
-
-      checkoutSection.style.display = 'none'; 
-
-      return; 
-
-    } 
-
- 
-
-    checkoutSection.style.display = 'block'; 
-
-    let totalArticles = 0; 
-
- 
-
-    cart.forEach((item, index) => { 
-
-      totalArticles += item.totalTND; 
-
- 
-
-      container.innerHTML += ` 
-
-        <div class="cart-item"> 
-
-          <img src="${item.img}" class="item-img"> 
-
-          <div class="item-details"> 
-
-            <div class="item-name">${item.title}</div> 
-
-            <div class="item-meta">Réf: ${item.ref} | Taille: ${item.size}</div> 
-
-            <div class="item-price">${item.totalTND.toFixed(2)} TND</div> 
-
-          </div> 
-
-          <div class="item-actions"> 
-
-            <button class="btn-delete" onclick="removeFromCart(${index})">🗑️</button> 
-
-            <div class="qty-control-sm"> 
-
-              <button class="qty-btn-sm" onclick="updateCartQty(${index}, -1)">−</button> 
-
-              <span>${item.qty}</span> 
-
-              <button class="qty-btn-sm" onclick="updateCartQty(${index}, 1)">+</button> 
-
-            </div> 
-
-          </div> 
-
-        </div> 
-
-      `; 
-
-    }); 
-
- 
-
-    // Calculs 
-
-    let discount = promoApplied ? (totalArticles * 0.10) : 0; 
-
-    let grandTotal = totalArticles - discount + FRAIS_TRANSPORT + FRAIS_MANUTENTION; 
-
-     
-
-    document.getElementById('summary-articles').innerText = totalArticles.toFixed(2) + " TND"; 
-
-    document.getElementById('summary-transport').innerText = FRAIS_TRANSPORT.toFixed(2) + " TND"; 
-
-    document.getElementById('summary-manutention').innerText = FRAIS_MANUTENTION.toFixed(2) + " TND"; 
-
-     
-
-    if (promoApplied) { 
-
-      document.getElementById('promo-line').style.display = 'flex'; 
-
-      document.getElementById('summary-discount').innerText = "-" + discount.toFixed(2) + " TND"; 
-
-    } else { 
-
-      document.getElementById('promo-line').style.display = 'none'; 
-
-    } 
-
-     
-
-    document.getElementById('summary-total').innerText = grandTotal.toFixed(2) + " TND"; 
-
-    document.getElementById('summary-usd').innerText = "≈ " + (grandTotal * TAUX_USD).toFixed(2) + " USD"; 
-
-     
-
-    // Acompte 70% et Solde 30% 
-
-    document.getElementById('summary-acompte').innerText = (grandTotal * 0.70).toFixed(2) + " TND"; 
-
-    document.getElementById('summary-solde').innerText = (grandTotal * 0.30).toFixed(2) + " TND"; 
-
- 
-
-    checkConditionsState(); 
-
-  } 
-
- 
-
-  // ========================================== 
-
-  // CODE PROMO 
-
-  // ========================================== 
-
-  function applyPromo() { 
-
-    const code = document.getElementById('promo-input').value.trim().toUpperCase(); 
-
-    const alertBox = document.getElementById('promo-alert'); 
-
- 
-
-    if (code === 'FIDA08') { 
-
-      promoApplied = true; 
-
-      alertBox.className = 'alert alert-success'; 
-
-      alertBox.style.display = 'block'; 
-
-      alertBox.innerText = 'Code promo appliqué : -10% sur les articles !'; 
-
-      renderCart(); 
-
-    } else { 
-
-      promoApplied = false; 
-
-      alertBox.className = 'alert alert-error'; 
-
-      alertBox.style.display = 'block'; 
-
-      alertBox.innerText = 'Code promo invalide.'; 
-
-      renderCart(); 
-
-    } 
-
-  } 
-
- 
-
-  // ========================================== 
-
-  // CONDITIONS & PAIEMENT 
-
-  // ========================================== 
-
-  document.querySelectorAll('.cond-check').forEach(cb => { 
-
-    cb.addEventListener('change', checkConditionsState); 
-
-  }); 
-
- 
-
-  function checkConditionsState() { 
-
-    const checked = document.querySelectorAll('.cond-check:checked').length; 
-
-    document.getElementById('btn-pay').disabled = (checked < 4 || cart.length === 0);  
-
-  } 
-
- 
-
-  async function processPayment() { 
-
-    const btn = document.getElementById('btn-pay'); 
-
-    btn.innerText = 'Traitement en cours...'; 
-
-    btn.disabled = true; 
-
- 
-
-    try { 
-
-      const nom = document.getElementById('cust-nom').value.trim(); 
-
-      const phone = document.getElementById('cust-phone').value.trim(); 
-
-      const commune = document.getElementById('cust-commune').value.trim(); 
-
-      const adresse = document.getElementById('cust-adresse').value.trim(); 
-
- 
-
-      if(nom.length < 2 || phone.length < 8 || commune.length < 2 || adresse.length < 2) { 
-
-        alert("Veuillez remplir correctement toutes les informations (Nom, Téléphone, Commune, Adresse)."); 
-
-        throw new Error("Formulaire incomplet"); 
-
-      } 
-
- 
-
-      let totalArticles = cart.reduce((sum, item) => sum + item.totalTND, 0); 
-
-      let discount = promoApplied ? (totalArticles * 0.10) : 0; 
-
-      let grandTotal = totalArticles - discount + FRAIS_TRANSPORT + FRAIS_MANUTENTION; 
-
-       
-
-      const acompte = +(grandTotal * 0.70).toFixed(2); 
-
-      const solde = +(grandTotal * 0.30).toFixed(2); 
-
-       
-
-      // Numéro de commande unique 
-
-      const numero = 'CMD-' + Date.now().toString(36).toUpperCase(); 
-
- 
-
-      // Si Supabase est configuré, on enregistre 
-
-      if (supabase) { 
-
-        const { data, error } = await supabase 
-
-          .from('commandes') 
-
-          .insert([{ 
-
-            numero_commande: numero, 
-
-            client_nom: nom, 
-
-            client_telephone: phone, 
-
-            adresse_livraison: `${commune}, ${adresse}`, 
-
-            montant_total: grandTotal, 
-
-            acompte_70: acompte, 
-
-            solde_30: solde, 
-
-            statut_etape: 1, 
-
-            panier: cart 
-
-          }]) 
-
-          .select(); 
-
- 
-
-        if (error) throw error; 
-
-      } 
-
- 
-
-      // Sauvegarde locale de l'ID pour le suivi 
-
-      currentOrderId = numero; 
-
-      localStorage.setItem('lk_last_order', currentOrderId); 
-
-       
-
-      // Reset du panier 
-
-      cart = []; 
-
-      saveCart(); 
-
-      renderCart(); 
-
-      document.getElementById('promo-input').value = ''; 
-
-      promoApplied = false; 
-
-      document.querySelectorAll('.cond-check').forEach(cb => cb.checked = false); 
-
-       
-
-      alert("Commande validée ! Redirection vers Konnect pour le paiement de l'acompte de " + acompte + " TND."); 
-
-      showView('tracking'); 
-
- 
-
-    } catch (err) { 
-
-      console.error(err); 
-
-      if(err.message !== "Formulaire incomplet") { 
-
-        alert("Erreur de connexion. Veuillez réessayer."); 
-
-      } 
-
-      btn.innerText = "Payer l'acompte (70%)"; 
-
-      btn.disabled = false; 
-
-    } 
-
-  } 
-
- 
-
-  // ========================================== 
-
-  // SUIVI 
-
-  // ========================================== 
-
-  async function fetchTracking() { 
-
-    const timeline = document.getElementById('client-timeline'); 
-
-    const refDisplay = document.getElementById('tracking-ref'); 
-
- 
-
-    if (!currentOrderId) { 
-
-      refDisplay.innerText = "Aucune commande active"; 
-
-      timeline.innerHTML = '<p style="font-size:13px; color:#888;">Passez une commande pour voir votre suivi.</p>'; 
-
-      return; 
-
-    } 
-
- 
-
-    refDisplay.innerText = `Commande : ${currentOrderId}`; 
-
-     
-
-    let currentStep = 1; // Étape par défaut si pas de connexion 
-
- 
-
-    if (supabase) { 
-
-      timeline.innerHTML = '<p style="font-size:13px; color:#888;">Mise à jour...</p>'; 
-
-      const { data, error } = await supabase.rpc('suivi_commande', { p_numero: currentOrderId }); 
-
-      if (!error && data && data.length > 0) { 
-
-        currentStep = data[0].statut_etape; 
-
-      } 
-
-    } 
-
- 
-
-    const steps = [ 
-
-      { title: "Commande validée", desc: "Acompte de 70% reçu" }, 
-
-      { title: "Achat à Tunis", desc: "Achat des articles en boutique" }, 
-
-      { title: "Contrôle Qualité", desc: "Vérification de votre commande" }, 
-
-      { title: "Préparation", desc: "Emballage sécurisé" }, 
-
-      { title: "Vol vers Kinshasa", desc: "Colis remis au transporteur" }, 
-
-      { title: "Arrivée à Kin", desc: "Dédouanement" }, 
-
-      { title: "En cours de livraison", desc: "Le livreur est en route" }, 
-
-      { title: "Livré !", desc: "Merci de votre confiance" } 
-
-    ]; 
-
- 
-
-    let html = ''; 
-
-    steps.forEach((step, index) => { 
-
-      let cssClass = ''; 
-
-      if (index < currentStep - 1) cssClass = 'done'; 
-
-      if (index === currentStep - 1) cssClass = 'active'; 
-
-      html += `<div class="step ${cssClass}"><div class="step-title">${step.title}</div><div class="step-desc">${step.desc}</div></div>`; 
-
-    }); 
-
-    timeline.innerHTML = html; 
-
-  } 
-
- 
-
-  // INIT 
-
-  updateCartBadge(); 
-
-  renderCart(); 
-
-  if (currentOrderId) fetchTracking(); 
-
-</script> 
-
- 
-
-</body> 
-
-</html> 
-
- 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>LowkeyExpress — Shopping Tunis → Kinshasa</title>
+
+<link rel="icon" type="image/png" href="logo.png.JPG">
+<link rel="apple-touch-icon" href="logo.png.JPG">
+<meta property="og:title" content="LowkeyExpress — Import Tunis → Kinshasa">
+<meta property="og:description" content="Achète tes articles préférés à Tunis et fais-toi livrer à Kinshasa.">
+<meta property="og:image" content="logo.png.JPG">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+--bg-app: #f7f6f2; --bg-beige: #f0ece3; --text-main: #111111;
+--text-muted: #888888; --black: #111111; --pink-light: #ffd6d6;
+--green-light: #e2f0d9; --gold: #d4af37; --bordeaux: #2b0006;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+body { background-color: #e5e5e5; display: flex; justify-content: center; min-height: 100vh; }
+.app-container { width: 100%; max-width: 414px; background: var(--bg-app); min-height: 100vh; position: relative; overflow-x: hidden; padding-bottom: 90px; }
+
+/* HEADER */
+header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: var(--bg-app); position: sticky; top: 0; z-index: 10; }
+.header-title { font-weight: 800; font-size: 22px; color: var(--bordeaux); letter-spacing: -0.5px; }
+.cart-icon-btn { position: relative; background: none; border: none; font-size: 22px; cursor: pointer; z-index: 20; }
+.cart-badge { position: absolute; top: -4px; right: -6px; background: var(--black); color: white; font-size: 10px; font-weight: 700; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+/* VUES */
+.view-section { display: none; animation: fadeIn 0.2s ease; }
+.view-section.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+/* SHOP */
+.hero-card { background: var(--bordeaux); border-radius: 24px; margin: 0 20px; padding: 24px; color: white; height: 180px; display: flex; flex-direction: column; justify-content: center; }
+.hero-title { font-size: 22px; font-weight: 800; margin-bottom: 8px; color: var(--gold); }
+.hero-sub { font-size: 13px; color: #ccc; }
+
+/* RECHERCHE */
+.search-section { padding: 20px; }
+.search-section select { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #ddd; margin-bottom: 10px; font-size: 14px; background: white; outline: none; }
+.search-box { display: flex; background: white; border-radius: 16px; padding: 5px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+.search-box input { flex: 1; border: none; padding: 12px 16px; font-size: 14px; outline: none; background: transparent; }
+.search-box button { background: var(--black); color: white; border: none; border-radius: 12px; padding: 0 20px; font-weight: 600; cursor: pointer; }
+.alert { padding: 12px; border-radius: 12px; font-size: 12px; margin-top: 10px; font-weight: 600; display: none; }
+
+/* GRILLE PRODUITS */
+.section-title { padding: 0 20px; font-size: 18px; font-weight: 800; margin-bottom: 16px; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 0 20px; }
+.product-card { background: var(--bg-beige); border-radius: 20px; padding: 12px; cursor: pointer; }
+.product-img-wrapper { width: 100%; aspect-ratio: 1; border-radius: 16px; overflow: hidden; margin-bottom: 12px; background: white; }
+.product-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+.product-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.product-price { font-size: 14px; font-weight: 800; }
+
+/* OVERLAY PRODUIT */
+.product-view { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-app); z-index: 100; transform: translateY(100%); transition: transform 0.3s, visibility 0.3s; display: flex; flex-direction: column; overflow-y: auto; visibility: hidden; pointer-events: none; }
+.product-view.active { transform: translateY(0); visibility: visible; pointer-events: auto; }
+.product-header { display: flex; justify-content: space-between; padding: 20px; }
+.back-btn { background: white; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 18px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+.product-main-img { width: 100%; height: 300px; object-fit: contain; background: white; margin-bottom: 20px; }
+.product-info { padding: 0 24px; flex: 1; }
+.product-title-lg { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+.product-subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 20px; }
+
+.options-title { font-size: 14px; font-weight: 600; margin-bottom: 12px; margin-top: 16px; }
+.size-options { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+.size-btn { min-width: 44px; height: 44px; padding: 0 10px; border-radius: 22px; border: 1px solid #ddd; background: transparent; font-weight: 600; font-size: 13px; cursor: pointer; }
+.size-btn.selected { background: var(--black); color: white; border-color: var(--black); }
+
+.color-options { display: flex; gap: 12px; margin-bottom: 20px; }
+.color-circle { width: 36px; height: 36px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; box-shadow: 0 0 0 2px #ddd; }
+.color-circle.selected { border-color: var(--black); transform: scale(1.1); }
+
+.qty-price-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+.qty-control { display: flex; align-items: center; gap: 16px; background: white; padding: 8px 16px; border-radius: 24px; }
+.qty-control button { background: none; border: none; font-size: 20px; cursor: pointer; }
+.price-block { text-align: right; }
+.price-block strong { font-size: 20px; font-weight: 800; }
+.add-to-cart-btn { background: var(--black); color: white; border: none; padding: 18px; border-radius: 30px; font-size: 16px; font-weight: 600; width: calc(100% - 48px); margin: 0 24px 30px; cursor: pointer; }
+
+/* PANIER */
+.cart-header { padding: 10px 20px 20px; }
+.cart-title { font-size: 26px; font-weight: 800; }
+.cart-item { background: var(--bg-beige); border-radius: 20px; padding: 16px; margin-bottom: 16px; display: flex; gap: 16px; align-items: center; }
+.item-img { width: 65px; height: 65px; border-radius: 12px; background: white; object-fit: cover; }
+.item-details { flex: 1; }
+.item-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+.item-meta { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; }
+.item-price { font-size: 14px; font-weight: 700; }
+.item-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+.btn-delete { background: var(--pink-light); border: none; width: 32px; height: 32px; border-radius: 10px; cursor: pointer; }
+.qty-control-sm { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; }
+.qty-btn-sm { width: 24px; height: 24px; border-radius: 50%; border: none; background: white; cursor: pointer; }
+
+/* FORMULAIRE & TOTAL */
+.promo-box { display: flex; background: #eaeaea; border-radius: 16px; padding: 4px; margin: 20px 0; }
+.promo-box input { flex: 1; background: transparent; border: none; padding: 12px; outline: none; text-transform: uppercase; font-size: 14px; }
+.promo-box button { background: transparent; border: none; padding: 0 16px; font-weight: 600; cursor: pointer; }
+.form-group { margin-bottom: 12px; }
+.form-group input { width: 100%; padding: 16px; border-radius: 16px; border: 1px solid #ddd; font-size: 14px; outline: none; }
+.conditions-box { margin: 20px 0; background: white; padding: 16px; border-radius: 20px; }
+.condition-item { display: flex; gap: 10px; font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+.condition-item input { width: 18px; height: 18px; accent-color: var(--black); }
+.summary-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; color: var(--text-muted); }
+.summary-row.total { font-size: 18px; font-weight: 800; color: var(--text-main); margin-top: 16px; padding-top: 16px; border-top: 1px dashed #ccc; }
+.usd-equivalent { font-size: 12px; text-align: right; margin-top: 4px; color: var(--text-muted); }
+.checkout-btn { background: var(--black); color: white; width: 100%; padding: 18px; border-radius: 30px; font-size: 16px; font-weight: 700; border: none; margin-top: 10px; cursor: pointer; }
+.checkout-btn:disabled { background: #ccc; }
+
+/* SUIVI & PROFIL */
+.timeline { margin-top: 20px; border-left: 2px solid #ddd; padding-left: 20px; }
+.step { position: relative; margin-bottom: 24px; opacity: 0.5; }
+.step.done { opacity: 1; } .step.active { opacity: 1; }
+.step::before { content: ''; position: absolute; left: -27px; top: 2px; width: 12px; height: 12px; border-radius: 50%; background: #ddd; }
+.step.done::before { background: #4caf50; } .step.active::before { background: var(--black); }
+.step-title { font-weight: 700; font-size: 14px; } .step-desc { font-size: 12px; color: var(--text-muted); }
+.profile-avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--bordeaux); color: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: bold; margin: 0 auto 16px; }
+.profile-menu { background: white; border-radius: 20px; padding: 10px 20px; margin-bottom: 16px; }
+.menu-item { display: flex; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid #eee; font-size: 14px; font-weight: 600; }
+.menu-item:last-child { border-bottom: none; }
+
+/* NAVIGATION BAS */
+.creator-credit { text-align: center; font-size: 10px; color: #aaa; margin-top: 20px; padding-bottom: 20px; text-transform: uppercase; }
+.bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 414px; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); display: flex; justify-content: space-around; padding: 12px 0 25px; border-top: 1px solid #eee; z-index: 50; }
+.nav-item { background: none; border: none; font-size: 22px; color: #ccc; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.nav-item span { font-size: 10px; font-weight: 600; }
+.nav-item.active { color: var(--black); }
+</style>
+</head>
+<body>
+
+<div class="app-container">
+<header>
+<div class="header-title">LowkeyExpress</div>
+<button class="cart-icon-btn" onclick="showView('cart')">🛍️<span class="cart-badge" id="cart-count-badge" style="display:none;">0</span></button>
+</header>
+
+<!-- VUE SHOP -->
+<div id="view-shop" class="view-section active">
+<div class="hero-card">
+<div class="hero-title">Import Tunis direction Kinshasa</div>
+<div class="hero-sub">Le luxe et la mode livrés chez toi en toute sécurité.</div>
+</div>
+
+<div class="search-section">
+<select id="select-brand">
+<option value="Zara">Zara (Tunis)</option>
+<option value="Bershka">Bershka (Tunis)</option>
+<option value="Stradivarius">Stradivarius (Tunis)</option>
+<option value="Pull&Bear">Pull&Bear (Tunis)</option>
+</select>
+<div class="search-box">
+<input type="text" id="input-ref" placeholder="Réf (Ex: 5039/472/800)...">
+<button onclick="verifyArticle()">🔍</button>
+</div>
+<div id="search-alert" class="alert"></div>
+</div>
+
+<div class="section-title">Sélection Populaire</div>
+<div class="grid">
+<div class="product-card" onclick="openProduct('5039/472/800')">
+<div class="product-img-wrapper"><img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=500&auto=format&fit=crop"></div>
+<div class="product-name">Body Foil Zara</div>
+<div class="product-price">109.00 TND</div>
+</div>
+<div class="product-card" onclick="openProduct('0110/518/999')">
+<div class="product-img-wrapper"><img src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=500&auto=format&fit=crop"></div>
+<div class="product-name">Golden Decade</div>
+<div class="product-price">119.00 TND</div>
+</div>
+</div>
+<div class="creator-credit">Conçu par ACHOUMAT KHALFANI</div>
+</div>
+
+<!-- VUE PRODUIT -->
+<div class="product-view" id="product-overlay">
+<div class="product-header"><button class="back-btn" onclick="closeProduct()">←</button></div>
+<img id="overlay-img" class="product-main-img" src="">
+<div class="product-info">
+<div class="product-title-lg" id="overlay-title">Article</div>
+<div class="product-subtitle" id="overlay-brand">Boutique</div>
+
+<div id="color-container" style="display: none;">
+<div class="options-title">Couleur</div>
+<div class="color-options" id="overlay-colors"></div>
+</div>
+
+<div class="options-title">Taille / Format</div>
+<div class="size-options" id="overlay-sizes"></div>
+
+<div class="qty-price-row">
+<div class="qty-control">
+<button onclick="updateQty(-1)">−</button><span id="overlay-qty">1</span><button onclick="updateQty(1)">+</button>
+</div>
+<div class="price-block"><strong id="overlay-price">0.00 TND</strong></div>
+</div>
+</div>
+<button class="add-to-cart-btn" onclick="addToCart()">Ajouter au panier</button>
+</div>
+
+<!-- VUE PANIER -->
+<div id="view-cart" class="view-section">
+<div class="cart-header"><div class="cart-title">Mon panier</div></div>
+<div id="cart-items-container" style="padding: 0 20px;"></div>
+<div id="checkout-section" style="padding: 0 20px;">
+<div class="promo-box">
+<input type="text" id="promo-input" placeholder="Code promo (FIDA08)">
+<button onclick="applyPromo()">Appliquer</button>
+</div>
+<div id="promo-alert" class="alert"></div>
+<div class="form-group"><input type="text" id="cust-nom" placeholder="Nom & Prénom *"></div>
+<div class="form-group"><input type="tel" id="cust-phone" placeholder="Téléphone (+243...) *"></div>
+<div class="form-group"><input type="text" id="cust-commune" placeholder="Commune *"></div>
+<div class="form-group"><input type="text" id="cust-adresse" placeholder="Adresse *"></div>
+<div class="conditions-box">
+<div class="condition-item"><input type="checkbox" class="cond-check"><span>J'accepte de payer 70% maintenant.</span></div>
+<div class="condition-item"><input type="checkbox" class="cond-check"><span>Je paierai 30% à la livraison.</span></div>
+<div class="condition-item"><input type="checkbox" class="cond-check"><span>Je confirme mes tailles/couleurs.</span></div>
+<div class="condition-item"><input type="checkbox" class="cond-check"><span>J'accepte les CGV.</span></div>
+</div>
+<div class="summary-row"><span>Sous-total</span><span id="summary-articles">0.00 TND</span></div>
+<div class="summary-row"><span>Transport & Service</span><span id="summary-transport">40.00 TND</span></div>
+<div class="summary-row" id="promo-line" style="display:none; color:#2e7d32;"><span>Code FIDA08 (-10%)</span><span id="summary-discount">0.00 TND</span></div>
+<div class="summary-row total"><span>Total</span><span id="summary-total">0.00 TND</span></div>
+<div class="usd-equivalent" id="summary-usd">≈ 0.00 USD</div>
+<button class="checkout-btn" id="btn-pay" disabled onclick="processPayment()">Payer l'acompte (70%)</button>
+</div>
+</div>
+
+<!-- VUE SUIVI -->
+<div id="view-tracking" class="view-section" style="padding: 20px;">
+<h2 style="font-size:24px; font-weight:800; margin-bottom:8px;">Suivi</h2>
+<div class="timeline" id="client-timeline"></div>
+</div>
+
+<!-- VUE PROFIL -->
+<div id="view-profile" class="view-section" style="padding: 20px; text-align: center;">
+<div class="profile-avatar">LK</div>
+<h2 style="font-size:20px; font-weight:800;">Client Lowkey</h2>
+<div class="profile-menu" style="margin-top:20px; text-align:left;">
+<div class="menu-item"><span>👤 Mon Profil</span></div>
+<div class="menu-item"><span>🎁 Points Fidélité</span></div>
+<div class="menu-item"><span>📞 Support WhatsApp</span></div>
+</div>
+<div class="creator-credit">Conçu par ACHOUMAT KHALFANI</div>
+</div>
+
+<!-- NAVIGATION -->
+<nav class="bottom-nav">
+<button class="nav-item active" id="nav-shop" onclick="showView('shop')">🏠<span>Boutique</span></button>
+<button class="nav-item" id="nav-cart" onclick="showView('cart')">🛒<span>Panier</span></button>
+<button class="nav-item" id="nav-tracking" onclick="showView('tracking')">📦<span>Suivi</span></button>
+<button class="nav-item" id="nav-profile" onclick="showView('profile')">👤<span>Profil</span></button>
+</nav>
+</div>
+
+<script>
+const catalog = {
+"5039/472/800": {
+brand: "Zara Tunis",
+title: "Body Foil Manches Courtes",
+priceTND: 109.00,
+img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=500&auto=format&fit=crop",
+sizes: ["XS", "S", "M", "L"],
+colors: [{name: "Noir", hex: "#111111"}, {name: "Blanc", hex: "#ffffff"}, {name: "Gris", hex: "#888888"}]
+},
+"0110/518/999": {
+brand: "Zara Tunis",
+title: "Golden Decade EDP 80ml",
+priceTND: 119.00,
+img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=500&auto=format&fit=crop",
+sizes: ["30 ml", "80 ml", "100 ml"],
+colors: []
+}
+};
+
+let activeProduct = null, selectedSize = '', selectedColor = '', currentQty = 1;
+let cart = JSON.parse(localStorage.getItem('lk_cart_v4')) || [];
+let promoApplied = false;
+const FRAIS_FIXES = 40.00;
+
+function showView(viewName) {
+document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
+document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+const view = document.getElementById('view-' + viewName);
+if (view) view.classList.add('active');
+document.getElementById('nav-' + viewName).classList.add('active');
+if (viewName === 'cart') renderCart();
+}
+
+function verifyArticle() {
+const inputRef = document.getElementById('input-ref').value.trim();
+const alertBox = document.getElementById('search-alert');
+
+alertBox.style.display = 'block';
+
+if (!inputRef) {
+alertBox.style.background = '#fef2f2'; alertBox.style.color = '#991b1b';
+alertBox.innerText = 'Veuillez entrer une référence.';
+return;
+}
+
+alertBox.style.background = '#fef3c7'; alertBox.style.color = '#92400e';
+alertBox.innerText = '🔍 Vérification dans la boutique officielle...';
+
+setTimeout(() => {
+if (catalog[inputRef]) {
+alertBox.style.background = '#e2f0d9'; alertBox.style.color = '#2e7d32';
+alertBox.innerText = 'Article trouvé ! ✅';
+setTimeout(() => { openProduct(inputRef); alertBox.style.display='none'; }, 500);
+} else {
+alertBox.style.background = '#fef2f2'; alertBox.style.color = '#991b1b';
+alertBox.innerText = 'Réf introuvable (mode démo). Essayez 5039/472/800';
+}
+}, 1000);
+}
+
+function openProduct(ref) {
+if (!catalog[ref]) return;
+activeProduct = catalog[ref];
+currentQty = 1;
+selectedColor = activeProduct.colors.length > 0 ? activeProduct.colors[0].name : 'Standard';
+
+document.getElementById('overlay-img').src = activeProduct.img;
+document.getElementById('overlay-title').innerText = activeProduct.title;
+document.getElementById('overlay-brand').innerText = activeProduct.brand;
+document.getElementById('overlay-qty').innerText = currentQty;
+
+const colorContainer = document.getElementById('color-container');
+const colorOptions = document.getElementById('overlay-colors');
+colorOptions.innerHTML = '';
+
+if (activeProduct.colors.length > 0) {
+colorContainer.style.display = 'block';
+activeProduct.colors.forEach((color, i) => {
+const circle = document.createElement('div');
+circle.className = 'color-circle' + (i === 0 ? ' selected' : '');
+circle.style.background = color.hex;
+circle.onclick = () => {
+document.querySelectorAll('.color-circle').forEach(c => c.classList.remove('selected'));
+circle.classList.add('selected');
+selectedColor = color.name;
+};
+colorOptions.appendChild(circle);
+});
+} else {
+colorContainer.style.display = 'none';
+}
+
+const sizeContainer = document.getElementById('overlay-sizes');
+sizeContainer.innerHTML = '';
+selectedSize = activeProduct.sizes[0];
+
+activeProduct.sizes.forEach((size, i) => {
+const btn = document.createElement('button');
+btn.className = 'size-btn' + (i === 0 ? ' selected' : '');
+btn.innerText = size;
+btn.onclick = (e) => {
+e.stopPropagation();
+document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+btn.classList.add('selected');
+selectedSize = size;
+};
+sizeContainer.appendChild(btn);
+});
+
+updateOverlayPrice();
+document.getElementById('product-overlay').classList.add('active');
+}
+
+function closeProduct() { document.getElementById('product-overlay').classList.remove('active'); }
+function updateQty(change) { if (currentQty + change < 1) return; currentQty += change; document.getElementById('overlay-qty').innerText = currentQty; updateOverlayPrice(); }
+function updateOverlayPrice() { document.getElementById('overlay-price').innerText = (activeProduct.priceTND * currentQty).toFixed(2) + " TND"; }
+
+function addToCart() {
+const existing = cart.findIndex(item => item.ref === activeProduct.title && item.size === selectedSize && item.color === selectedColor);
+if (existing > -1) {
+cart[existing].qty += currentQty;
+cart[existing].totalTND = cart[existing].priceTND * cart[existing].qty;
+}
+else {
+cart.push({
+title: activeProduct.title,
+ref: activeProduct.title,
+size: selectedSize,
+color: selectedColor,
+qty: currentQty,
+priceTND: activeProduct.priceTND,
+totalTND: activeProduct.priceTND * currentQty,
+img: activeProduct.img
+});
+}
+saveCart(); closeProduct(); showView('cart');
+}
+
+function saveCart() { localStorage.setItem('lk_cart_v4', JSON.stringify(cart)); updateBadge(); }
+function updateBadge() { const t = cart.reduce((s, i) => s + i.qty, 0); const b = document.getElementById('cart-count-badge'); b.innerText = t; b.style.display = t > 0 ? 'flex' : 'none'; }
+function updateCartQty(i, c) { cart[i].qty += c; cart[i].totalTND = cart[i].priceTND * cart[i].qty; if (cart[i].qty <= 0) removeFromCart(i); else { saveCart(); renderCart(); } }
+function removeFromCart(i) { cart.splice(i, 1); saveCart(); renderCart(); }
+
+function renderCart() {
+const container = document.getElementById('cart-items-container');
+const checkout = document.getElementById('checkout-section');
+container.innerHTML = '';
+if (cart.length === 0) { container.innerHTML = '<p style="text-align:center; padding: 40px 0; color: #888;">Panier vide.</p>'; checkout.style.display = 'none'; return; }
+checkout.style.display = 'block';
+let totalArticles = 0;
+cart.forEach((item, i) => {
+totalArticles += item.totalTND;
+container.innerHTML += `
+<div class="cart-item">
+<img src="${item.img}" class="item-img">
+<div class="item-details">
+<div class="item-name">${item.title}</div>
+<div class="item-meta">Taille: ${item.size} | Couleur: ${item.color}</div>
+<div class="item-price">${item.totalTND.toFixed(2)} TND</div>
+</div>
+<div class="item-actions">
+<button class="btn-delete" onclick="removeFromCart(${i})">🗑️</button>
+<div class="qty-control-sm"><button class="qty-btn-sm" onclick="updateCartQty(${i}, -1)">−</button><span>${item.qty}</span><button class="qty-btn-sm" onclick="updateCartQty(${i}, 1)">+</button></div>
+</div>
+</div>`;
+});
+let discount = promoApplied ? (totalArticles * 0.10) : 0;
+let grandTotal = totalArticles - discount + FRAIS_FIXES;
+document.getElementById('summary-articles').innerText = totalArticles.toFixed(2) + " TND";
+document.getElementById('summary-transport').innerText = FRAIS_FIXES.toFixed(2) + " TND";
+if (promoApplied) { document.getElementById('promo-line').style.display = 'flex'; document.getElementById('summary-discount').innerText = "-" + discount.toFixed(2) + " TND"; } else { document.getElementById('promo-line').style.display = 'none'; }
+document.getElementById('summary-total').innerText = grandTotal.toFixed(2) + " TND";
+document.getElementById('summary-usd').innerText = "≈ " + (grandTotal * 0.33).toFixed(2) + " USD";
+checkConditions();
+}
+
+function applyPromo() {
+const code = document.getElementById('promo-input').value.trim().toUpperCase();
+const alert = document.getElementById('promo-alert');
+alert.style.display = 'block';
+if (code === 'FIDA08') { promoApplied = true; alert.style.background = '#e2f0d9'; alert.style.color = '#2e7d32'; alert.innerText = 'Code appliqué (-10%) !'; renderCart(); }
+else { promoApplied = false; alert.style.background = '#fef2f2'; alert.style.color = '#991b1b'; alert.innerText = 'Code invalide.'; renderCart(); }
+}
+
+document.querySelectorAll('.cond-check').forEach(cb => cb.addEventListener('change', checkConditions));
+function checkConditions() { document.getElementById('btn-pay').disabled = (document.querySelectorAll('.cond-check:checked').length < 4 || cart.length === 0); }
+
+function processPayment() {
+const nom = document.getElementById('cust-nom').value.trim();
+const phone = document.getElementById('cust-phone').value.trim();
+const commune = document.getElementById('cust-commune').value.trim();
+const adresse = document.getElementById('cust-adresse').value.trim();
+if(nom.length < 2 || phone.length < 8 || commune.length < 2 || adresse.length < 2) { alert("Remplissez tous les champs."); return; }
+alert("Commande validée ! Un message pour le paiement de l'acompte va s'afficher.");
+cart = []; saveCart(); renderCart();
+document.querySelectorAll('.cond-check').forEach(cb => cb.checked = false);
+showView('tracking');
+renderTimeline(1);
+}
+
+function renderTimeline(step) {
+const steps = ["Commande validée", "Achat à Tunis", "Contrôle Qualité", "Préparation", "Vol vers Kin", "Arrivée à Kin", "En livraison", "Livré !"];
+let html = '';
+steps.forEach((s, i) => { let c = i < step-1 ? 'done' : (i === step-1 ? 'active' : ''); html += `<div class="step ${c}"><div class="step-title">${s}</div></div>`; });
+document.getElementById('client-timeline').innerHTML = html;
+}
+
+updateBadge(); renderCart(); renderTimeline(1);
+</script>
+</body>
+</html>
