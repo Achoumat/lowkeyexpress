@@ -3,31 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>LowkeyExpress — Shopping Tunis → Kinshasa</title>
+<title>LowkeyExpress — Import Tunis → Kinshasa</title>
 
-<!-- LOGO ET PARTAGE (OPEN GRAPH) -->
+<!-- LOGO ET PARTAGE -->
 <link rel="icon" type="image/jpeg" href="https://i.ibb.co/Z1FxFm6v/IMG-E4687.jpg">
 <link rel="apple-touch-icon" href="https://i.ibb.co/Z1FxFm6v/IMG-E4687.jpg">
 <meta property="og:title" content="LowkeyExpress — Import Tunis → Kinshasa">
-<meta property="og:description" content="Achète tes articles préférés à Tunis et fais-toi livrer à Kinshasa.">
 <meta property="og:image" content="https://i.ibb.co/Z1FxFm6v/IMG-E4687.jpg">
-<meta property="og:type" content="website">
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-/* --- VARIABLES DE COULEURS (MODE CLAIR / SOMBRE) --- */
+/* VARIABLES MODE CLAIR / SOMBRE */
 :root {
 --bg-app: #f7f6f2; --bg-card: #ffffff; --bg-beige: #f0ece3;
 --text-main: #111111; --text-muted: #888888;
---black: #111111; --white: #ffffff; --pink-light: #ffd6d6;
---green-light: #e2f0d9; --bordeaux: #2b0006; --gold: #d4af37;
+--primary: #111111; --accent: #2b0006; --gold: #d4af37;
+--danger: #ef4444;
 }
 [data-theme="dark"] {
---bg-app: #121212; --bg-card: #1e1e1e; --bg-beige: #2a2a2a;
+--bg-app: #0a0a0a; --bg-card: #1c1c1e; --bg-beige: #2a2a2a;
 --text-main: #ffffff; --text-muted: #aaaaaa;
---black: #ffffff; --white: #1e1e1e; --pink-light: #4a1f1f;
---green-light: #1b3b22; --bordeaux: #e8d5b5; --gold: #d4af37;
+--primary: #ffffff; --accent: #2b0006; --gold: #d4af37;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; transition: background-color 0.3s, color 0.3s; }
@@ -36,9 +33,9 @@ body { background-color: var(--bg-app); display: flex; justify-content: center; 
 
 /* HEADER */
 header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: var(--bg-app); position: sticky; top: 0; z-index: 10; }
-.header-logo { height: 40px; width: auto; object-fit: contain; } /* Ajustement pour le logo */
+.header-logo { height: 40px; width: auto; object-fit: contain; }
 .cart-icon-btn { position: relative; background: none; border: none; font-size: 22px; cursor: pointer; color: var(--text-main); }
-.cart-badge { position: absolute; top: -4px; right: -6px; background: var(--text-main); color: var(--bg-app); font-size: 10px; font-weight: 700; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.cart-badge { position: absolute; top: -4px; right: -6px; background: var(--accent); color: var(--gold); font-size: 10px; font-weight: 700; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 
 /* VUES */
 .view-section { display: none; animation: fadeIn 0.2s ease; }
@@ -46,21 +43,20 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
 /* SHOP */
-.hero-card { background: var(--bordeaux); border-radius: 24px; margin: 0 20px; padding: 24px; color: var(--bg-app); height: 180px; display: flex; flex-direction: column; justify-content: center; }
-[data-theme="dark"] .hero-card { color: #121212; }
+.hero-card { background: var(--accent); border-radius: 24px; margin: 0 20px; padding: 24px; color: var(--gold); height: 160px; display: flex; flex-direction: column; justify-content: center; }
 .hero-title { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
-.hero-sub { font-size: 13px; opacity: 0.8; }
+.hero-sub { font-size: 13px; color: #ccc; }
 
 /* FILTRES & RECHERCHE */
 .filters { display: flex; gap: 10px; padding: 20px 20px 10px; overflow-x: auto; scrollbar-width: none; }
 .filters::-webkit-scrollbar { display: none; }
-.filter-btn { background: var(--bg-card); color: var(--text-muted); border: 1px solid transparent; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; white-space: nowrap; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
-.filter-btn.active { background: var(--text-main); color: var(--bg-app); }
+.filter-btn { background: var(--bg-card); color: var(--text-muted); border: none; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; white-space: nowrap; cursor: pointer; }
+.filter-btn.active { background: var(--primary); color: var(--bg-app); }
 
 .search-section { padding: 10px 20px 20px; }
-.search-box { display: flex; background: var(--bg-card); border-radius: 16px; padding: 5px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+.search-box { display: flex; background: var(--bg-card); border-radius: 16px; padding: 5px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
 .search-box input { flex: 1; border: none; padding: 12px 16px; font-size: 14px; outline: none; background: transparent; color: var(--text-main); }
-.search-box button { background: var(--text-main); color: var(--bg-app); border: none; border-radius: 12px; padding: 0 20px; font-weight: 600; cursor: pointer; }
+.search-box button { background: var(--primary); color: var(--bg-app); border: none; border-radius: 12px; padding: 0 20px; font-weight: 600; cursor: pointer; }
 
 /* GRILLE PRODUITS */
 .section-title { padding: 0 20px; font-size: 18px; font-weight: 800; margin-bottom: 16px; }
@@ -69,8 +65,9 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 .product-img-wrapper { width: 100%; aspect-ratio: 1; border-radius: 16px; overflow: hidden; margin-bottom: 12px; background: var(--bg-card); position: relative; }
 .product-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
 .product-type-badge { position: absolute; top: 8px; left: 8px; background: var(--bg-card); color: var(--text-main); font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 10px; }
-.product-name { font-size: 13px; font-weight: 700; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.product-name { font-size: 13px; font-weight: 700; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .product-price { font-size: 14px; font-weight: 800; }
+.product-price-usd { font-size: 11px; color: var(--text-muted); font-weight: 600; }
 
 /* OVERLAY PRODUIT */
 .product-view { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-app); z-index: 100; transform: translateY(100%); transition: transform 0.3s, visibility 0.3s; display: flex; flex-direction: column; overflow-y: auto; visibility: hidden; pointer-events: none; }
@@ -86,18 +83,19 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 .options-title { font-size: 14px; font-weight: 600; margin-bottom: 12px; margin-top: 16px; }
 .size-options, .color-options { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
 .size-btn { min-width: 44px; height: 44px; padding: 0 10px; border-radius: 22px; border: 1px solid var(--text-muted); background: transparent; color: var(--text-main); font-weight: 600; font-size: 13px; cursor: pointer; }
-.size-btn.selected { background: var(--text-main); color: var(--bg-app); border-color: var(--text-main); }
+.size-btn.selected { background: var(--primary); color: var(--bg-app); border-color: var(--primary); }
 .color-circle { width: 36px; height: 36px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; box-shadow: 0 0 0 2px var(--text-muted); }
-.color-circle.selected { border-color: var(--bg-app); transform: scale(1.1); box-shadow: 0 0 0 2px var(--text-main); }
+.color-circle.selected { border-color: var(--bg-app); transform: scale(1.1); box-shadow: 0 0 0 2px var(--primary); }
 
 .qty-price-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
 .qty-control { display: flex; align-items: center; gap: 16px; background: var(--bg-card); padding: 8px 16px; border-radius: 24px; }
 .qty-control button { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-main); }
 .price-block { text-align: right; }
-.price-block strong { font-size: 20px; font-weight: 800; }
-.add-to-cart-btn { background: var(--text-main); color: var(--bg-app); border: none; padding: 18px; border-radius: 30px; font-size: 16px; font-weight: 600; width: calc(100% - 48px); margin: 0 24px 30px; cursor: pointer; }
+.price-block strong { font-size: 20px; font-weight: 800; display: block; }
+.price-block span { font-size: 12px; color: var(--text-muted); }
+.add-to-cart-btn { background: var(--primary); color: var(--bg-app); border: none; padding: 18px; border-radius: 30px; font-size: 16px; font-weight: 600; width: calc(100% - 48px); margin: 0 24px 30px; cursor: pointer; }
 
-/* PANIER (Style maquette) */
+/* PANIER */
 .cart-header { padding: 10px 20px 20px; display: flex; justify-content: space-between; align-items: center; }
 .cart-title { font-size: 26px; font-weight: 800; }
 .cart-item { background: var(--bg-beige); border-radius: 20px; padding: 16px; margin-bottom: 16px; display: flex; gap: 16px; align-items: center; }
@@ -107,7 +105,7 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 .item-meta { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; }
 .item-price { font-size: 14px; font-weight: 700; }
 .item-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
-.btn-delete { background: var(--pink-light); border: none; width: 32px; height: 32px; border-radius: 10px; cursor: pointer; }
+.btn-delete { background: #ffd6d6; border: none; width: 32px; height: 32px; border-radius: 10px; cursor: pointer; color: #000; }
 .qty-control-sm { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; }
 .qty-btn-sm { width: 24px; height: 24px; border-radius: 50%; border: none; background: var(--bg-card); cursor: pointer; color: var(--text-main); }
 
@@ -122,11 +120,11 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 
 .conditions-box { margin: 20px 0; background: var(--bg-card); padding: 16px; border-radius: 20px; }
 .condition-item { display: flex; gap: 10px; font-size: 12px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4; }
-.condition-item input { width: 18px; height: 18px; accent-color: var(--text-main); cursor: pointer; }
+.condition-item input { width: 18px; height: 18px; accent-color: var(--primary); cursor: pointer; }
 
 .summary-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; color: var(--text-muted); }
 .summary-row.total { font-size: 18px; font-weight: 800; color: var(--text-main); margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--text-muted); }
-.checkout-btn { background: var(--text-main); color: var(--bg-app); width: 100%; padding: 18px; border-radius: 30px; font-size: 16px; font-weight: 700; border: none; margin-top: 10px; cursor: pointer; }
+.checkout-btn { background: var(--primary); color: var(--bg-app); width: 100%; padding: 18px; border-radius: 30px; font-size: 16px; font-weight: 700; border: none; margin-top: 10px; cursor: pointer; }
 .checkout-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* SUIVI & PROFIL */
@@ -134,10 +132,10 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 .step { position: relative; margin-bottom: 24px; opacity: 0.5; }
 .step.done { opacity: 1; } .step.active { opacity: 1; }
 .step::before { content: ''; position: absolute; left: -27px; top: 2px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg-beige); }
-.step.done::before { background: #4caf50; } .step.active::before { background: var(--text-main); box-shadow: 0 0 0 4px var(--bg-app); }
-.step-title { font-weight: 700; font-size: 14px; } .step-desc { font-size: 12px; color: var(--text-muted); }
+.step.done::before { background: #4caf50; } .step.active::before { background: var(--accent); box-shadow: 0 0 0 4px var(--bg-app); }
+.step-title { font-weight: 700; font-size: 14px; }
 
-.profile-avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--bordeaux); color: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: bold; margin: 0 auto 16px; }
+.profile-avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--accent); color: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: bold; margin: 0 auto 16px; cursor: pointer; }
 .profile-menu { background: var(--bg-card); border-radius: 20px; padding: 10px 20px; margin-bottom: 16px; }
 .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--bg-beige); font-size: 14px; font-weight: 600; }
 .menu-item:last-child { border-bottom: none; }
@@ -147,32 +145,32 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 .switch input { opacity: 0; width: 0; height: 0; }
 .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--text-muted); transition: .4s; border-radius: 24px; }
 .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: var(--bg-app); transition: .4s; border-radius: 50%; }
-input:checked + .slider { background-color: var(--text-main); }
+input:checked + .slider { background-color: var(--accent); }
 input:checked + .slider:before { transform: translateX(20px); }
 
 /* NAVIGATION BAS */
-.creator-credit { text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 30px; padding-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+.creator-credit { text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 30px; padding-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; }
 .bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 414px; background: var(--bg-app); display: flex; justify-content: space-around; padding: 12px 0 25px; border-top: 1px solid var(--bg-beige); z-index: 50; }
 .nav-item { background: none; border: none; font-size: 20px; color: var(--text-muted); cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; }
 .nav-item span { font-size: 10px; font-weight: 600; }
-.nav-item.active { color: var(--text-main); }
+.nav-item.active { color: var(--primary); }
 
-/* POPUP SUCCÈS */
-.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; }
+/* POPUPS GÉNÉRIQUES & SUCCÈS */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(4px); }
 .modal-overlay.active { display: flex; }
 .modal-content { background: var(--bg-app); width: 100%; max-width: 340px; border-radius: 24px; padding: 30px 20px; text-align: center; animation: popIn 0.3s; }
 @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-.success-icon { font-size: 50px; margin-bottom: 16px; }
-.modal-title { font-size: 20px; font-weight: 800; margin-bottom: 10px; }
+.modal-icon { font-size: 40px; margin-bottom: 16px; }
+.modal-title { font-size: 18px; font-weight: 800; margin-bottom: 10px; }
 .modal-text { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5; }
+.modal-btn { background: var(--primary); color: var(--bg-app); width: 100%; padding: 16px; border-radius: 24px; font-size: 14px; font-weight: 700; border: none; cursor: pointer; }
 </style>
 </head>
 <body data-theme="light">
 
 <div class="app-container">
 <header>
-<!-- Intégration de ton logo ici -->
-<img src="https://i.ibb.co/Z1FxFm6v/IMG-E4687.jpg" alt="LowkeyExpress Logo" class="header-logo">
+<img src="https://i.ibb.co/Z1FxFm6v/IMG-E4687.jpg" alt="LowkeyExpress" class="header-logo">
 <button class="cart-icon-btn" onclick="showView('cart')">🛍️<span class="cart-badge" id="cart-count-badge" style="display:none;">0</span></button>
 </header>
 
@@ -183,13 +181,11 @@ input:checked + .slider:before { transform: translateX(20px); }
 <div class="hero-sub">Le luxe et la mode livrés chez toi en toute sécurité.</div>
 </div>
 
-<!-- Filtres Boutiques -->
 <div class="filters">
-<button class="filter-btn active" onclick="filterProducts('all')">Tout</button>
-<button class="filter-btn" onclick="filterProducts('Zara')">ZARA</button>
-<button class="filter-btn" onclick="filterProducts('Bershka')">BERSHKA</button>
-<button class="filter-btn" onclick="filterProducts('Stradivarius')">STRADIVARIUS</button>
-<button class="filter-btn" onclick="filterProducts('Pull&Bear')">PULL&BEAR</button>
+<button class="filter-btn active" onclick="filterProducts('all', event)">Tout</button>
+<button class="filter-btn" onclick="filterProducts('Femme', event)">Femme</button>
+<button class="filter-btn" onclick="filterProducts('Homme', event)">Homme</button>
+<button class="filter-btn" onclick="filterProducts('Accessoire', event)">Accessoires</button>
 </div>
 
 <div class="search-section">
@@ -200,12 +196,9 @@ input:checked + .slider:before { transform: translateX(20px); }
 </div>
 
 <div class="section-title">Sélection Populaire</div>
-<div class="grid" id="product-grid">
-<!-- Les produits seront injectés ici par JS -->
-</div>
+<div class="grid" id="product-grid"></div>
 
-<!-- Signature -->
-<div class="creator-credit">ACHOUMAT KHALFANI</div>
+<div class="creator-credit" onclick="openHowItWorks()">ACHOUMAT KHALFANI</div>
 </div>
 
 <!-- VUE PRODUIT -->
@@ -217,7 +210,7 @@ input:checked + .slider:before { transform: translateX(20px); }
 <div class="product-title-lg" id="overlay-title">Article</div>
 <div class="product-ref" id="overlay-ref">Réf: -</div>
 
-<div id="color-container" style="display: none;">
+<div id="color-container">
 <div class="options-title">Couleur</div>
 <div class="color-options" id="overlay-colors"></div>
 </div>
@@ -229,7 +222,10 @@ input:checked + .slider:before { transform: translateX(20px); }
 <div class="qty-control">
 <button onclick="updateQty(-1)">−</button><span id="overlay-qty">1</span><button onclick="updateQty(1)">+</button>
 </div>
-<div class="price-block"><strong id="overlay-price">0.00 TND</strong></div>
+<div class="price-block">
+<strong id="overlay-price">0.00 TND</strong>
+<span id="overlay-price-usd">~ $0.00 USD</span>
+</div>
 </div>
 </div>
 <button class="add-to-cart-btn" onclick="addToCart()">Ajouter au panier</button>
@@ -242,43 +238,42 @@ input:checked + .slider:before { transform: translateX(20px); }
 
 <div id="checkout-section" style="padding: 0 20px;">
 <div class="promo-box">
-<input type="text" id="promo-input" placeholder="Entrez le code promo">
+<input type="text" id="promo-input" placeholder="Code promo">
 <button onclick="applyPromo()">Appliquer</button>
 </div>
 <div id="promo-alert" style="display:none; color:#2e7d32; font-size:12px; font-weight:600; margin-bottom:10px;"></div>
 
-<!-- Formulaire de livraison -->
 <div class="form-group"><input type="text" id="cust-prenom" placeholder="Prénom *"></div>
 <div class="form-group"><input type="text" id="cust-nom" placeholder="Nom *"></div>
-<div class="form-group"><input type="text" id="cust-adresse" placeholder="Adresse *"></div>
+<div class="form-group"><input type="text" id="cust-adresse" placeholder="Adresse complète *"></div>
 <div class="form-group"><input type="text" value="RDC" disabled></div>
 <div class="form-group"><input type="text" value="Kinshasa" disabled></div>
 <div class="form-group"><input type="text" id="cust-cp" placeholder="Code postal *"></div>
 <div class="form-group"><input type="tel" id="cust-phone" placeholder="Numéro de téléphone *"></div>
 <div class="form-group"><input type="email" id="cust-email" placeholder="Adresse email *"></div>
-<div class="form-group"><input type="text" id="cust-message" placeholder="Message (Optionnel)"></div>
 
 <div class="conditions-box">
 <div class="condition-item"><input type="checkbox" class="cond-check"><span>J'accepte de payer <b>70%</b> maintenant.</span></div>
-<div class="condition-item"><input type="checkbox" class="cond-check"><span>Je paierai les <b>30%</b> restants à la livraison à Kinshasa.</span></div>
-<div class="condition-item"><input type="checkbox" class="cond-check"><span>J'accepte les conditions générales de vente.</span></div>
+<div class="condition-item"><input type="checkbox" class="cond-check"><span>Je paierai les <b>30%</b> à la livraison à Kinshasa.</span></div>
+<div class="condition-item"><input type="checkbox" class="cond-check"><span>J'accepte les conditions générales.</span></div>
 </div>
 
 <div class="summary-row"><span>Sous-total</span><span id="summary-articles">0.00 TND</span></div>
-<div class="summary-row"><span>Transport & Service</span><span id="summary-transport">0.00 TND</span></div>
+<div class="summary-row"><span>Transport & Service</span><span id="summary-transport">40.00 TND</span></div>
 <div class="summary-row" id="promo-line" style="display:none; color:#2e7d32;"><span>Code Promo</span><span id="summary-discount">0.00 TND</span></div>
 
 <div class="summary-row total"><span>Total</span><span id="summary-total">0.00 TND</span></div>
-<div class="summary-row" style="color:var(--text-main); font-weight:800; margin-top:8px;"><span>Acompte (70%)</span><span id="summary-acompte">0.00 TND</span></div>
+<div class="summary-row" style="font-size:12px;"><span>≈ USD</span><span id="summary-total-usd">0.00 USD</span></div>
+<div class="summary-row" style="color:var(--accent); font-weight:800; margin-top:12px;"><span>Acompte (70%)</span><span id="summary-acompte">0.00 TND</span></div>
 <div class="summary-row" style="font-size:12px;"><span>Reste à payer (30%)</span><span id="summary-solde">0.00 TND</span></div>
 
-<button class="checkout-btn" id="btn-pay" disabled onclick="processPayment()">Payer l'acompte</button>
+<button class="checkout-btn" id="btn-pay" disabled onclick="openPaymentModal()">Payer l'acompte</button>
 </div>
 </div>
 
 <!-- VUE SUIVI -->
 <div id="view-tracking" class="view-section" style="padding: 20px;">
-<h2 style="font-size:24px; font-weight:800; margin-bottom:8px;">Suivi de colis</h2>
+<h2 style="font-size:24px; font-weight:800; margin-bottom:8px;">Suivi</h2>
 <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;" id="tracking-ref">Aucune commande active</p>
 <div class="timeline" id="client-timeline"></div>
 </div>
@@ -289,15 +284,11 @@ input:checked + .slider:before { transform: translateX(20px); }
 <h2 style="font-size:20px; font-weight:800;">Mon Compte</h2>
 
 <div class="profile-menu" style="margin-top:20px; text-align:left;">
-<div class="menu-item"><span>🌍 Langue</span> <select style="border:none; background:transparent; font-weight:600; color:var(--text-muted); font-size:14px;"><option>Français</option><option>English</option><option>Lingala</option></select></div>
+<div class="menu-item"><span>🌍 Langue</span> <select style="border:none; background:transparent; font-weight:600; color:var(--text-muted); font-size:14px; outline:none;"><option>Français</option><option>English</option><option>Lingala</option></select></div>
 <div class="menu-item"><span>🌗 Mode Sombre</span>
-<label class="switch">
-<input type="checkbox" id="theme-toggle" onchange="toggleTheme()">
-<span class="slider"></span>
-</label>
+<label class="switch"><input type="checkbox" id="theme-toggle" onchange="toggleTheme()"><span class="slider"></span></label>
 </div>
-<div class="menu-item"><span>🎁 Points Fidélité</span> <span style="color:var(--text-muted);">0 pts</span></div>
-<div class="menu-item"><span>💬 Support Client</span> <span style="color:var(--text-muted);">WhatsApp</span></div>
+<div class="menu-item" onclick="openHowItWorks()"><span>❓ Comment ça marche ?</span> <span>→</span></div>
 </div>
 
 <div class="creator-credit">ACHOUMAT KHALFANI</div>
@@ -312,37 +303,97 @@ input:checked + .slider:before { transform: translateX(20px); }
 </nav>
 </div>
 
-<!-- POPUP SUCCÈS -->
+<!-- MODALES -->
+<!-- 1. Popup d'erreur (remplace le alert moche) -->
+<div class="modal-overlay" id="error-modal">
+<div class="modal-content">
+<div class="modal-icon">🔍</div>
+<div class="modal-title">Article introuvable</div>
+<div class="modal-text">Nous n'avons pas trouvé cette référence dans nos boutiques partenaires. Vérifiez votre saisie ou contactez notre support.</div>
+<button class="modal-btn" onclick="closeModal('error-modal')">Réessayer</button>
+</div>
+</div>
+
+<!-- 2. Popup Comment ça marche -->
+<div class="modal-overlay" id="how-modal">
+<div class="modal-content">
+<div class="modal-icon">✨</div>
+<div class="modal-title">Comment ça marche ?</div>
+<div class="modal-text" style="text-align:left;">
+<b>1. Choisissez</b> vos articles préférés sur Zara, Bershka, etc.<br><br>
+<b>2. Nous achetons</b> et vérifions vos articles directement à Tunis.<br><br>
+<b>3. Nous livrons</b> chez vous à Kinshasa en toute sécurité.<br><br>
+<i>Paiement sécurisé : 70% à la commande, 30% à la réception.</i>
+</div>
+<button class="modal-btn" onclick="closeModal('how-modal')">J'ai compris</button>
+</div>
+</div>
+
+<!-- 3. Popup Choix Paiement -->
+<div class="modal-overlay" id="payment-modal">
+<div class="modal-content" style="text-align:left;">
+<div class="modal-title" style="text-align:center;">Mode de paiement</div>
+<div class="modal-text" style="text-align:center; margin-bottom:15px;">Choisissez comment régler les 70%.</div>
+
+<div style="display:flex; gap:10px; margin-bottom:15px;">
+<button class="modal-btn" style="background:var(--bg-beige); color:var(--text-main);" onclick="selectPayment('card')">💳 Carte Bancaire</button>
+<button class="modal-btn" style="background:var(--bg-beige); color:var(--text-main);" onclick="selectPayment('mobile')">📱 Mobile Money</button>
+</div>
+
+<div id="card-fields" style="display:none;">
+<div class="form-group"><input type="text" placeholder="Numéro de carte"></div>
+<div style="display:flex; gap:10px;">
+<div class="form-group" style="flex:1;"><input type="text" placeholder="MM/YY"></div>
+<div class="form-group" style="flex:1;"><input type="text" placeholder="CVV"></div>
+</div>
+</div>
+
+<div id="mobile-fields" style="display:none;">
+<div class="form-group">
+<select style="width:100%; padding:16px; border-radius:16px; border:1px solid var(--bg-beige); background:var(--bg-card); color:var(--text-main); font-size:14px;">
+<option>Airtel Money</option>
+<option>M-Pesa</option>
+</select>
+</div>
+<div class="form-group"><input type="tel" placeholder="Numéro de téléphone"></div>
+</div>
+
+<button class="modal-btn" id="confirm-pay-btn" style="margin-top:15px;" onclick="processPayment()">Confirmer et Payer</button>
+<button style="background:none; border:none; width:100%; text-align:center; margin-top:10px; color:var(--text-muted); cursor:pointer;" onclick="closeModal('payment-modal')">Annuler</button>
+</div>
+</div>
+
+<!-- 4. Popup Succès -->
 <div class="modal-overlay" id="success-modal">
 <div class="modal-content">
-<div class="success-icon">✅</div>
-<div class="modal-title">Paiement réussi !</div>
-<div class="modal-text">Votre commande a bien été enregistrée.<br><br>Un e-mail de confirmation vient de vous être envoyé. Vous pouvez suivre l'évolution de votre colis en temps réel.</div>
-<button class="checkout-btn" onclick="closeModalAndTrack()">Voir mon suivi</button>
+<div class="modal-icon">✅</div>
+<div class="modal-title">Commande effectuée avec succès !</div>
+<div class="modal-text">Votre commande a bien été enregistrée et votre paiement validé.<br><br>Vous allez recevoir un e-mail et un message WhatsApp de confirmation.</div>
+<button class="modal-btn" onclick="closeModal('success-modal'); showView('tracking');">Voir mon suivi</button>
 </div>
 </div>
 
 <script>
-// --- CATALOGUE DES PRODUITS (Basé sur tes captures) ---
+// CATALOGUE (Tes vraies images et prix)
 const catalog = [
-{ ref: "6145/109/620", brand: "Stradivarius", title: "Polo rayé", priceTND: 179.00, type: "Femme", category: "Vêtement", img: "https://images.unsplash.com/photo-1596755094514-f87e32f85e2c?w=500&auto=format&fit=crop", sizes: ["XS","S","M","L"], colors: [{name:"Rose",hex:"#f4a4c0"}] },
-{ ref: "4908/352/800", brand: "Bershka", title: "Jean droit étoiles", priceTND: 199.00, type: "Femme", category: "Vêtement", img: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=500&auto=format&fit=crop", sizes: ["34","36","38","40"], colors: [{name:"Noir",hex:"#111111"}] },
-{ ref: "3170/208/300", brand: "Zara", title: "Montre rectangulaire", priceTND: 99.90, type: "Accessoire", category: "Accessoire", img: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=500&auto=format&fit=crop", sizes: ["Unique"], colors: [{name:"Or",hex:"#d4af37"}] },
-{ ref: "7700507717", brand: "Pull&Bear", title: "Sweat à capuche", priceTND: 199.00, type: "Homme", category: "Vêtement", img: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500&auto=format&fit=crop", sizes: ["S","M","L","XL"], colors: [{name:"Chocolat",hex:"#4e342e"}] }
+{ ref: "6145/109/620", brand: "Zara", title: "Polo rayé", priceTND: 179.00, type: "Femme", img: "https://zupimages.net/up/26/44/o1ic.jpg", sizes: ["XS","S","M","L"], colors: [{name:"Rose",hex:"#f4a4c0"}] },
+{ ref: "0110/528/990", brand: "Zara", title: "Golden Decade EDP", priceTND: 119.00, type: "Femme", img: "https://zupimages.net/up/26/44/kbs5.jpeg", sizes: ["80ml", "100ml"], colors: [] },
+{ ref: "4908/352/800", brand: "Bershka", title: "Jean droit étoiles", priceTND: 199.00, type: "Femme", img: "https://zupimages.net/up/26/44/ji90.jpeg", sizes: ["32","34","36","38","40","42"], colors: [{name:"Noir",hex:"#111111", img:"https://zupimages.net/up/26/44/ji90.jpeg"}, {name:"Bleu",hex:"#6c8ebf", img:"https://zupimages.net/up/26/44/60k1.jpeg"}] },
+{ ref: "7700507717", brand: "Pull&Bear", title: "Sweat à capuche", priceTND: 199.00, type: "Homme", img: "https://zupimages.net/up/26/44/t014.jpeg", sizes: ["S","M","L","XL"], colors: [{name:"Chocolat",hex:"#4e342e"}] },
+{ ref: "9222/770/040", brand: "Stradivarius", title: "Sandales à talon", priceTND: 129.00, type: "Femme", img: "https://zupimages.net/up/26/44/slly.jpeg", sizes: ["36","37","39","40"], colors: [{name:"Noir",hex:"#000000"}] }
 ];
 
-// --- ÉTAT GLOBAL ---
 let activeProduct = null, selectedSize = '', selectedColor = '', currentQty = 1;
-let cart = JSON.parse(localStorage.getItem('lk_cart_final_v5')) || [];
+let cart = JSON.parse(localStorage.getItem('lk_cart_final')) || [];
 let promoApplied = false;
 const FRAIS_FIXES = 40.00;
+const TAUX_USD = 0.33;
 
-// --- AFFICHAGE DES PRODUITS ---
 function renderProducts(filter = 'all') {
 const grid = document.getElementById('product-grid');
 grid.innerHTML = '';
 catalog.forEach(p => {
-if (filter === 'all' || p.brand === filter) {
+if (filter === 'all' || p.type === filter) {
 grid.innerHTML += `
 <div class="product-card" onclick="openProduct('${p.ref}')">
 <div class="product-img-wrapper">
@@ -351,43 +402,38 @@ grid.innerHTML += `
 </div>
 <div class="product-name">${p.title}</div>
 <div class="product-price">${p.priceTND.toFixed(2)} TND</div>
+<div class="product-price-usd">~ $${(p.priceTND * TAUX_USD).toFixed(2)} USD</div>
 </div>
 `;
 }
 });
 }
-function filterProducts(brand) {
+function filterProducts(category, evt) {
 document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-event.target.classList.add('active');
-renderProducts(brand);
+if(evt) evt.target.classList.add('active');
+renderProducts(category);
 }
 
-// --- NAVIGATION ---
 function showView(viewName) {
 document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
 document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
 document.getElementById('view-' + viewName).classList.add('active');
 document.getElementById('nav-' + viewName).classList.add('active');
 if (viewName === 'cart') renderCart();
+if (viewName === 'tracking') renderTimeline();
 }
 
-// --- RECHERCHE SIMULÉE ---
 function verifyArticle() {
 const ref = document.getElementById('input-ref').value.trim();
 const found = catalog.find(p => p.ref === ref);
-if (found) {
-openProduct(ref);
-} else {
-alert("Référence introuvable (mode démo). Essayez : 6145/109/620");
-}
+if (found) { openProduct(ref); }
+else { document.getElementById('error-modal').classList.add('active'); }
 }
 
-// --- PRODUIT ---
 function openProduct(ref) {
 activeProduct = catalog.find(p => p.ref === ref);
 if(!activeProduct) return;
 currentQty = 1;
-selectedColor = activeProduct.colors.length > 0 ? activeProduct.colors[0].name : 'Standard';
 
 document.getElementById('overlay-img').src = activeProduct.img;
 document.getElementById('overlay-title').innerText = activeProduct.title;
@@ -395,12 +441,16 @@ document.getElementById('overlay-brand').innerText = activeProduct.brand;
 document.getElementById('overlay-ref').innerText = "Réf: " + activeProduct.ref;
 document.getElementById('overlay-qty').innerText = currentQty;
 document.getElementById('overlay-price').innerText = activeProduct.priceTND.toFixed(2) + " TND";
+document.getElementById('overlay-price-usd').innerText = "~ $" + (activeProduct.priceTND * TAUX_USD).toFixed(2) + " USD";
 
+// Couleurs
 const colorContainer = document.getElementById('color-container');
 const colorOptions = document.getElementById('overlay-colors');
 colorOptions.innerHTML = '';
+
 if (activeProduct.colors.length > 0) {
 colorContainer.style.display = 'block';
+selectedColor = activeProduct.colors[0];
 activeProduct.colors.forEach((c, i) => {
 const circle = document.createElement('div');
 circle.className = 'color-circle' + (i === 0 ? ' selected' : '');
@@ -408,14 +458,17 @@ circle.style.background = c.hex;
 circle.onclick = () => {
 document.querySelectorAll('.color-circle').forEach(el => el.classList.remove('selected'));
 circle.classList.add('selected');
-selectedColor = c.name;
+selectedColor = c;
+if(c.img) document.getElementById('overlay-img').src = c.img;
 };
 colorOptions.appendChild(circle);
 });
 } else {
 colorContainer.style.display = 'none';
+selectedColor = {name: 'Standard'};
 }
 
+// Tailles
 const sizeContainer = document.getElementById('overlay-sizes');
 sizeContainer.innerHTML = '';
 selectedSize = activeProduct.sizes[0];
@@ -436,21 +489,29 @@ document.getElementById('product-overlay').classList.add('active');
 }
 
 function closeProduct() { document.getElementById('product-overlay').classList.remove('active'); }
-function updateQty(change) { if (currentQty + change < 1) return; currentQty += change; document.getElementById('overlay-qty').innerText = currentQty; document.getElementById('overlay-price').innerText = (activeProduct.priceTND * currentQty).toFixed(2) + " TND"; }
+function updateQty(change) {
+if (currentQty + change < 1) return;
+currentQty += change;
+document.getElementById('overlay-qty').innerText = currentQty;
+document.getElementById('overlay-price').innerText = (activeProduct.priceTND * currentQty).toFixed(2) + " TND";
+document.getElementById('overlay-price-usd').innerText = "~ $" + ((activeProduct.priceTND * currentQty) * TAUX_USD).toFixed(2) + " USD";
+}
 
-// --- PANIER ---
 function addToCart() {
-const existing = cart.findIndex(item => item.ref === activeProduct.ref && item.size === selectedSize && item.color === selectedColor);
+const existing = cart.findIndex(item => item.ref === activeProduct.ref && item.size === selectedSize && item.color === selectedColor.name);
 if (existing > -1) {
 cart[existing].qty += currentQty;
 cart[existing].totalTND = cart[existing].priceTND * cart[existing].qty;
 } else {
-cart.push({ title: activeProduct.title, ref: activeProduct.ref, size: selectedSize, color: selectedColor, qty: currentQty, priceTND: activeProduct.priceTND, totalTND: activeProduct.priceTND * currentQty, img: activeProduct.img });
+cart.push({
+title: activeProduct.title, ref: activeProduct.ref, size: selectedSize, color: selectedColor.name,
+qty: currentQty, priceTND: activeProduct.priceTND, totalTND: activeProduct.priceTND * currentQty, img: activeProduct.img
+});
 }
 saveCart(); closeProduct(); showView('cart');
 }
 
-function saveCart() { localStorage.setItem('lk_cart_final_v5', JSON.stringify(cart)); updateBadge(); }
+function saveCart() { localStorage.setItem('lk_cart_final', JSON.stringify(cart)); updateBadge(); }
 function updateBadge() { const t = cart.reduce((s, i) => s + i.qty, 0); const b = document.getElementById('cart-count-badge'); b.innerText = t; b.style.display = t > 0 ? 'flex' : 'none'; }
 function updateCartQty(i, c) { cart[i].qty += c; cart[i].totalTND = cart[i].priceTND * cart[i].qty; if (cart[i].qty <= 0) removeFromCart(i); else { saveCart(); renderCart(); } }
 function removeFromCart(i) { cart.splice(i, 1); saveCart(); renderCart(); }
@@ -462,6 +523,7 @@ container.innerHTML = '';
 if (cart.length === 0) { container.innerHTML = '<p style="text-align:center; padding: 40px 0; color: var(--text-muted);">Votre panier est vide.</p>'; checkout.style.display = 'none'; return; }
 checkout.style.display = 'block';
 let totalArticles = 0;
+
 cart.forEach((item, i) => {
 totalArticles += item.totalTND;
 container.innerHTML += `
@@ -469,7 +531,7 @@ container.innerHTML += `
 <img src="${item.img}" class="item-img">
 <div class="item-details">
 <div class="item-name">${item.title}</div>
-<div class="item-meta">Taille: ${item.size} | Couleur: ${item.color}</div>
+<div class="item-meta">T: ${item.size} | C: ${item.color}</div>
 <div class="item-price">${item.totalTND.toFixed(2)} TND</div>
 </div>
 <div class="item-actions">
@@ -478,85 +540,110 @@ container.innerHTML += `
 </div>
 </div>`;
 });
+
 let discount = promoApplied ? (totalArticles * 0.10) : 0;
 let grandTotal = totalArticles - discount + FRAIS_FIXES;
+
 document.getElementById('summary-articles').innerText = totalArticles.toFixed(2) + " TND";
-document.getElementById('summary-transport').innerText = FRAIS_FIXES.toFixed(2) + " TND";
 if (promoApplied) { document.getElementById('promo-line').style.display = 'flex'; document.getElementById('summary-discount').innerText = "-" + discount.toFixed(2) + " TND"; } else { document.getElementById('promo-line').style.display = 'none'; }
+
 document.getElementById('summary-total').innerText = grandTotal.toFixed(2) + " TND";
+document.getElementById('summary-total-usd').innerText = "~ $" + (grandTotal * TAUX_USD).toFixed(2) + " USD";
 document.getElementById('summary-acompte').innerText = (grandTotal * 0.70).toFixed(2) + " TND";
 document.getElementById('summary-solde').innerText = (grandTotal * 0.30).toFixed(2) + " TND";
+
 checkConditions();
 }
 
 function applyPromo() {
 const code = document.getElementById('promo-input').value.trim().toUpperCase();
 const alertBox = document.getElementById('promo-alert');
-if (code === 'FIDA08') { promoApplied = true; alertBox.style.display = 'block'; alertBox.innerText = 'Code promo appliqué (-10%) !'; renderCart(); }
+if (code === 'FIDA08') { promoApplied = true; alertBox.style.display = 'block'; alertBox.style.color = '#2e7d32'; alertBox.innerText = 'Code promo appliqué (-10%) !'; renderCart(); }
 else { promoApplied = false; alertBox.style.display = 'block'; alertBox.style.color = '#ef4444'; alertBox.innerText = 'Code invalide.'; renderCart(); }
 }
 
 document.querySelectorAll('.cond-check').forEach(cb => cb.addEventListener('change', checkConditions));
 function checkConditions() { document.getElementById('btn-pay').disabled = (document.querySelectorAll('.cond-check:checked').length < 3 || cart.length === 0); }
 
-// --- PAIEMENT ---
-function processPayment() {
-const prenom = document.getElementById('cust-prenom').value.trim();
-const nom = document.getElementById('cust-nom').value.trim();
-const adresse = document.getElementById('cust-adresse').value.trim();
-const cp = document.getElementById('cust-cp').value.trim();
-const phone = document.getElementById('cust-phone').value.trim();
-const email = document.getElementById('cust-email').value.trim();
-
-if(prenom.length < 2 || nom.length < 2 || adresse.length < 5 || cp.length < 2 || phone.length < 8 || email.length < 5) {
-alert("Veuillez remplir correctement tous les champs obligatoires."); return;
+// PAIEMENT
+function openPaymentModal() { document.getElementById('payment-modal').classList.add('active'); }
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+function selectPayment(type) {
+document.getElementById('card-fields').style.display = type === 'card' ? 'block' : 'none';
+document.getElementById('mobile-fields').style.display = type === 'mobile' ? 'block' : 'none';
 }
 
-// Simulation du paiement réussi
-document.getElementById('success-modal').classList.add('active');
+function processPayment() {
+// Génération numéro de commande PRO
+const year = new Date().getFullYear().toString().slice(-2);
+const random = Math.floor(1000 + Math.random() * 9000);
+const numeroCommande = `LK-${year}-${random}`;
 
-// Reset
+let totalArticles = cart.reduce((sum, item) => sum + item.totalTND, 0);
+let discount = promoApplied ? (totalArticles * 0.10) : 0;
+let grandTotal = totalArticles - discount + FRAIS_FIXES;
+
+const newOrder = {
+id: numeroCommande,
+date: new Date().toLocaleDateString('fr-FR'),
+nom: document.getElementById('cust-prenom').value + " " + document.getElementById('cust-nom').value,
+phone: document.getElementById('cust-phone').value,
+email: document.getElementById('cust-email').value,
+adresse: document.getElementById('cust-adresse').value + ", " + document.getElementById('cust-cp').value + ", Kinshasa",
+items: cart,
+total: grandTotal,
+acompte: +(grandTotal * 0.70).toFixed(2),
+solde: +(grandTotal * 0.30).toFixed(2),
+statut: 1
+};
+
+// SAUVEGARDE POUR L'ADMIN
+let existingOrders = JSON.parse(localStorage.getItem('lk_orders')) || [];
+existingOrders.push(newOrder);
+localStorage.setItem('lk_orders', JSON.stringify(existingOrders));
+localStorage.setItem('lk_current_order', numeroCommande);
+
+// Reset UI
+closeModal('payment-modal');
+document.getElementById('success-modal').classList.add('active');
 cart = []; saveCart(); renderCart();
 document.querySelectorAll('.cond-check').forEach(cb => cb.checked = false);
 checkConditions();
-document.getElementById('tracking-ref').innerText = "N° " + Math.floor(100000 + Math.random() * 900000);
-renderTimeline(1);
 }
 
-function closeModalAndTrack() {
-document.getElementById('success-modal').classList.remove('active');
-showView('tracking');
-}
+// SUIVI
+function renderTimeline() {
+const currentOrderId = localStorage.getItem('lk_current_order');
+if(!currentOrderId) return;
 
-// --- SUIVI ---
-function renderTimeline(step) {
+const orders = JSON.parse(localStorage.getItem('lk_orders')) || [];
+const myOrder = orders.find(o => o.id === currentOrderId);
+if(!myOrder) return;
+
+document.getElementById('tracking-ref').innerText = "N° " + myOrder.id;
+const step = myOrder.statut;
 const steps = ["Commande validée", "Achat à Tunis", "Contrôle Qualité", "Préparation", "Vol vers Kin", "Arrivée à Kin", "En livraison", "Livré !"];
 let html = '';
-steps.forEach((s, i) => { let c = i < step-1 ? 'done' : (i === step-1 ? 'active' : ''); html += `<div class="step ${c}"><div class="step-title">${s}</div></div>`; });
+steps.forEach((s, i) => {
+let c = i < step-1 ? 'done' : (i === step-1 ? 'active' : '');
+html += `<div class="step ${c}"><div class="step-title">${s}</div></div>`;
+});
 document.getElementById('client-timeline').innerHTML = html;
 }
 
-// --- MODE SOMBRE ---
+// AUTRES
 function toggleTheme() {
 const body = document.body;
-if (body.getAttribute('data-theme') === 'light') {
-body.setAttribute('data-theme', 'dark');
-localStorage.setItem('lk_theme', 'dark');
-} else {
-body.setAttribute('data-theme', 'light');
-localStorage.setItem('lk_theme', 'light');
+if (body.getAttribute('data-theme') === 'light') { body.setAttribute('data-theme', 'dark'); localStorage.setItem('lk_theme', 'dark'); }
+else { body.setAttribute('data-theme', 'light'); localStorage.setItem('lk_theme', 'light'); }
 }
-}
+function openHowItWorks() { document.getElementById('how-modal').classList.add('active'); }
 
 // INIT
-if (localStorage.getItem('lk_theme') === 'dark') {
-document.body.setAttribute('data-theme', 'dark');
-document.getElementById('theme-toggle').checked = true;
-}
+if (localStorage.getItem('lk_theme') === 'dark') { document.body.setAttribute('data-theme', 'dark'); document.getElementById('theme-toggle').checked = true; }
 updateBadge();
 renderProducts();
 renderCart();
-renderTimeline(1);
 </script>
 </body>
 </html>
