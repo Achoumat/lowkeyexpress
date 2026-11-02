@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Admin — LowkeyExpress</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+--bg: #0a0a0a; --card: #1c1c1e; --text: #ffffff;
+--text-muted: #888888; --neon-green: #ccff00; --neon-purple: #b388ff;
+--danger: #ff4444;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+body { background-color: var(--bg); color: var(--text); display: flex; justify-content: center; min-height: 100vh; }
+.app-container { width: 100%; max-width: 414px; padding: 20px; padding-bottom: 100px; position: relative; }
+
+/* ÉCRAN DE CONNEXION */
+#login-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 90vh; }
+.lock-icon { font-size: 50px; margin-bottom: 20px; }
+.login-input { width: 100%; padding: 18px; border-radius: 16px; border: 1px solid #333; background: var(--card); color: white; font-size: 24px; text-align: center; letter-spacing: 8px; outline: none; margin-bottom: 20px; }
+.login-btn { width: 100%; padding: 18px; border-radius: 16px; border: none; background: var(--neon-green); color: #000; font-size: 16px; font-weight: 800; cursor: pointer; }
+
+/* DASHBOARD */
+#admin-app { display: none; }
+.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+.header-left { font-size: 14px; color: var(--text-muted); }
+.header-left strong { display: block; font-size: 18px; color: var(--text); margin-top: 4px; }
+.logout-btn { background: transparent; border: 1px solid #333; color: var(--text-muted); padding: 6px 12px; border-radius: 12px; font-size: 12px; cursor: pointer; }
+
+.balance-title { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+.balance-amount { font-size: 38px; font-weight: 800; margin-bottom: 20px; }
+
+/* CARTES NEON */
+.cards-row { display: flex; gap: 16px; margin-bottom: 30px; overflow-x: auto; scrollbar-width: none; padding-bottom: 10px; }
+.cards-row::-webkit-scrollbar { display: none; }
+.neon-card { min-width: 220px; border-radius: 20px; padding: 20px; color: #000; display: flex; flex-direction: column; justify-content: space-between; height: 140px; }
+.card-green { background: var(--neon-green); }
+.card-purple { background: var(--neon-purple); }
+.card-label { font-size: 12px; font-weight: 600; opacity: 0.8; }
+.card-value { font-size: 22px; font-weight: 800; }
+
+/* RECHERCHE & LISTE DES COMMANDES */
+.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.section-title { font-size: 18px; font-weight: 700; }
+.search-input { width: 100%; padding: 14px; border-radius: 12px; background: var(--card); border: 1px solid #333; color: white; font-size: 14px; outline: none; margin-bottom: 16px; }
+
+.order-card { background: var(--card); border-radius: 16px; padding: 16px; margin-bottom: 12px; cursor: pointer; border: 1px solid transparent; transition: 0.2s; }
+.order-card:hover { border-color: var(--neon-green); }
+.order-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.order-client { font-weight: 700; font-size: 15px; }
+.order-price { font-weight: 800; color: var(--neon-green); }
+.order-details { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+.order-status { display: inline-block; padding: 4px 10px; border-radius: 8px; font-size: 10px; font-weight: 700; background: rgba(255,255,255,0.1); }
+
+/* MODAL GESTION COMMANDE */
+.modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: flex-end; z-index: 100; backdrop-filter: blur(5px); }
+.modal.active { display: flex; }
+.modal-content { background: var(--card); width: 100%; max-width: 414px; border-radius: 24px 24px 0 0; padding: 24px; animation: slideUp 0.3s; max-height: 90vh; overflow-y: auto; }
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.modal-title { font-size: 20px; font-weight: 800; margin-bottom: 16px; }
+.modal-info { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+.modal-info strong { color: white; font-size: 14px; }
+
+.items-list { margin: 16px 0; border-top: 1px solid #333; padding-top: 16px; }
+.item-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px; }
+
+.status-select { width: 100%; padding: 16px; border-radius: 12px; background: var(--bg); color: white; border: 1px solid #333; font-size: 14px; outline: none; margin: 16px 0; }
+.btn-wa { display: block; text-align: center; background: #25D366; color: #000; text-decoration: none; padding: 16px; border-radius: 12px; font-weight: 800; margin-bottom: 12px; }
+.close-modal { width: 100%; padding: 16px; border-radius: 12px; background: var(--neon-green); color: black; font-weight: 800; border: none; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<div class="app-container">
+<!-- ÉCRAN DE CONNEXION -->
+<div id="login-screen">
+<div class="lock-icon">🔒</div>
+<h2 style="margin-bottom: 20px; font-weight:800;">Espace Patronne</h2>
+<input type="password" id="admin-code" class="login-input" placeholder="****" maxlength="4">
+<button class="login-btn" onclick="checkCode()">Déverrouiller</button>
+<p id="error-msg" style="color: var(--danger); margin-top: 15px; font-size: 13px; display: none;">Code incorrect</p>
+</div>
+
+<!-- DASHBOARD ADMIN -->
+<div id="admin-app">
+<div class="header">
+<div class="header-left">
+Bonjour,
+<strong>Achoumat 👋</strong>
+</div>
+<button class="logout-btn" onclick="logout()">Déconnexion</button>
+</div>
+
+<div class="balance-title">Chiffre d'Affaires Total</div>
+<div class="balance-amount" id="total-revenue">0.00 TND</div>
+
+<div class="cards-row">
+<div class="neon-card card-green">
+<div class="card-label">Acomptes reçus (70%)</div>
+<div class="card-value" id="total-acompte">0.00 TND</div>
+</div>
+<div class="neon-card card-purple">
+<div class="card-label">Soldes à percevoir (30%)</div>
+<div class="card-value" id="total-solde">0.00 TND</div>
+</div>
+</div>
+
+<div class="section-header">
+<div class="section-title">Commandes</div>
+</div>
+
+<input type="text" class="search-input" id="search-order" placeholder="Rechercher par nom ou numéro..." onkeyup="loadOrders()">
+
+<div id="orders-list"></div>
+</div>
+</div>
+
+<!-- MODAL GESTION COMMANDE -->
+<div class="modal" id="order-modal">
+<div class="modal-content">
+<div class="modal-title">Gérer la commande</div>
+<div id="modal-order-details"></div>
+
+<label style="font-size: 12px; color: var(--text-muted); margin-top: 16px; display: block;">Mettre à jour le statut (visible par le client) :</label>
+<select class="status-select" id="status-updater">
+<option value="1">1. Commande validée</option>
+<option value="2">2. Achat à Tunis</option>
+<option value="3">3. Contrôle Qualité</option>
+<option value="4">4. Préparation</option>
+<option value="5">5. Vol vers Kin</option>
+<option value="6">6. Arrivée à Kin</option>
+<option value="7">7. En livraison</option>
+<option value="8">8. Livré !</option>
+</select>
+
+<a href="#" id="wa-link" class="btn-wa" target="_blank">Contacter sur WhatsApp</a>
+<button class="close-modal" onclick="saveStatus()">Enregistrer & Fermer</button>
+</div>
+</div>
+
+<script>
+// --- SÉCURITÉ ---
+function checkCode() {
+const code = document.getElementById('admin-code').value;
+if (code === '0418') {
+document.getElementById('login-screen').style.display = 'none';
+document.getElementById('admin-app').style.display = 'block';
+loadOrders();
+} else {
+document.getElementById('error-msg').style.display = 'block';
+document.getElementById('admin-code').value = '';
+}
+}
+
+function logout() {
+document.getElementById('admin-app').style.display = 'none';
+document.getElementById('login-screen').style.display = 'flex';
+document.getElementById('admin-code').value = '';
+}
+
+// --- CHARGEMENT DES COMMANDES ---
+let orders = [];
+let currentOrderIndex = -1;
+
+function loadOrders() {
+const search = document.getElementById('search-order').value.toLowerCase();
+orders = JSON.parse(localStorage.getItem('lk_orders')) || [];
+
+let total = 0, acompte = 0, solde = 0;
+orders.forEach(o => {
+total += o.total; acompte += o.acompte; solde += o.solde;
+});
+
+document.getElementById('total-revenue').innerText = total.toFixed(2) + " TND";
+document.getElementById('total-acompte').innerText = acompte.toFixed(2) + " TND";
+document.getElementById('total-solde').innerText = solde.toFixed(2) + " TND";
+
+const list = document.getElementById('orders-list');
+list.innerHTML = '';
+
+if (orders.length === 0) {
+list.innerHTML = '<p style="color:var(--text-muted); font-size:13px; text-align:center; padding:20px 0;">Aucune commande pour le moment.</p>';
+return;
+}
+
+// Filtrer et afficher (du plus récent au plus ancien)
+const filtered = orders.filter(o => o.nom.toLowerCase().includes(search) || o.id.toLowerCase().includes(search));
+
+filtered.slice().reverse().forEach((o) => {
+const realIndex = orders.findIndex(order => order.id === o.id);
+list.innerHTML += `
+<div class="order-card" onclick="openOrderModal(${realIndex})">
+<div class="order-header">
+<div class="order-client">${o.nom}</div>
+<div class="order-price">${o.total.toFixed(2)} TND</div>
+</div>
+<div class="order-details">
+${o.date} | N° ${o.id} <br>
+Statut: Étape ${o.statut}
+</div>
+</div>
+`;
+});
+}
+
+function openOrderModal(index) {
+currentOrderIndex = index;
+const o = orders[index];
+
+// Détail des articles
+let itemsHtml = '<div class="items-list">';
+o.items.forEach(item => {
+itemsHtml += `
+<div class="item-row">
+<span>${item.qty}x ${item.title} (T: ${item.size}, C: ${item.color})</span>
+<strong>${item.totalTND.toFixed(2)} TND</strong>
+</div>
+`;
+});
+itemsHtml += '</div>';
+
+document.getElementById('modal-order-details').innerHTML = `
+<div class="modal-info">Client : <strong>${o.nom}</strong></div>
+<div class="modal-info">Tél : <strong>${o.phone}</strong></div>
+<div class="modal-info">Email : <strong>${o.email}</strong></div>
+<div class="modal-info">Adresse : <strong>${o.adresse}</strong></div>
+${itemsHtml}
+<div class="modal-info" style="margin-top:12px; border-top:1px solid #333; padding-top:12px;">Total : <strong>${o.total.toFixed(2)} TND</strong></div>
+<div class="modal-info">Acompte (70%) : <strong style="color:var(--neon-green)">${o.acompte.toFixed(2)} TND</strong></div>
+<div class="modal-info">Reste (30%) : <strong style="color:var(--neon-purple)">${o.solde.toFixed(2)} TND</strong></div>
+`;
+
+// Lien WhatsApp
+const waMessage = encodeURIComponent(`Bonjour ${o.nom}, c'est LowkeyExpress concernant votre commande ${o.id}.`);
+document.getElementById('wa-link').href = `https://wa.me/${o.phone.replace(/[^0-9]/g, '')}?text=${waMessage}`;
+
+document.getElementById('status-updater').value = o.statut;
+document.getElementById('order-modal').classList.add('active');
+}
+
+function saveStatus() {
+if (currentOrderIndex === -1) return;
+const newStatus = parseInt(document.getElementById('status-updater').value);
+orders[currentOrderIndex].statut = newStatus;
+localStorage.setItem('lk_orders', JSON.stringify(orders));
+document.getElementById('order-modal').classList.remove('active');
+loadOrders();
+alert("Statut mis à jour ! Le client verra le changement sur son application.");
+}
+</script>
+</body>
+</html>
