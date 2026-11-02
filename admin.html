@@ -9,65 +9,88 @@
 :root {
 --bg: #0a0a0a; --card: #1c1c1e; --text: #ffffff;
 --text-muted: #888888; --neon-green: #ccff00; --neon-purple: #b388ff;
---danger: #ff4444;
+--danger: #ff4444; --glass: rgba(255,255,255,0.05);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
 body { background-color: var(--bg); color: var(--text); display: flex; justify-content: center; min-height: 100vh; }
-.app-container { width: 100%; max-width: 414px; padding: 20px; padding-bottom: 100px; position: relative; }
+.app-container { width: 100%; max-width: 414px; padding: 20px 0 100px 0; position: relative; }
 
 /* ÉCRAN DE CONNEXION */
-#login-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 90vh; }
+#login-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 90vh; padding: 0 20px; }
 .lock-icon { font-size: 50px; margin-bottom: 20px; }
 .login-input { width: 100%; padding: 18px; border-radius: 16px; border: 1px solid #333; background: var(--card); color: white; font-size: 24px; text-align: center; letter-spacing: 8px; outline: none; margin-bottom: 20px; }
 .login-btn { width: 100%; padding: 18px; border-radius: 16px; border: none; background: var(--neon-green); color: #000; font-size: 16px; font-weight: 800; cursor: pointer; }
 
 /* DASHBOARD */
-#admin-app { display: none; }
-.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-.header-left { font-size: 14px; color: var(--text-muted); }
-.header-left strong { display: block; font-size: 18px; color: var(--text); margin-top: 4px; }
-.logout-btn { background: transparent; border: 1px solid #333; color: var(--text-muted); padding: 6px 12px; border-radius: 12px; font-size: 12px; cursor: pointer; }
+#admin-app { display: none; animation: fadeIn 0.4s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
+.header { display: flex; justify-content: space-between; align-items: center; padding: 0 20px; margin-bottom: 24px; }
+.header-left { font-size: 13px; color: var(--text-muted); }
+.header-left strong { display: block; font-size: 20px; color: var(--text); margin-top: 4px; font-weight: 800; }
+.bell { background: var(--card); width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 20px; position: relative; }
+
+.balance-section { padding: 0 20px; margin-bottom: 30px; }
 .balance-title { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
-.balance-amount { font-size: 38px; font-weight: 800; margin-bottom: 20px; }
+.balance-amount { font-size: 40px; font-weight: 800; }
+.balance-amount span { font-size: 20px; color: var(--text-muted); }
 
 /* CARTES NEON */
-.cards-row { display: flex; gap: 16px; margin-bottom: 30px; overflow-x: auto; scrollbar-width: none; padding-bottom: 10px; }
+.cards-row { display: flex; gap: 16px; padding: 0 20px 20px 20px; overflow-x: auto; scrollbar-width: none; }
 .cards-row::-webkit-scrollbar { display: none; }
-.neon-card { min-width: 220px; border-radius: 20px; padding: 20px; color: #000; display: flex; flex-direction: column; justify-content: space-between; height: 140px; }
+.neon-card { min-width: 260px; border-radius: 24px; padding: 24px; color: #000; display: flex; flex-direction: column; justify-content: space-between; height: 150px; position: relative; overflow: hidden; }
+.neon-card::before { content: ''; position: absolute; top: -50%; right: -20%; width: 150px; height: 150px; border-radius: 50%; background: rgba(255,255,255,0.2); filter: blur(20px); }
 .card-green { background: var(--neon-green); }
 .card-purple { background: var(--neon-purple); }
-.card-label { font-size: 12px; font-weight: 600; opacity: 0.8; }
-.card-value { font-size: 22px; font-weight: 800; }
+.card-label { font-size: 13px; font-weight: 700; opacity: 0.8; z-index: 1; }
+.card-value { font-size: 26px; font-weight: 800; z-index: 1; }
 
-/* RECHERCHE & LISTE DES COMMANDES */
-.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-.section-title { font-size: 18px; font-weight: 700; }
-.search-input { width: 100%; padding: 14px; border-radius: 12px; background: var(--card); border: 1px solid #333; color: white; font-size: 14px; outline: none; margin-bottom: 16px; }
+/* FAUX GRAPHIQUE (Style maquette) */
+.chart-container { padding: 0 20px; margin-bottom: 30px; }
+.chart { width: 100%; height: 120px; position: relative; border-bottom: 1px solid #333; margin-bottom: 10px; display: flex; align-items: flex-end; }
+.chart svg { width: 100%; height: 100%; }
+.chart-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); }
 
-.order-card { background: var(--card); border-radius: 16px; padding: 16px; margin-bottom: 12px; cursor: pointer; border: 1px solid transparent; transition: 0.2s; }
-.order-card:hover { border-color: var(--neon-green); }
-.order-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
-.order-client { font-weight: 700; font-size: 15px; }
-.order-price { font-weight: 800; color: var(--neon-green); }
-.order-details { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
-.order-status { display: inline-block; padding: 4px 10px; border-radius: 8px; font-size: 10px; font-weight: 700; background: rgba(255,255,255,0.1); }
+/* SECTION COMMANDES */
+.section-header { display: flex; justify-content: space-between; align-items: center; padding: 0 20px; margin-bottom: 16px; }
+.section-title { font-size: 18px; font-weight: 800; }
+
+.order-list { padding: 0 20px; }
+.order-item { background: var(--card); border-radius: 20px; padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: transform 0.2s; }
+.order-item:active { transform: scale(0.98); }
+.order-left { display: flex; align-items: center; gap: 16px; }
+.order-icon { width: 45px; height: 45px; border-radius: 50%; background: rgba(255,255,255,0.05); display: flex; justify-content: center; align-items: center; font-size: 20px; }
+.order-info h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.order-info p { font-size: 12px; color: var(--text-muted); }
+.order-right { text-align: right; }
+.order-price { font-size: 15px; font-weight: 800; color: var(--neon-green); }
+.order-status { font-size: 10px; padding: 4px 8px; border-radius: 8px; background: rgba(255,255,255,0.1); margin-top: 6px; display: inline-block; }
+
+.empty-msg { text-align: center; color: var(--text-muted); font-size: 13px; padding: 40px 0; }
 
 /* MODAL GESTION COMMANDE */
 .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: flex-end; z-index: 100; backdrop-filter: blur(5px); }
 .modal.active { display: flex; }
-.modal-content { background: var(--card); width: 100%; max-width: 414px; border-radius: 24px 24px 0 0; padding: 24px; animation: slideUp 0.3s; max-height: 90vh; overflow-y: auto; }
+.modal-content { background: var(--card); width: 100%; max-width: 414px; border-radius: 30px 30px 0 0; padding: 30px 24px; animation: slideUp 0.3s; max-height: 90vh; overflow-y: auto; }
 @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-.modal-title { font-size: 20px; font-weight: 800; margin-bottom: 16px; }
-.modal-info { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
-.modal-info strong { color: white; font-size: 14px; }
+.modal-title { font-size: 22px; font-weight: 800; margin-bottom: 20px; }
+.modal-info { font-size: 14px; color: var(--text-muted); margin-bottom: 10px; display: flex; justify-content: space-between; }
+.modal-info strong { color: white; font-weight: 600; text-align: right; max-width: 60%; }
 
-.items-list { margin: 16px 0; border-top: 1px solid #333; padding-top: 16px; }
-.item-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px; }
+.items-list { margin: 20px 0; border-top: 1px solid #333; padding-top: 20px; }
+.item-row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 12px; color: #ccc; }
+.item-row strong { color: white; }
 
-.status-select { width: 100%; padding: 16px; border-radius: 12px; background: var(--bg); color: white; border: 1px solid #333; font-size: 14px; outline: none; margin: 16px 0; }
-.btn-wa { display: block; text-align: center; background: #25D366; color: #000; text-decoration: none; padding: 16px; border-radius: 12px; font-weight: 800; margin-bottom: 12px; }
-.close-modal { width: 100%; padding: 16px; border-radius: 12px; background: var(--neon-green); color: black; font-weight: 800; border: none; cursor: pointer; }
+.status-select { width: 100%; padding: 18px; border-radius: 16px; background: #2c2c2e; color: white; border: 1px solid #444; font-size: 15px; outline: none; margin: 20px 0; font-weight: 600; }
+.btn-wa { display: flex; justify-content: center; align-items: center; gap: 10px; background: #25D366; color: #000; text-decoration: none; padding: 18px; border-radius: 16px; font-weight: 800; margin-bottom: 12px; font-size: 15px; }
+.close-modal { width: 100%; padding: 18px; border-radius: 16px; background: var(--neon-green); color: black; font-weight: 800; border: none; cursor: pointer; font-size: 15px; }
+
+/* NAVIGATION BAS */
+.bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 414px; background: var(--bg); display: flex; justify-content: space-around; padding: 15px 0 30px; border-top: 1px solid #1a1a1a; z-index: 50; }
+.nav-item { background: none; border: none; color: #555; font-size: 24px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: 0.3s; }
+.nav-item.active { color: var(--neon-green); }
+.nav-item span { font-size: 10px; font-weight: 600; }
+.nav-center { width: 50px; height: 50px; border-radius: 50%; background: var(--neon-green); display: flex; justify-content: center; align-items: center; color: #000; font-size: 24px; margin-top: -20px; box-shadow: 0 5px 15px rgba(204,255,0,0.3); }
 </style>
 </head>
 <body>
@@ -76,7 +99,7 @@ body { background-color: var(--bg); color: var(--text); display: flex; justify-c
 <!-- ÉCRAN DE CONNEXION -->
 <div id="login-screen">
 <div class="lock-icon">🔒</div>
-<h2 style="margin-bottom: 20px; font-weight:800;">Espace Patronne</h2>
+<h2 style="margin-bottom: 20px; font-weight:800; font-size:24px;">Espace Patronne</h2>
 <input type="password" id="admin-code" class="login-input" placeholder="****" maxlength="4">
 <button class="login-btn" onclick="checkCode()">Déverrouiller</button>
 <p id="error-msg" style="color: var(--danger); margin-top: 15px; font-size: 13px; display: none;">Code incorrect</p>
@@ -89,11 +112,13 @@ body { background-color: var(--bg); color: var(--text); display: flex; justify-c
 Bonjour,
 <strong>Achoumat 👋</strong>
 </div>
-<button class="logout-btn" onclick="logout()">Déconnexion</button>
+<div class="bell">🔔</div>
 </div>
 
-<div class="balance-title">Chiffre d'Affaires Total</div>
-<div class="balance-amount" id="total-revenue">0.00 TND</div>
+<div class="balance-section">
+<div class="balance-title">Total Balance (Chiffre d'Affaires)</div>
+<div class="balance-amount"><span id="total-revenue">0.00</span> TND</div>
+</div>
 
 <div class="cards-row">
 <div class="neon-card card-green">
@@ -106,23 +131,43 @@ Bonjour,
 </div>
 </div>
 
+<div class="chart-container">
+<div class="chart">
+<!-- Faux graphique stylisé pour le design -->
+<svg viewBox="0 0 100 30" preserveAspectRatio="none">
+<path d="M0,25 C20,25 30,10 50,15 C70,20 80,5 100,10 L100,30 L0,30 Z" fill="rgba(204,255,0,0.1)" />
+<path d="M0,25 C20,25 30,10 50,15 C70,20 80,5 100,10" fill="none" stroke="var(--neon-green)" stroke-width="1.5" />
+</svg>
+</div>
+<div class="chart-labels">
+<span>Jan</span><span>Fév</span><span>Mar</span><span>Avr</span><span>Mai</span><span>Juin</span>
+</div>
+</div>
+
 <div class="section-header">
-<div class="section-title">Commandes</div>
+<div class="section-title">Transactions Récentes</div>
 </div>
 
-<input type="text" class="search-input" id="search-order" placeholder="Rechercher par nom ou numéro..." onkeyup="loadOrders()">
+<div class="order-list" id="orders-list"></div>
+</div>
+</div>
 
-<div id="orders-list"></div>
-</div>
-</div>
+<!-- NAVIGATION BAS -->
+<nav class="bottom-nav">
+<button class="nav-item active">🏠<span>Accueil</span></button>
+<button class="nav-item">📊<span>Stats</span></button>
+<div class="nav-center" onclick="logout()">🚪</div>
+<button class="nav-item">💳<span>Cartes</span></button>
+<button class="nav-item">👤<span>Profil</span></button>
+</nav>
 
 <!-- MODAL GESTION COMMANDE -->
 <div class="modal" id="order-modal">
 <div class="modal-content">
-<div class="modal-title">Gérer la commande</div>
+<div class="modal-title">Détails Commande</div>
 <div id="modal-order-details"></div>
 
-<label style="font-size: 12px; color: var(--text-muted); margin-top: 16px; display: block;">Mettre à jour le statut (visible par le client) :</label>
+<label style="font-size: 13px; color: var(--text-muted); font-weight: 600; display: block;">Mettre à jour le statut :</label>
 <select class="status-select" id="status-updater">
 <option value="1">1. Commande validée</option>
 <option value="2">2. Achat à Tunis</option>
@@ -134,7 +179,7 @@ Bonjour,
 <option value="8">8. Livré !</option>
 </select>
 
-<a href="#" id="wa-link" class="btn-wa" target="_blank">Contacter sur WhatsApp</a>
+<a href="#" id="wa-link" class="btn-wa" target="_blank">💬 Contacter le client</a>
 <button class="close-modal" onclick="saveStatus()">Enregistrer & Fermer</button>
 </div>
 </div>
@@ -159,20 +204,21 @@ document.getElementById('login-screen').style.display = 'flex';
 document.getElementById('admin-code').value = '';
 }
 
-// --- CHARGEMENT DES COMMANDES ---
+// --- GESTION DES COMMANDES ---
 let orders = [];
 let currentOrderIndex = -1;
 
 function loadOrders() {
-const search = document.getElementById('search-order').value.toLowerCase();
 orders = JSON.parse(localStorage.getItem('lk_orders')) || [];
 
 let total = 0, acompte = 0, solde = 0;
 orders.forEach(o => {
-total += o.total; acompte += o.acompte; solde += o.solde;
+total += o.total;
+acompte += o.acompte;
+solde += o.solde;
 });
 
-document.getElementById('total-revenue').innerText = total.toFixed(2) + " TND";
+document.getElementById('total-revenue').innerText = total.toFixed(2);
 document.getElementById('total-acompte').innerText = acompte.toFixed(2) + " TND";
 document.getElementById('total-solde').innerText = solde.toFixed(2) + " TND";
 
@@ -180,24 +226,25 @@ const list = document.getElementById('orders-list');
 list.innerHTML = '';
 
 if (orders.length === 0) {
-list.innerHTML = '<p style="color:var(--text-muted); font-size:13px; text-align:center; padding:20px 0;">Aucune commande pour le moment.</p>';
+list.innerHTML = '<p class="empty-msg">Aucune transaction pour le moment.</p>';
 return;
 }
 
-// Filtrer et afficher (du plus récent au plus ancien)
-const filtered = orders.filter(o => o.nom.toLowerCase().includes(search) || o.id.toLowerCase().includes(search));
-
-filtered.slice().reverse().forEach((o) => {
+// Affichage de la plus récente à la plus ancienne
+orders.slice().reverse().forEach((o) => {
 const realIndex = orders.findIndex(order => order.id === o.id);
 list.innerHTML += `
-<div class="order-card" onclick="openOrderModal(${realIndex})">
-<div class="order-header">
-<div class="order-client">${o.nom}</div>
-<div class="order-price">${o.total.toFixed(2)} TND</div>
+<div class="order-item" onclick="openOrderModal(${realIndex})">
+<div class="order-left">
+<div class="order-icon">🛍️</div>
+<div class="order-info">
+<h4>${o.nom}</h4>
+<p>${o.date} | N° ${o.id}</p>
 </div>
-<div class="order-details">
-${o.date} | N° ${o.id} <br>
-Statut: Étape ${o.statut}
+</div>
+<div class="order-right">
+<div class="order-price">+ ${o.total.toFixed(2)} TND</div>
+<div class="order-status">Étape ${o.statut}</div>
 </div>
 </div>
 `;
@@ -208,7 +255,6 @@ function openOrderModal(index) {
 currentOrderIndex = index;
 const o = orders[index];
 
-// Détail des articles
 let itemsHtml = '<div class="items-list">';
 o.items.forEach(item => {
 itemsHtml += `
@@ -221,14 +267,14 @@ itemsHtml += `
 itemsHtml += '</div>';
 
 document.getElementById('modal-order-details').innerHTML = `
-<div class="modal-info">Client : <strong>${o.nom}</strong></div>
-<div class="modal-info">Tél : <strong>${o.phone}</strong></div>
-<div class="modal-info">Email : <strong>${o.email}</strong></div>
-<div class="modal-info">Adresse : <strong>${o.adresse}</strong></div>
+<div class="modal-info"><span>Client</span> <strong>${o.nom}</strong></div>
+<div class="modal-info"><span>Téléphone</span> <strong>${o.phone}</strong></div>
+<div class="modal-info"><span>Email</span> <strong>${o.email}</strong></div>
+<div class="modal-info"><span>Adresse</span> <strong>${o.adresse}</strong></div>
 ${itemsHtml}
-<div class="modal-info" style="margin-top:12px; border-top:1px solid #333; padding-top:12px;">Total : <strong>${o.total.toFixed(2)} TND</strong></div>
-<div class="modal-info">Acompte (70%) : <strong style="color:var(--neon-green)">${o.acompte.toFixed(2)} TND</strong></div>
-<div class="modal-info">Reste (30%) : <strong style="color:var(--neon-purple)">${o.solde.toFixed(2)} TND</strong></div>
+<div class="modal-info" style="border-top:1px solid #333; padding-top:12px;"><span>Total</span> <strong>${o.total.toFixed(2)} TND</strong></div>
+<div class="modal-info"><span>Acompte (70%)</span> <strong style="color:var(--neon-green)">${o.acompte.toFixed(2)} TND</strong></div>
+<div class="modal-info"><span>Reste (30%)</span> <strong style="color:var(--neon-purple)">${o.solde.toFixed(2)} TND</strong></div>
 `;
 
 // Lien WhatsApp
