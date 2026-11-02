@@ -11,13 +11,13 @@
 --bg: #000000; --card: #121212; --card-light: #1e1e1e;
 --text: #ffffff; --text-muted: #888888;
 --neon-green: #ccff00; --neon-purple: #d1b3ff;
+--color-red: #ff4d4d; --color-green: #4caf50;
 --border-color: #222222;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
 body { background-color: #e5e5e5; display: flex; justify-content: center; min-height: 100vh; }
 .app-container { width: 100%; max-width: 414px; background-color: var(--bg); min-height: 100vh; position: relative; padding-bottom: 90px; overflow-x: hidden; }
 
-/* EFFET DE FOND */
 .bg-glow { position: absolute; top: -50px; left: -50px; width: 250px; height: 250px; background: radial-gradient(circle, rgba(204,255,0,0.08) 0%, rgba(0,0,0,0) 70%); z-index: 0; }
 
 /* ÉCRAN DE CONNEXION */
@@ -40,8 +40,11 @@ body { background-color: #e5e5e5; display: flex; justify-content: center; min-he
 .header-right { display: flex; align-items: center; gap: 15px; }
 .bell { color: var(--text); font-size: 20px; position: relative; }
 .bell-dot { position: absolute; top: -2px; right: 0; width: 8px; height: 8px; background: var(--neon-purple); border-radius: 50%; border: 1px solid var(--bg); }
-.profile-pic { width: 50px; height: 50px; border-radius: 50%; background: var(--card-light); display: flex; justify-content: center; align-items: center; position: relative; border: 2px solid var(--neon-purple); cursor: pointer; }
-.profile-pic img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+
+/* L'AVATAR AVEC UPLOAD PHOTO */
+.profile-pic-container { position: relative; width: 50px; height: 50px; }
+.profile-pic { width: 50px; height: 50px; border-radius: 50%; background: var(--card-light); display: flex; justify-content: center; align-items: center; font-size: 18px; font-weight: bold; color: var(--text); border: 2px solid var(--neon-purple); cursor: pointer; background-size: cover; background-position: center; }
+.profile-pic input[type="file"] { display: none; }
 
 /* SALUTATION */
 .greeting { padding: 0 20px; margin-bottom: 20px; }
@@ -66,7 +69,7 @@ body { background-color: #e5e5e5; display: flex; justify-content: center; min-he
 /* BOUTONS D'ACTION */
 .action-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding: 0 20px; margin-bottom: 24px; }
 .action-btn { border-radius: 16px; padding: 16px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; border: none; cursor: pointer; text-align: center; }
-.btn-icon { font-size: 20px; }
+.btn-icon { font-size: 24px; }
 .btn-text { font-size: 11px; font-weight: 600; line-height: 1.2; }
 .btn-green { background: var(--neon-green); color: #000; }
 .btn-purple { background: var(--neon-purple); color: #000; }
@@ -96,43 +99,49 @@ body { background-color: #e5e5e5; display: flex; justify-content: center; min-he
 .filters-row { display: flex; gap: 10px; padding: 0 20px; margin-bottom: 20px; overflow-x: auto; scrollbar-width: none; }
 .filters-row::-webkit-scrollbar { display: none; }
 .filter-pill { background: var(--card); border: none; color: var(--text-muted); padding: 10px 20px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: 0.2s; }
-.filter-pill.active { background: var(--neon-green); color: #000; }
+
+/* COULEURS DES FILTRES */
+.filter-pill.active[data-filter="all"] { background: var(--neon-green); color: #000; }
+.filter-pill.active[data-filter="ventes"] { background: var(--color-red); color: #fff; }
+.filter-pill.active[data-filter="achats"] { background: var(--color-green); color: #fff; }
+.filter-pill.active[data-filter="benefices"] { background: var(--neon-purple); color: #000; }
 
 .chart-card { background: var(--card); border-radius: 20px; padding: 20px; margin: 0 20px 20px; border: 1px solid var(--border-color); }
 .chart-header { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
 .chart-svg-container { width: 100%; height: 120px; position: relative; }
 
 .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding: 0 20px; margin-bottom: 20px; }
-.stat-box-mini { background: var(--card); border-radius: 16px; padding: 15px; text-align: center; border: 1px solid var(--border-color); }
+.stat-box-mini { background: var(--card); border-radius: 16px; padding: 15px; text-align: center; border: 1px solid var(--border-color); transition: 0.3s; }
 .stat-box-mini .icon { width: 30px; height: 30px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 14px; margin: 0 auto 10px; }
 .stat-box-mini h4 { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; font-weight: 500; }
 .stat-box-mini p { font-size: 14px; font-weight: 800; color: white; margin-bottom: 4px; }
 .stat-box-mini span { font-size: 10px; color: var(--text-muted); }
 .stat-box-mini span.green { color: var(--neon-green); }
 
-.banner { background: var(--neon-purple); color: #000; border-radius: 16px; padding: 20px; margin: 0 20px 20px; display: flex; justify-content: space-between; align-items: center; }
+.banner { background: var(--neon-purple); color: #000; border-radius: 16px; padding: 20px; margin: 0 20px 20px; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
 .banner h4 { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
 .banner p { font-size: 11px; opacity: 0.8; }
 
 /* VUE PROFIL & CARTE BANCAIRE */
 .profile-section { padding: 0 20px; text-align: center; }
-.profile-avatar { width: 90px; height: 90px; border-radius: 50%; background: var(--card-light); border: 2px solid var(--neon-green); display: flex; justify-content: center; align-items: center; font-size: 30px; font-weight: bold; margin: 0 auto 15px; }
+
+.bank-card { background: linear-gradient(135deg, #ccff00, #80a300); border-radius: 20px; padding: 24px; color: #000; text-align: left; position: relative; overflow: hidden; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+.bank-card::after { content: ''; position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: rgba(255,255,255,0.2); border-radius: 50%; filter: blur(20px); }
+.card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+.card-chip { width: 40px; height: 30px; background: rgba(0,0,0,0.1); border-radius: 6px; }
+.eye-icon { font-size: 18px; cursor: pointer; z-index: 2; }
+.card-number { font-size: 20px; letter-spacing: 3px; font-weight: 600; margin-bottom: 20px; font-family: monospace; }
+.card-bottom { display: flex; justify-content: space-between; align-items: flex-end; }
+.card-holder { font-size: 12px; text-transform: uppercase; opacity: 0.8; }
+.card-balance { font-size: 22px; font-weight: 800; text-align: right; }
+
+.btn-withdraw { width: 100%; background: var(--card); color: var(--text); border: 1px solid var(--border-color); padding: 16px; border-radius: 16px; font-weight: 700; font-size: 14px; cursor: pointer; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; gap: 10px; }
 
 .info-card { background: var(--card); border-radius: 20px; padding: 20px; margin-bottom: 20px; border: 1px solid var(--border-color); text-align: left; }
 .info-group { margin-bottom: 15px; }
 .info-group label { font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
 .info-group input { width: 100%; background: var(--card-light); border: 1px solid transparent; color: var(--text); padding: 12px; border-radius: 12px; font-size: 14px; outline: none; transition: 0.2s; }
 .info-group input:focus { border-color: var(--neon-green); }
-
-/* CARTE BANCAIRE VISUELLE */
-.bank-card { background: linear-gradient(135deg, var(--neon-green), #99cc00); border-radius: 20px; padding: 24px; color: #000; text-align: left; position: relative; overflow: hidden; margin-bottom: 20px; }
-.bank-card::after { content: ''; position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: rgba(255,255,255,0.2); border-radius: 50%; filter: blur(20px); }
-.card-chip { width: 40px; height: 30px; background: rgba(0,0,0,0.1); border-radius: 6px; margin-bottom: 20px; }
-.card-number { font-size: 20px; letter-spacing: 3px; font-weight: 600; margin-bottom: 20px; font-family: monospace; }
-.card-bottom { display: flex; justify-content: space-between; align-items: flex-end; }
-.card-holder { font-size: 12px; text-transform: uppercase; opacity: 0.8; }
-.card-balance { font-size: 22px; font-weight: 800; text-align: right; }
-.btn-withdraw { width: 100%; background: var(--card); color: var(--text); border: 1px solid var(--border-color); padding: 16px; border-radius: 16px; font-weight: 700; font-size: 14px; cursor: pointer; margin-bottom: 20px; }
 
 /* NAVIGATION BAS */
 .bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 414px; background: var(--bg); display: flex; justify-content: space-around; align-items: center; padding: 15px 10px 25px; border-top: 1px solid var(--border-color); z-index: 100; }
@@ -141,12 +150,28 @@ body { background-color: #e5e5e5; display: flex; justify-content: center; min-he
 .nav-item.active { color: var(--neon-green); }
 .nav-center { width: 50px; height: 50px; border-radius: 50%; background: var(--neon-green); display: flex; justify-content: center; align-items: center; color: #000; font-size: 20px; transform: translateY(-15px); cursor: pointer; box-shadow: 0 4px 15px rgba(204,255,0,0.2); }
 
-/* MODAL */
-.modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: flex-end; z-index: 200; backdrop-filter: blur(5px); }
+/* MODALS */
+.modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 200; backdrop-filter: blur(5px); padding: 20px; }
 .modal.active { display: flex; }
-.modal-content { background: var(--card); width: 100%; max-width: 414px; border-radius: 24px 24px 0 0; padding: 30px 24px; animation: slideUp 0.3s; max-height: 90vh; overflow-y: auto; border: 1px solid var(--border-color); border-bottom: none; }
+.modal-content-custom { background: var(--card); width: 100%; max-width: 340px; border-radius: 24px; padding: 24px; animation: popIn 0.3s; border: 1px solid var(--border-color); text-align: center; }
+@keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.modal-title { font-size: 18px; font-weight: 800; margin-bottom: 10px; }
+.modal-text { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
+.btn-close-custom { background: var(--neon-green); color: #000; padding: 14px; border-radius: 16px; width: 100%; border: none; font-weight: 800; font-size: 14px; cursor: pointer; }
+
+.modal-bottom { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: flex-end; z-index: 200; backdrop-filter: blur(5px); }
+.modal-bottom.active { display: flex; }
+.modal-bottom-content { background: var(--card); width: 100%; max-width: 414px; border-radius: 24px 24px 0 0; padding: 30px 24px; animation: slideUp 0.3s; border: 1px solid var(--border-color); border-bottom: none; }
 @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-.modal-title { font-size: 20px; font-weight: 800; margin-bottom: 20px; }
+
+.form-group-modal { margin-bottom: 15px; text-align: left; }
+.form-group-modal label { font-size: 12px; color: var(--text-muted); margin-bottom: 5px; display: block; }
+.form-group-modal input { width: 100%; padding: 16px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg); color: var(--text); font-size: 16px; outline: none; }
+
+.btn-submit-modal { width: 100%; padding: 16px; border-radius: 12px; border: none; background: var(--neon-green); color: #000; font-weight: 800; font-size: 15px; cursor: pointer; margin-top: 10px; }
+
+/* MODAL GESTION COMMANDE */
+.order-modal-content { background: var(--card); width: 100%; max-width: 414px; border-radius: 24px 24px 0 0; padding: 30px 24px; animation: slideUp 0.3s; max-height: 90vh; overflow-y: auto; border: 1px solid var(--border-color); border-bottom: none; }
 .modal-info { font-size: 13px; color: var(--text-muted); margin-bottom: 10px; display: flex; justify-content: space-between; }
 .modal-info strong { color: white; font-weight: 600; }
 .items-list { margin: 20px 0; border-top: 1px solid var(--border-color); padding-top: 20px; }
@@ -182,8 +207,8 @@ body { background-color: #e5e5e5; display: flex; justify-content: center; min-he
 </div>
 <div class="header-right">
 <div class="bell"><i class="fa-regular fa-bell"></i><div class="bell-dot"></div></div>
-<div class="profile-pic" onclick="switchView('view-profile', document.querySelectorAll('.nav-item')[4])">
-<img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=100&auto=format&fit=crop" alt="Profile">
+<div class="profile-pic-container" onclick="switchView('view-profile', document.querySelectorAll('.nav-item')[4])">
+<div class="profile-pic" id="header-avatar">AK</div>
 </div>
 </div>
 </div>
@@ -202,19 +227,19 @@ body { background-color: #e5e5e5; display: flex; justify-content: center; min-he
 <div class="stat-item">
 <div class="stat-icon icon-green"><i class="fa-solid fa-bag-shopping"></i></div>
 <div class="stat-label">Commandes</div>
-<div class="stat-value" id="stat-total-orders">128</div>
+<div class="stat-value" id="stat-total-orders">0</div>
 <div class="stat-trend"><span>↑ +8%</span></div>
 </div>
 <div class="stat-item">
 <div class="stat-icon icon-purple"><i class="fa-solid fa-chart-simple"></i></div>
 <div class="stat-label">Chiffre d'affaires</div>
-<div class="stat-value" id="stat-total-revenue">8 450</div>
+<div class="stat-value" id="stat-total-revenue">0</div>
 <div class="stat-trend"><span>↑ +12%</span></div>
 </div>
 <div class="stat-item">
 <div class="stat-icon icon-green"><i class="fa-solid fa-wallet"></i></div>
 <div class="stat-label">À percevoir</div>
-<div class="stat-value" id="stat-total-pending">2 180</div>
+<div class="stat-value" id="stat-total-pending">0</div>
 <div class="stat-trend"><span>↑ +5%</span></div>
 </div>
 </div>
@@ -222,15 +247,15 @@ body { background-color: #e5e5e5; display: flex; justify-content: center; min-he
 
 <div class="action-grid">
 <button class="action-btn btn-green" onclick="switchView('view-orders', document.querySelectorAll('.nav-item')[1])">
-<i class="fa-solid fa-cart-shopping btn-icon"></i>
+<span class="btn-icon">🛒</span>
 <span class="btn-text">Nouvelle<br>commande</span>
 </button>
 <button class="action-btn btn-purple" onclick="switchView('view-stats', document.querySelectorAll('.nav-item')[3])">
-<i class="fa-solid fa-plus btn-icon"></i>
+<span class="btn-icon">📈</span>
 <span class="btn-text">Voir les<br>stats</span>
 </button>
 <button class="action-btn btn-dark" onclick="switchView('view-profile', document.querySelectorAll('.nav-item')[4])">
-<i class="fa-solid fa-box btn-icon"></i>
+<span class="btn-icon">📦</span>
 <span class="btn-text">Voir les<br>soldes</span>
 </button>
 </div>
@@ -248,28 +273,28 @@ body { background-color: #e5e5e5; display: flex; justify-content: center; min-he
 <div class="stats-header">
 <button class="back-btn" onclick="switchView('view-home', document.querySelectorAll('.nav-item')[0])"><i class="fa-solid fa-chevron-left"></i></button>
 <div class="stats-title">Statistiques</div>
-<button class="settings-btn" onclick="alert('Les paramètres des statistiques seront bientôt disponibles !')"><i class="fa-solid fa-gear"></i></button>
+<button class="settings-btn" onclick="openCustomModal('Paramètres', 'Les paramètres des statistiques seront bientôt disponibles.', '⚙️')"><i class="fa-solid fa-gear"></i></button>
 </div>
 
 <div class="filters-row">
-<button class="filter-pill active" onclick="setFilter(this)">Tout</button>
-<button class="filter-pill" onclick="setFilter(this)">Ventes</button>
-<button class="filter-pill" onclick="setFilter(this)">Achats</button>
-<button class="filter-pill" onclick="setFilter(this)">Bénéfices</button>
+<button class="filter-pill active" data-filter="all" onclick="filterStats('all', this)">Tout</button>
+<button class="filter-pill" data-filter="ventes" onclick="filterStats('ventes', this)">Ventes</button>
+<button class="filter-pill" data-filter="achats" onclick="filterStats('achats', this)">Achats</button>
+<button class="filter-pill" data-filter="benefices" onclick="filterStats('benefices', this)">Bénéfices</button>
 </div>
 
 <div class="chart-card">
 <div class="chart-header">
-<span>Évolution de votre activité</span>
+<span id="chart-title">Évolution de votre activité</span>
 <span>30 jours <i class="fa-solid fa-chevron-down"></i></span>
 </div>
 <div class="chart-svg-container">
 <svg class="chart-svg" viewBox="0 0 100 40" preserveAspectRatio="none">
-<path d="M0,35 Q15,30 25,28 T45,22 T65,20 T85,15 T100,10" fill="none" stroke="var(--neon-purple)" stroke-width="2" opacity="0.6"/>
-<path d="M0,32 Q15,22 25,24 T45,15 T65,18 T85,8 T100,5" fill="none" stroke="var(--neon-green)" stroke-width="2" />
-<circle cx="65" cy="18" r="3" fill="var(--bg)" stroke="var(--neon-green)" stroke-width="1.5"/>
+<path id="chart-line-bg" d="M0,35 Q15,30 25,28 T45,22 T65,20 T85,15 T100,10" fill="none" stroke="var(--neon-purple)" stroke-width="2" opacity="0.6"/>
+<path id="chart-line-main" d="M0,32 Q15,22 25,24 T45,15 T65,18 T85,8 T100,5" fill="none" stroke="var(--neon-green)" stroke-width="2" />
+<circle id="chart-dot" cx="65" cy="18" r="3" fill="var(--bg)" stroke="var(--neon-green)" stroke-width="1.5"/>
 </svg>
-<div style="position: absolute; top: 20px; right: 20px; background: var(--neon-green); color: #000; font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 8px;">8 450 TND</div>
+<div id="chart-badge" style="position: absolute; top: 20px; right: 20px; background: var(--neon-green); color: #000; font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 8px;">0 TND</div>
 </div>
 <div style="display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); margin-top: 10px;">
 <span>1-7</span><span>8-14</span><span>15-21</span><span>22-30</span>
@@ -280,29 +305,29 @@ body { background-color: #e5e5e5; display: flex; justify-content: center; min-he
 <div class="stat-box-mini">
 <div class="icon icon-green"><i class="fa-solid fa-bag-shopping"></i></div>
 <h4>Ventes</h4>
-<p id="stat-box-sales">8 450 TND</p>
+<p id="stat-box-sales">0 TND</p>
 <span class="green">↑ +12,5%</span>
 </div>
 <div class="stat-box-mini">
 <div class="icon icon-purple"><i class="fa-solid fa-wallet"></i></div>
 <h4>Dépenses</h4>
-<p>2 180 TND</p>
+<p id="stat-box-expenses">0 TND</p>
 <span class="green">↑ +5%</span>
 </div>
 <div class="stat-box-mini">
 <div class="icon icon-green"><i class="fa-solid fa-arrow-trend-up"></i></div>
 <h4>Bénéfice</h4>
-<p id="stat-box-profit">6 270 TND</p>
+<p id="stat-box-profit">0 TND</p>
 <span class="green">↑ +15%</span>
 </div>
 </div>
 
-<div class="banner">
+<div class="banner" id="stats-banner">
 <div>
-<h4>+12,5% ce mois-ci</h4>
-<p>Vos ventes sont en hausse !</p>
+<h4 id="banner-title">+12,5% ce mois-ci</h4>
+<p id="banner-text">Vos ventes sont en hausse !</p>
 </div>
-<i class="fa-solid fa-chart-line" style="font-size: 24px;"></i>
+<i id="banner-icon" class="fa-solid fa-chart-line" style="font-size: 24px;"></i>
 </div>
 </div>
 
@@ -325,20 +350,30 @@ body { background-color: #e5e5e5; display: flex; justify-content: center; min-he
 </div>
 
 <div class="profile-section">
-<div class="profile-avatar">AK</div>
+<!-- AVATAR UPLOADABLE -->
+<div class="profile-pic-container" style="width: 90px; height: 90px; margin: 0 auto 15px;" onclick="document.getElementById('avatar-upload').click()">
+<div class="profile-pic" id="profile-avatar-large" style="width: 100%; height: 100%; font-size: 30px;">AK</div>
+<input type="file" id="avatar-upload" accept="image/*" onchange="handlePhotoUpload(event)">
+</div>
+<p style="font-size: 11px; color: var(--neon-green); margin-bottom: 20px; cursor: pointer;" onclick="document.getElementById('avatar-upload').click()">Modifier la photo</p>
+
 <h2 style="font-size: 22px; font-weight: 800;">Achoumat Khalfani</h2>
 <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 30px;">Fondatrice & CEO</p>
 
 <!-- CARTE BANCAIRE -->
 <div class="bank-card">
+<div class="card-top">
 <div class="card-chip"></div>
+<i class="fa-solid fa-eye eye-icon" id="toggle-balance-eye" onclick="toggleBalance()"></i>
+</div>
 <div class="card-number">**** **** **** 0418</div>
 <div class="card-bottom">
 <div class="card-holder">ACHOUMAT K.</div>
-<div class="card-balance" id="card-balance-display">8 450 TND</div>
+<div class="card-balance" id="card-balance-display">0 TND</div>
 </div>
 </div>
-<button class="btn-withdraw" onclick="alert('Demande de retrait envoyée à votre banque !')"><i class="fa-solid fa-money-bill-transfer"></i> Retirer les fonds</button>
+
+<button class="btn-withdraw" onclick="openWithdrawModal()"><i class="fa-solid fa-money-bill-transfer"></i> Retirer les fonds</button>
 
 <!-- INFOS MODIFIABLES -->
 <div class="info-card">
@@ -348,7 +383,7 @@ body { background-color: #e5e5e5; display: flex; justify-content: center; min-he
 </div>
 <div class="info-group">
 <label>Numéro de téléphone</label>
-<input type="tel" id="admin-phone" placeholder="+243 ...">
+<input type="tel" id="admin-phone" value="+216 " placeholder="+216 ...">
 </div>
 <div class="info-group">
 <label>Code secret (4 chiffres)</label>
@@ -374,8 +409,8 @@ body { background-color: #e5e5e5; display: flex; justify-content: center; min-he
 </nav>
 
 <!-- MODAL GESTION COMMANDE -->
-<div class="modal" id="order-modal">
-<div class="modal-content">
+<div class="modal-bottom" id="order-modal">
+<div class="order-modal-content">
 <div class="modal-title">Détails Commande</div>
 <div id="modal-order-details"></div>
 <label style="font-size: 12px; color: var(--text-muted); font-weight: 600; display: block; margin-top: 15px;">Mettre à jour le statut :</label>
@@ -394,14 +429,53 @@ body { background-color: #e5e5e5; display: flex; justify-content: center; min-he
 </div>
 </div>
 
+<!-- MODAL RETRAIT -->
+<div class="modal-bottom" id="withdraw-modal">
+<div class="modal-bottom-content">
+<div class="modal-title">Retirer des fonds</div>
+<div class="form-group-modal">
+<label>Montant à retirer (TND)</label>
+<input type="number" id="withdraw-amount" placeholder="Ex: 500" min="1">
+</div>
+<div style="font-size: 12px; color: var(--text-muted); margin-bottom: 20px;">
+Solde disponible : <strong id="withdraw-available" style="color: var(--neon-green);">0 TND</strong>
+</div>
+<button class="btn-submit-modal" onclick="processWithdraw()">Confirmer le retrait</button>
+<button style="background:none; border:none; width:100%; text-align:center; margin-top:15px; color:var(--text-muted); cursor:pointer;" onclick="closeModal('withdraw-modal')">Annuler</button>
+</div>
+</div>
+
+<!-- MODAL GÉNÉRIQUE (Succès/Erreur) -->
+<div class="modal" id="custom-modal">
+<div class="modal-content-custom">
+<div id="custom-icon" style="font-size: 40px; margin-bottom: 15px;">✅</div>
+<div class="modal-title" id="custom-title">Succès</div>
+<div class="modal-text" id="custom-text">Opération effectuée avec succès.</div>
+<button class="btn-close-custom" onclick="closeModal('custom-modal')">Fermer</button>
+</div>
+</div>
+
 <script>
+// --- VARIABLES GLOBALES ---
+let orders = [];
+let currentOrderIndex = -1;
+let balanceVisible = true;
+
+// --- INITIALISATION ---
+window.onload = () => {
+loadProfile();
+if(localStorage.getItem('lk_admin_logged') === 'true') {
+checkCode();
+}
+};
+
 // --- SÉCURITÉ ---
 function checkCode() {
 const code = document.getElementById('admin-code').value;
-// Si l'utilisateur a changé son code, on le lit depuis le localStorage, sinon c'est 0418 par défaut
 const savedCode = localStorage.getItem('lk_admin_code') || '0418';
 
 if (code === savedCode) {
+localStorage.setItem('lk_admin_logged', 'true');
 document.getElementById('login-screen').style.display = 'none';
 document.getElementById('admin-app').style.display = 'block';
 document.getElementById('bottom-nav').style.display = 'flex';
@@ -414,6 +488,7 @@ document.getElementById('admin-code').value = '';
 }
 
 function logout() {
+localStorage.removeItem('lk_admin_logged');
 document.getElementById('admin-app').style.display = 'none';
 document.getElementById('bottom-nav').style.display = 'none';
 document.getElementById('login-screen').style.display = 'flex';
@@ -432,18 +507,109 @@ btn.classList.add('active');
 }
 }
 
-// --- FILTRES STATS (Cliquables) ---
-function setFilter(btn) {
+// --- FILTRES STATS ---
+function filterStats(type, btn) {
 document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
 btn.classList.add('active');
-// Ici on pourrait filtrer les vraies données selon le choix
+
+// Valeurs de test pour l'effet visuel
+const data = {
+all: { title: "Évolution globale", sales: "338 TND", expenses: "2 180 TND", profit: "101 TND", color: "var(--neon-green)", banner: "+12,5% ce mois-ci", msg: "Votre activité globale est en hausse !" },
+ventes: { title: "Évolution des ventes", sales: "338 TND", expenses: "0 TND", profit: "338 TND", color: "var(--color-red)", banner: "+8,2% de ventes", msg: "Les ventes augmentent bien." },
+achats: { title: "Évolution des achats", sales: "0 TND", expenses: "2 180 TND", profit: "0 TND", color: "var(--color-green)", banner: "+5% d'achats", msg: "Vos achats fournisseurs." },
+benefices: { title: "Évolution des bénéfices", sales: "0 TND", expenses: "0 TND", profit: "101 TND", color: "var(--neon-purple)", banner: "+15% de bénéfice", msg: "Les bénéfices sont au top !" }
+};
+
+const current = data[type];
+
+// Mise à jour de l'interface
+document.getElementById('chart-title').innerText = current.title;
+document.getElementById('chart-line-main').setAttribute('stroke', current.color);
+document.getElementById('chart-dot').setAttribute('stroke', current.color);
+document.getElementById('chart-badge').style.background = current.color;
+document.getElementById('stat-box-sales').innerText = current.sales;
+document.getElementById('stat-box-expenses').innerText = current.expenses;
+document.getElementById('stat-box-profit').innerText = current.profit;
+document.getElementById('banner-title').innerText = current.banner;
+document.getElementById('banner-text').innerText = current.msg;
+document.getElementById('stats-banner').style.background = current.color;
+document.getElementById('stats-banner').style.color = type === 'achats' || type === 'ventes' ? '#fff' : '#000';
 }
 
-// --- PROFIL (Sauvegarde & Chargement) ---
+// --- GESTION CARTE BANCAIRE ---
+function toggleBalance() {
+const display = document.getElementById('card-balance-display');
+const eye = document.getElementById('toggle-balance-eye');
+const total = localStorage.getItem('lk_total_revenue') || "0";
+
+if(balanceVisible) {
+display.innerText = "**** TND";
+eye.classList.remove('fa-eye');
+eye.classList.add('fa-eye-slash');
+} else {
+display.innerText = Number(total).toFixed(0) + " TND";
+eye.classList.remove('fa-eye-slash');
+eye.classList.add('fa-eye');
+}
+balanceVisible = !balanceVisible;
+}
+
+// --- RETRAIT ---
+function openWithdrawModal() {
+const total = localStorage.getItem('lk_total_revenue') || "0";
+document.getElementById('withdraw-available').innerText = Number(total).toFixed(2) + " TND";
+document.getElementById('withdraw-modal').classList.add('active');
+}
+
+function processWithdraw() {
+const amount = parseFloat(document.getElementById('withdraw-amount').value);
+const total = parseFloat(localStorage.getItem('lk_total_revenue') || "0");
+
+if(isNaN(amount) || amount <= 0) {
+openCustomModal('Erreur', 'Veuillez entrer un montant valide.', '❌');
+return;
+}
+if(amount > total) {
+openCustomModal('Erreur', 'Montant supérieur au solde disponible.', '❌');
+return;
+}
+
+// Simulation de retrait
+closeModal('withdraw-modal');
+openCustomModal('Retrait confirmé', `Votre demande de retrait de ${amount} TND a bien été envoyée.`, '💸');
+document.getElementById('withdraw-amount').value = '';
+}
+
+// --- PROFIL & PHOTO ---
 function loadProfile() {
 document.getElementById('admin-email').value = localStorage.getItem('lk_admin_email') || 'contact@lowkey.com';
-document.getElementById('admin-phone').value = localStorage.getItem('lk_admin_phone') || '';
+document.getElementById('admin-phone').value = localStorage.getItem('lk_admin_phone') || '+216 ';
 document.getElementById('admin-password').value = localStorage.getItem('lk_admin_code') || '0418';
+
+// Photo de profil
+const savedPhoto = localStorage.getItem('lk_admin_photo');
+if(savedPhoto) {
+document.getElementById('header-avatar').style.backgroundImage = `url(${savedPhoto})`;
+document.getElementById('header-avatar').innerText = '';
+document.getElementById('profile-avatar-large').style.backgroundImage = `url(${savedPhoto})`;
+document.getElementById('profile-avatar-large').innerText = '';
+}
+}
+
+function handlePhotoUpload(event) {
+const file = event.target.files[0];
+if (file) {
+const reader = new FileReader();
+reader.onload = function(e) {
+const imgData = e.target.result;
+localStorage.setItem('lk_admin_photo', imgData);
+document.getElementById('header-avatar').style.backgroundImage = `url(${imgData})`;
+document.getElementById('header-avatar').innerText = '';
+document.getElementById('profile-avatar-large').style.backgroundImage = `url(${imgData})`;
+document.getElementById('profile-avatar-large').innerText = '';
+};
+reader.readAsDataURL(file);
+}
 }
 
 function saveProfile() {
@@ -451,19 +617,28 @@ const email = document.getElementById('admin-email').value;
 const phone = document.getElementById('admin-phone').value;
 const pass = document.getElementById('admin-password').value;
 
-if(pass.length !== 4) { alert("Le code secret doit contenir exactement 4 chiffres."); return; }
+if(pass.length !== 4) { openCustomModal('Erreur', 'Le code secret doit contenir 4 chiffres.', '❌'); return; }
 
 localStorage.setItem('lk_admin_email', email);
 localStorage.setItem('lk_admin_phone', phone);
 localStorage.setItem('lk_admin_code', pass);
 
-alert("Profil mis à jour avec succès !");
+openCustomModal('Succès', 'Profil mis à jour avec succès !', '✅');
 }
 
-// --- CHARGEMENT DES DONNÉES COMMANDES ---
-let orders = [];
-let currentOrderIndex = -1;
+// --- MODALS CUSTOM ---
+function openCustomModal(title, text, icon) {
+document.getElementById('custom-title').innerText = title;
+document.getElementById('custom-text').innerText = text;
+document.getElementById('custom-icon').innerText = icon;
+document.getElementById('custom-modal').classList.add('active');
+}
 
+function closeModal(id) {
+document.getElementById(id).classList.remove('active');
+}
+
+// --- CHARGEMENT DES COMMANDES ---
 function loadData() {
 orders = JSON.parse(localStorage.getItem('lk_orders')) || [];
 
@@ -473,13 +648,15 @@ total += Number(o.total) || 0;
 solde += Number(o.solde) || 0;
 });
 
+localStorage.setItem('lk_total_revenue', total);
+
 document.getElementById('stat-total-orders').innerText = orders.length > 0 ? orders.length : 0;
 document.getElementById('stat-total-revenue').innerText = total.toFixed(0) + " TND";
 document.getElementById('stat-total-pending').innerText = solde.toFixed(0) + " TND";
-document.getElementById('card-balance-display').innerText = total.toFixed(0) + " TND";
 
-document.getElementById('stat-box-sales').innerText = total.toFixed(0) + " TND";
-document.getElementById('stat-box-profit').innerText = (total * 0.3).toFixed(0) + " TND";
+if(balanceVisible) {
+document.getElementById('card-balance-display').innerText = total.toFixed(0) + " TND";
+}
 
 renderRecentActivity();
 renderAllOrders();
