@@ -5,146 +5,165 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Admin — LowkeyExpress</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 :root {
---bg: #09090b; --card: #18181b; --card-light: #27272a;
---text: #ffffff; --text-muted: #a1a1aa;
---neon-green: #ccff00; --neon-purple: #c084fc;
---status-green: rgba(204, 255, 0, 0.15); --status-purple: rgba(192, 132, 252, 0.15);
+--bg: #000000; --card: #121212; --card-light: #1e1e1e;
+--text: #ffffff; --text-muted: #888888;
+--neon-green: #ccff00; --neon-purple: #d1b3ff;
+--border-color: #222222;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-body { background-color: var(--bg); color: var(--text); display: flex; justify-content: center; min-height: 100vh; }
-.app-container { width: 100%; max-width: 414px; padding: 20px 0 100px 0; position: relative; overflow-x: hidden; }
+body { background-color: #e5e5e5; display: flex; justify-content: center; min-height: 100vh; }
+.app-container { width: 100%; max-width: 414px; background-color: var(--bg); min-height: 100vh; position: relative; padding-bottom: 90px; overflow-x: hidden; }
 
-/* EFFET DE FOND (Comme sur la maquette) */
-.bg-glow { position: absolute; top: -100px; left: -100px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(204,255,0,0.05) 0%, rgba(9,9,11,0) 70%); z-index: 0; }
-.bg-glow-purple { position: absolute; bottom: 0; right: -100px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(192,132,252,0.05) 0%, rgba(9,9,11,0) 70%); z-index: 0; }
+/* EFFET DE FOND */
+.bg-glow { position: absolute; top: -50px; left: -50px; width: 250px; height: 250px; background: radial-gradient(circle, rgba(204,255,0,0.08) 0%, rgba(0,0,0,0) 70%); z-index: 0; }
 
 /* ÉCRAN DE CONNEXION */
-#login-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 90vh; padding: 0 20px; position: relative; z-index: 10; }
-.lock-icon { font-size: 50px; margin-bottom: 20px; }
-.login-input { width: 100%; padding: 18px; border-radius: 16px; border: 1px solid #333; background: var(--card); color: white; font-size: 24px; text-align: center; letter-spacing: 8px; outline: none; margin-bottom: 20px; }
+#login-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; padding: 0 20px; position: relative; z-index: 10; }
+.login-input { width: 100%; padding: 18px; border-radius: 16px; border: 1px solid var(--border-color); background: var(--card); color: white; font-size: 24px; text-align: center; letter-spacing: 8px; outline: none; margin-bottom: 20px; }
 .login-btn { width: 100%; padding: 18px; border-radius: 16px; border: none; background: var(--neon-green); color: #000; font-size: 16px; font-weight: 800; cursor: pointer; }
 
-/* NAVIGATION DES VUES */
-#admin-app { display: none; position: relative; z-index: 10; animation: fadeIn 0.4s ease; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+/* APPLICATION */
+#admin-app { display: none; position: relative; z-index: 10; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 .view { display: none; }
 .view.active { display: block; }
 
 /* HEADER */
-.header { display: flex; justify-content: space-between; align-items: flex-start; padding: 0 20px; margin-bottom: 24px; }
-.header-left { display: flex; flex-direction: column; }
-.crown { color: var(--neon-green); font-size: 20px; margin-bottom: 4px; }
-.header-title { font-size: 12px; font-weight: 600; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; }
-.header-title span { display: block; font-size: 14px; color: var(--text); }
-
-.header-right { display: flex; align-items: center; gap: 12px; }
-.bell { background: var(--card); width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 18px; position: relative; }
-.profile-pic { width: 50px; height: 50px; border-radius: 50%; background: var(--card); border: 2px solid var(--neon-green); display: flex; justify-content: center; align-items: center; font-size: 20px; font-weight: 800; position: relative; }
-.profile-pic::after { content: '✎'; position: absolute; bottom: -2px; right: -2px; background: var(--neon-green); color: #000; width: 18px; height: 18px; border-radius: 50%; font-size: 10px; display: flex; justify-content: center; align-items: center; border: 2px solid var(--bg); }
+.header { display: flex; justify-content: space-between; align-items: flex-start; padding: 20px; }
+.header-left { display: flex; flex-direction: column; align-items: center; }
+.crown-icon { color: var(--neon-green); font-size: 20px; margin-bottom: 6px; }
+.header-title { font-size: 11px; font-weight: 600; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; text-align: center; line-height: 1.4; }
+.header-title span { color: var(--text); font-weight: 700; }
+.header-right { display: flex; align-items: center; gap: 15px; }
+.bell { color: var(--text); font-size: 20px; position: relative; }
+.bell-dot { position: absolute; top: -2px; right: 0; width: 8px; height: 8px; background: var(--neon-purple); border-radius: 50%; border: 1px solid var(--bg); }
+.profile-pic { width: 50px; height: 50px; border-radius: 50%; background: var(--card-light); display: flex; justify-content: center; align-items: center; position: relative; border: 2px solid var(--neon-purple); cursor: pointer; }
+.profile-pic img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
 
 /* SALUTATION */
-.greeting { padding: 0 20px; margin-bottom: 24px; }
-.greeting h1 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+.greeting { padding: 0 20px; margin-bottom: 20px; }
+.greeting h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; }
 .greeting h1 span { color: var(--neon-green); }
 .greeting p { font-size: 13px; color: var(--text-muted); }
 
-/* VUE D'ENSEMBLE */
-.overview-card { background: var(--card); border-radius: 24px; padding: 20px; margin: 0 20px 24px; border: 1px solid rgba(255,255,255,0.05); }
+/* CARTE VUE D'ENSEMBLE */
+.overview-card { background: linear-gradient(145deg, #161b13, #0d0d0d); border-radius: 20px; padding: 20px; margin: 0 20px 20px; border: 1px solid rgba(204,255,0,0.1); }
 .overview-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-.overview-title { font-size: 15px; font-weight: 700; }
+.overview-title { font-size: 16px; font-weight: 600; color: #e0e0e0; }
 .overview-stats { display: flex; justify-content: space-between; }
-.stat-item { display: flex; flex-direction: column; gap: 6px; }
-.stat-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 14px; margin-bottom: 4px; }
+.stat-item { display: flex; flex-direction: column; gap: 4px; }
+.stat-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 14px; margin-bottom: 6px; }
 .icon-green { background: rgba(204,255,0,0.1); color: var(--neon-green); }
-.icon-purple { background: rgba(192,132,252,0.1); color: var(--neon-purple); }
+.icon-purple { background: rgba(209,179,255,0.1); color: var(--neon-purple); }
 .stat-label { font-size: 11px; color: var(--text-muted); }
-.stat-value { font-size: 16px; font-weight: 800; }
-.stat-trend { font-size: 10px; color: var(--neon-green); }
+.stat-value { font-size: 18px; font-weight: 700; color: var(--text); }
+.stat-trend { font-size: 10px; color: var(--text-muted); }
+.stat-trend span { color: var(--neon-green); }
 
 /* BOUTONS D'ACTION */
 .action-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding: 0 20px; margin-bottom: 24px; }
-.action-btn { background: var(--card); border-radius: 18px; padding: 15px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; border: none; color: white; cursor: pointer; text-align: center; transition: 0.2s; }
-.action-btn:active { transform: scale(0.95); }
+.action-btn { border-radius: 16px; padding: 16px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; border: none; cursor: pointer; text-align: center; }
 .btn-icon { font-size: 20px; }
 .btn-text { font-size: 11px; font-weight: 600; line-height: 1.2; }
 .btn-green { background: var(--neon-green); color: #000; }
 .btn-purple { background: var(--neon-purple); color: #000; }
+.btn-dark { background: var(--card); color: var(--text); border: 1px solid var(--border-color); }
 
 /* ACTIVITÉ RÉCENTE */
-.section-header { display: flex; justify-content: space-between; align-items: center; padding: 0 20px; margin-bottom: 16px; }
+.section-header { display: flex; justify-content: space-between; align-items: center; padding: 0 20px; margin-bottom: 12px; }
 .section-title { font-size: 16px; font-weight: 700; }
-.see-all { font-size: 12px; color: var(--neon-green); font-weight: 600; text-decoration: none; }
-
+.see-all { font-size: 12px; color: var(--text-muted); font-weight: 500; text-decoration: none; }
 .activity-list { padding: 0 20px; }
-.activity-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; }
-.activity-item:last-child { border-bottom: none; }
+.activity-item { display: flex; align-items: center; justify-content: space-between; padding: 12px; background: var(--card); border-radius: 16px; margin-bottom: 10px; cursor: pointer; }
 .activity-left { display: flex; align-items: center; gap: 12px; }
 .activity-img { width: 45px; height: 45px; border-radius: 12px; background: var(--card-light); display: flex; justify-content: center; align-items: center; font-size: 20px; }
-.activity-info h4 { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+.activity-info h4 { font-size: 13px; font-weight: 600; margin-bottom: 4px; color: var(--text); }
 .activity-info p { font-size: 11px; color: var(--text-muted); }
-.activity-right { text-align: right; }
-.badge { font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 8px; display: inline-block; }
-.badge-green { background: var(--status-green); color: var(--neon-green); }
-.badge-purple { background: var(--status-purple); color: var(--neon-purple); }
-.activity-date { font-size: 10px; color: var(--text-muted); margin-top: 4px; display: block; }
+.activity-right { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.badge { font-size: 9px; font-weight: 700; padding: 4px 8px; border-radius: 6px; }
+.badge-green { background: rgba(204,255,0,0.15); color: var(--neon-green); }
+.badge-purple { background: rgba(209,179,255,0.15); color: var(--neon-purple); }
+.activity-date { font-size: 10px; color: var(--text-muted); }
 
 /* VUE STATS */
+.stats-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; }
+.back-btn, .settings-btn { background: var(--card); border: none; color: var(--text); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 16px; display: flex; justify-content: center; align-items: center; }
+.stats-title { font-size: 18px; font-weight: 700; }
+
 .filters-row { display: flex; gap: 10px; padding: 0 20px; margin-bottom: 20px; overflow-x: auto; scrollbar-width: none; }
 .filters-row::-webkit-scrollbar { display: none; }
-.filter-pill { background: var(--card); border: none; color: var(--text-muted); padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.filter-pill { background: var(--card); border: none; color: var(--text-muted); padding: 10px 20px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: 0.2s; }
 .filter-pill.active { background: var(--neon-green); color: #000; }
 
-.chart-card { background: var(--card); border-radius: 24px; padding: 20px; margin: 0 20px 20px; border: 1px solid rgba(255,255,255,0.05); }
-.chart-svg-container { width: 100%; height: 150px; margin-top: 20px; position: relative; }
-.chart-svg { width: 100%; height: 100%; }
+.chart-card { background: var(--card); border-radius: 20px; padding: 20px; margin: 0 20px 20px; border: 1px solid var(--border-color); }
+.chart-header { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
+.chart-svg-container { width: 100%; height: 120px; position: relative; }
 
-.stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding: 0 20px; margin-bottom: 24px; }
-.stat-box-mini { background: var(--card); border-radius: 16px; padding: 15px; text-align: center; }
-.stat-box-mini .icon { font-size: 16px; margin-bottom: 8px; display: block; }
-.stat-box-mini h4 { font-size: 10px; color: var(--text-muted); margin-bottom: 4px; font-weight: 500; }
-.stat-box-mini p { font-size: 14px; font-weight: 800; color: white; }
-.stat-box-mini span { font-size: 10px; color: var(--neon-green); }
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding: 0 20px; margin-bottom: 20px; }
+.stat-box-mini { background: var(--card); border-radius: 16px; padding: 15px; text-align: center; border: 1px solid var(--border-color); }
+.stat-box-mini .icon { width: 30px; height: 30px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 14px; margin: 0 auto 10px; }
+.stat-box-mini h4 { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; font-weight: 500; }
+.stat-box-mini p { font-size: 14px; font-weight: 800; color: white; margin-bottom: 4px; }
+.stat-box-mini span { font-size: 10px; color: var(--text-muted); }
+.stat-box-mini span.green { color: var(--neon-green); }
 
-.banner { background: var(--neon-purple); color: #000; border-radius: 16px; padding: 16px; margin: 0 20px 24px; display: flex; justify-content: space-between; align-items: center; }
-.banner h4 { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
+.banner { background: var(--neon-purple); color: #000; border-radius: 16px; padding: 20px; margin: 0 20px 20px; display: flex; justify-content: space-between; align-items: center; }
+.banner h4 { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
 .banner p { font-size: 11px; opacity: 0.8; }
 
+/* VUE PROFIL & CARTE BANCAIRE */
+.profile-section { padding: 0 20px; text-align: center; }
+.profile-avatar { width: 90px; height: 90px; border-radius: 50%; background: var(--card-light); border: 2px solid var(--neon-green); display: flex; justify-content: center; align-items: center; font-size: 30px; font-weight: bold; margin: 0 auto 15px; }
+
+.info-card { background: var(--card); border-radius: 20px; padding: 20px; margin-bottom: 20px; border: 1px solid var(--border-color); text-align: left; }
+.info-group { margin-bottom: 15px; }
+.info-group label { font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+.info-group input { width: 100%; background: var(--card-light); border: 1px solid transparent; color: var(--text); padding: 12px; border-radius: 12px; font-size: 14px; outline: none; transition: 0.2s; }
+.info-group input:focus { border-color: var(--neon-green); }
+
+/* CARTE BANCAIRE VISUELLE */
+.bank-card { background: linear-gradient(135deg, var(--neon-green), #99cc00); border-radius: 20px; padding: 24px; color: #000; text-align: left; position: relative; overflow: hidden; margin-bottom: 20px; }
+.bank-card::after { content: ''; position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: rgba(255,255,255,0.2); border-radius: 50%; filter: blur(20px); }
+.card-chip { width: 40px; height: 30px; background: rgba(0,0,0,0.1); border-radius: 6px; margin-bottom: 20px; }
+.card-number { font-size: 20px; letter-spacing: 3px; font-weight: 600; margin-bottom: 20px; font-family: monospace; }
+.card-bottom { display: flex; justify-content: space-between; align-items: flex-end; }
+.card-holder { font-size: 12px; text-transform: uppercase; opacity: 0.8; }
+.card-balance { font-size: 22px; font-weight: 800; text-align: right; }
+.btn-withdraw { width: 100%; background: var(--card); color: var(--text); border: 1px solid var(--border-color); padding: 16px; border-radius: 16px; font-weight: 700; font-size: 14px; cursor: pointer; margin-bottom: 20px; }
+
 /* NAVIGATION BAS */
-.bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 414px; background: var(--bg); display: flex; justify-content: space-between; align-items: center; padding: 15px 20px 30px; border-top: 1px solid rgba(255,255,255,0.05); z-index: 100; }
-.nav-item { background: none; border: none; color: #555; font-size: 22px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: 0.3s; width: 50px; }
-.nav-item span { font-size: 9px; font-weight: 600; color: var(--text-muted); }
+.bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 414px; background: var(--bg); display: flex; justify-content: space-around; align-items: center; padding: 15px 10px 25px; border-top: 1px solid var(--border-color); z-index: 100; }
+.nav-item { background: none; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: 0.2s; }
+.nav-item span { font-size: 10px; font-weight: 500; }
 .nav-item.active { color: var(--neon-green); }
-.nav-item.active span { color: var(--neon-green); }
+.nav-center { width: 50px; height: 50px; border-radius: 50%; background: var(--neon-green); display: flex; justify-content: center; align-items: center; color: #000; font-size: 20px; transform: translateY(-15px); cursor: pointer; box-shadow: 0 4px 15px rgba(204,255,0,0.2); }
 
-.nav-center { width: 55px; height: 55px; border-radius: 50%; background: var(--neon-green); display: flex; justify-content: center; align-items: center; color: #000; font-size: 24px; box-shadow: 0 5px 20px rgba(204,255,0,0.3); cursor: pointer; transform: translateY(-10px); }
-
-/* MODAL GESTION COMMANDE (Conservé) */
-.modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: flex-end; z-index: 200; backdrop-filter: blur(5px); }
+/* MODAL */
+.modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: flex-end; z-index: 200; backdrop-filter: blur(5px); }
 .modal.active { display: flex; }
-.modal-content { background: var(--card); width: 100%; max-width: 414px; border-radius: 30px 30px 0 0; padding: 30px 24px; animation: slideUp 0.3s; max-height: 90vh; overflow-y: auto; border: 1px solid rgba(255,255,255,0.1); border-bottom: none; }
+.modal-content { background: var(--card); width: 100%; max-width: 414px; border-radius: 24px 24px 0 0; padding: 30px 24px; animation: slideUp 0.3s; max-height: 90vh; overflow-y: auto; border: 1px solid var(--border-color); border-bottom: none; }
 @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 .modal-title { font-size: 20px; font-weight: 800; margin-bottom: 20px; }
 .modal-info { font-size: 13px; color: var(--text-muted); margin-bottom: 10px; display: flex; justify-content: space-between; }
-.modal-info strong { color: white; font-weight: 600; text-align: right; max-width: 60%; }
-.items-list { margin: 20px 0; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
-.item-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 12px; color: #ccc; }
+.modal-info strong { color: white; font-weight: 600; }
+.items-list { margin: 20px 0; border-top: 1px solid var(--border-color); padding-top: 20px; }
+.item-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 12px; color: var(--text-muted); }
 .item-row strong { color: white; }
-.status-select { width: 100%; padding: 16px; border-radius: 16px; background: var(--bg); color: white; border: 1px solid rgba(255,255,255,0.1); font-size: 14px; outline: none; margin: 20px 0; font-weight: 600; }
+.status-select { width: 100%; padding: 16px; border-radius: 16px; background: var(--bg); color: white; border: 1px solid var(--border-color); font-size: 14px; outline: none; margin: 20px 0; font-weight: 600; }
 .btn-wa { display: flex; justify-content: center; align-items: center; gap: 10px; background: #25D366; color: #000; text-decoration: none; padding: 16px; border-radius: 16px; font-weight: 800; margin-bottom: 12px; font-size: 14px; }
 .close-modal { width: 100%; padding: 16px; border-radius: 16px; background: var(--neon-green); color: black; font-weight: 800; border: none; cursor: pointer; font-size: 15px; }
 </style>
 </head>
 <body>
 
-<div class="bg-glow"></div>
-<div class="bg-glow-purple"></div>
-
 <div class="app-container">
+<div class="bg-glow"></div>
+
 <!-- ÉCRAN DE CONNEXION -->
 <div id="login-screen">
-<div class="lock-icon">🔒</div>
 <h2 style="margin-bottom: 20px; font-weight:800; font-size:24px;">Espace Patronne</h2>
 <input type="password" id="admin-code" class="login-input" placeholder="****" maxlength="4">
 <button class="login-btn" onclick="checkCode()">Déverrouiller</button>
@@ -158,100 +177,99 @@ body { background-color: var(--bg); color: var(--text); display: flex; justify-c
 <div id="view-home" class="view active">
 <div class="header">
 <div class="header-left">
-<div class="crown">👑</div>
-<div class="header-title">Espace<span>Patronne</span></div>
+<i class="fa-solid fa-crown crown-icon"></i>
+<div class="header-title">ESPACE<br><span>PATRONNE</span></div>
 </div>
 <div class="header-right">
-<div class="bell">🔔</div>
-<div class="profile-pic">AK</div>
+<div class="bell"><i class="fa-regular fa-bell"></i><div class="bell-dot"></div></div>
+<div class="profile-pic" onclick="switchView('view-profile', document.querySelectorAll('.nav-item')[4])">
+<img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=100&auto=format&fit=crop" alt="Profile">
+</div>
 </div>
 </div>
 
 <div class="greeting">
-<h1>Bonjour, Achoumat <span>👑</span></h1>
+<h1>Bonjour, <span>Achoumat</span> 👑</h1>
 <p>Gérez votre business avec style ♡</p>
 </div>
 
 <div class="overview-card">
 <div class="overview-header">
 <div class="overview-title">Vue d'ensemble</div>
+<i class="fa-solid fa-chevron-right" style="color:var(--text-muted); font-size:12px;"></i>
 </div>
 <div class="overview-stats">
 <div class="stat-item">
-<div class="stat-icon icon-green">🛍️</div>
+<div class="stat-icon icon-green"><i class="fa-solid fa-bag-shopping"></i></div>
 <div class="stat-label">Commandes</div>
-<div class="stat-value" id="stat-total-orders">0</div>
-<div class="stat-trend">↑ +8%</div>
+<div class="stat-value" id="stat-total-orders">128</div>
+<div class="stat-trend"><span>↑ +8%</span></div>
 </div>
 <div class="stat-item">
-<div class="stat-icon icon-purple">📊</div>
+<div class="stat-icon icon-purple"><i class="fa-solid fa-chart-simple"></i></div>
 <div class="stat-label">Chiffre d'affaires</div>
-<div class="stat-value" id="stat-total-revenue">0</div>
-<div class="stat-trend">↑ +12%</div>
+<div class="stat-value" id="stat-total-revenue">8 450</div>
+<div class="stat-trend"><span>↑ +12%</span></div>
 </div>
 <div class="stat-item">
-<div class="stat-icon icon-green">💵</div>
+<div class="stat-icon icon-green"><i class="fa-solid fa-wallet"></i></div>
 <div class="stat-label">À percevoir</div>
-<div class="stat-value" id="stat-total-pending">0</div>
-<div class="stat-trend">↑ +5%</div>
+<div class="stat-value" id="stat-total-pending">2 180</div>
+<div class="stat-trend"><span>↑ +5%</span></div>
 </div>
 </div>
 </div>
 
 <div class="action-grid">
-<button class="action-btn btn-green" onclick="switchView('view-home', document.querySelectorAll('.nav-item')[0])">
-<span class="btn-icon">🛒</span>
+<button class="action-btn btn-green" onclick="switchView('view-orders', document.querySelectorAll('.nav-item')[1])">
+<i class="fa-solid fa-cart-shopping btn-icon"></i>
 <span class="btn-text">Nouvelle<br>commande</span>
 </button>
 <button class="action-btn btn-purple" onclick="switchView('view-stats', document.querySelectorAll('.nav-item')[3])">
-<span class="btn-icon">📈</span>
+<i class="fa-solid fa-plus btn-icon"></i>
 <span class="btn-text">Voir les<br>stats</span>
 </button>
-<button class="action-btn" onclick="switchView('view-cards', document.querySelectorAll('.nav-item')[2])">
-<span class="btn-icon">📦</span>
+<button class="action-btn btn-dark" onclick="switchView('view-profile', document.querySelectorAll('.nav-item')[4])">
+<i class="fa-solid fa-box btn-icon"></i>
 <span class="btn-text">Voir les<br>soldes</span>
 </button>
 </div>
 
 <div class="section-header">
 <div class="section-title">Activité récente</div>
-<a href="#" class="see-all">Voir tout →</a>
+<a href="#" class="see-all" onclick="switchView('view-orders', document.querySelectorAll('.nav-item')[1])">Voir tout <i class="fa-solid fa-arrow-right"></i></a>
 </div>
 
-<div class="activity-list" id="recent-activity-list">
-<!-- JS injected -->
-</div>
+<div class="activity-list" id="recent-activity-list"></div>
 </div>
 
 <!-- VUE 2 : STATS -->
 <div id="view-stats" class="view">
-<div class="header" style="justify-content: center; position: relative;">
-<div style="position: absolute; left: 20px; font-size: 20px; cursor: pointer;" onclick="switchView('view-home', document.querySelectorAll('.nav-item')[0])">←</div>
-<div style="font-size: 18px; font-weight: 700;">Statistiques</div>
-<div style="position: absolute; right: 20px; font-size: 20px;">⚙️</div>
+<div class="stats-header">
+<button class="back-btn" onclick="switchView('view-home', document.querySelectorAll('.nav-item')[0])"><i class="fa-solid fa-chevron-left"></i></button>
+<div class="stats-title">Statistiques</div>
+<button class="settings-btn" onclick="alert('Les paramètres des statistiques seront bientôt disponibles !')"><i class="fa-solid fa-gear"></i></button>
 </div>
 
 <div class="filters-row">
-<button class="filter-pill active">Tout</button>
-<button class="filter-pill">Ventes</button>
-<button class="filter-pill">Achats</button>
-<button class="filter-pill">Bénéfices</button>
+<button class="filter-pill active" onclick="setFilter(this)">Tout</button>
+<button class="filter-pill" onclick="setFilter(this)">Ventes</button>
+<button class="filter-pill" onclick="setFilter(this)">Achats</button>
+<button class="filter-pill" onclick="setFilter(this)">Bénéfices</button>
 </div>
 
 <div class="chart-card">
-<div style="display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted);">
+<div class="chart-header">
 <span>Évolution de votre activité</span>
-<span>30 jours ⌄</span>
+<span>30 jours <i class="fa-solid fa-chevron-down"></i></span>
 </div>
 <div class="chart-svg-container">
 <svg class="chart-svg" viewBox="0 0 100 40" preserveAspectRatio="none">
-<!-- Courbe violette (Dépenses) -->
-<path d="M0,35 Q10,30 20,25 T40,20 T60,22 T80,15 T100,10" fill="none" stroke="var(--neon-purple)" stroke-width="1.5" opacity="0.6"/>
-<!-- Courbe verte (Ventes) -->
-<path d="M0,30 Q15,20 25,22 T45,15 T65,12 T85,18 T100,8" fill="none" stroke="var(--neon-green)" stroke-width="2" />
-<!-- Point sur la courbe -->
-<circle cx="65" cy="12" r="3" fill="var(--bg)" stroke="var(--neon-green)" stroke-width="1.5"/>
+<path d="M0,35 Q15,30 25,28 T45,22 T65,20 T85,15 T100,10" fill="none" stroke="var(--neon-purple)" stroke-width="2" opacity="0.6"/>
+<path d="M0,32 Q15,22 25,24 T45,15 T65,18 T85,8 T100,5" fill="none" stroke="var(--neon-green)" stroke-width="2" />
+<circle cx="65" cy="18" r="3" fill="var(--bg)" stroke="var(--neon-green)" stroke-width="1.5"/>
 </svg>
+<div style="position: absolute; top: 20px; right: 20px; background: var(--neon-green); color: #000; font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 8px;">8 450 TND</div>
 </div>
 <div style="display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); margin-top: 10px;">
 <span>1-7</span><span>8-14</span><span>15-21</span><span>22-30</span>
@@ -260,22 +278,22 @@ body { background-color: var(--bg); color: var(--text); display: flex; justify-c
 
 <div class="stats-grid">
 <div class="stat-box-mini">
-<span class="icon">🛍️</span>
+<div class="icon icon-green"><i class="fa-solid fa-bag-shopping"></i></div>
 <h4>Ventes</h4>
-<p id="stat-box-sales">0 TND</p>
-<span>↑ +12.5%</span>
+<p id="stat-box-sales">8 450 TND</p>
+<span class="green">↑ +12,5%</span>
 </div>
 <div class="stat-box-mini">
-<span class="icon">💳</span>
+<div class="icon icon-purple"><i class="fa-solid fa-wallet"></i></div>
 <h4>Dépenses</h4>
-<p>0 TND</p>
-<span>↑ +5%</span>
+<p>2 180 TND</p>
+<span class="green">↑ +5%</span>
 </div>
 <div class="stat-box-mini">
-<span class="icon">📈</span>
+<div class="icon icon-green"><i class="fa-solid fa-arrow-trend-up"></i></div>
 <h4>Bénéfice</h4>
-<p id="stat-box-profit">0 TND</p>
-<span>↑ +15%</span>
+<p id="stat-box-profit">6 270 TND</p>
+<span class="green">↑ +15%</span>
 </div>
 </div>
 
@@ -284,55 +302,75 @@ body { background-color: var(--bg); color: var(--text); display: flex; justify-c
 <h4>+12,5% ce mois-ci</h4>
 <p>Vos ventes sont en hausse !</p>
 </div>
-<div>📈</div>
+<i class="fa-solid fa-chart-line" style="font-size: 24px;"></i>
 </div>
 </div>
 
-<!-- VUE 3 : CARTES / FINANCES -->
-<div id="view-cards" class="view">
-<div class="header" style="justify-content: center; position: relative;">
-<div style="position: absolute; left: 20px; font-size: 20px; cursor: pointer;" onclick="switchView('view-home', document.querySelectorAll('.nav-item')[0])">←</div>
-<div style="font-size: 18px; font-weight: 700;">Soldes à percevoir</div>
+<!-- VUE 3 : COMMANDES -->
+<div id="view-orders" class="view">
+<div class="stats-header">
+<button class="back-btn" onclick="switchView('view-home', document.querySelectorAll('.nav-item')[0])"><i class="fa-solid fa-chevron-left"></i></button>
+<div class="stats-title">Toutes les commandes</div>
+<div style="width:40px;"></div>
 </div>
-<p style="padding: 0 20px 20px; font-size:13px; color:var(--text-muted);">Liste des clients devant régler les 30% à la livraison.</p>
-<div class="order-list" id="pending-payments-list"></div>
+<div class="order-list" id="all-orders-list" style="padding: 0 20px;"></div>
 </div>
 
-<!-- VUE 4 : PROFIL -->
+<!-- VUE 4 : PROFIL & CARTE -->
 <div id="view-profile" class="view">
-<div class="header" style="justify-content: center; position: relative;">
-<div style="font-size: 18px; font-weight: 700;">Mon Profil</div>
+<div class="stats-header">
+<button class="back-btn" onclick="switchView('view-home', document.querySelectorAll('.nav-item')[0])"><i class="fa-solid fa-chevron-left"></i></button>
+<div class="stats-title">Mon Profil</div>
+<div style="width:40px;"></div>
 </div>
-<div style="padding: 0 20px; text-align: center; margin-top: 20px;">
-<div class="profile-pic" style="width: 100px; height: 100px; margin: 0 auto 20px; font-size: 40px;">AK</div>
+
+<div class="profile-section">
+<div class="profile-avatar">AK</div>
 <h2 style="font-size: 22px; font-weight: 800;">Achoumat Khalfani</h2>
 <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 30px;">Fondatrice & CEO</p>
 
-<div style="background: var(--card); border-radius: 16px; padding: 20px; margin-bottom: 20px; text-align: left;">
-<div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
-<span style="color: var(--text-muted); font-size: 14px;">Email</span>
-<span style="font-size: 14px; font-weight: 600;">contact@lowkey.com</span>
+<!-- CARTE BANCAIRE -->
+<div class="bank-card">
+<div class="card-chip"></div>
+<div class="card-number">**** **** **** 0418</div>
+<div class="card-bottom">
+<div class="card-holder">ACHOUMAT K.</div>
+<div class="card-balance" id="card-balance-display">8 450 TND</div>
 </div>
-<div style="display: flex; justify-content: space-between; padding: 10px 0;">
-<span style="color: var(--text-muted); font-size: 14px;">Code secret</span>
-<span style="font-size: 14px; font-weight: 600;">••••</span>
+</div>
+<button class="btn-withdraw" onclick="alert('Demande de retrait envoyée à votre banque !')"><i class="fa-solid fa-money-bill-transfer"></i> Retirer les fonds</button>
+
+<!-- INFOS MODIFIABLES -->
+<div class="info-card">
+<div class="info-group">
+<label>Email de contact</label>
+<input type="email" id="admin-email" placeholder="contact@lowkey.com">
+</div>
+<div class="info-group">
+<label>Numéro de téléphone</label>
+<input type="tel" id="admin-phone" placeholder="+243 ...">
+</div>
+<div class="info-group">
+<label>Code secret (4 chiffres)</label>
+<input type="text" id="admin-password" maxlength="4" placeholder="****">
+</div>
+<button style="width: 100%; padding: 16px; border-radius: 12px; border: none; background: var(--neon-green); color: #000; font-weight: 800; cursor: pointer; margin-top: 10px;" onclick="saveProfile()">Enregistrer les modifications</button>
+</div>
+
+<button style="width: 100%; background: rgba(255, 0, 0, 0.1); color: red; border: 1px solid red; padding: 16px; border-radius: 16px; font-weight: 700; font-size: 15px; cursor: pointer; margin-bottom: 20px;" onclick="logout()">Se déconnecter</button>
 </div>
 </div>
 
-<button class="action-btn" style="width: 100%; background: rgba(255, 0, 0, 0.1); color: red; border: 1px solid red; padding: 16px; font-weight: 700; font-size: 15px;" onclick="logout()">Se déconnecter</button>
 </div>
 </div>
 
-</div>
-</div>
-
-<!-- NAVIGATION BAS (Avec le bouton central) -->
+<!-- NAVIGATION BAS -->
 <nav class="bottom-nav" id="bottom-nav" style="display:none;">
-<button class="nav-item active" onclick="switchView('view-home', this)">🏠<span>Accueil</span></button>
-<button class="nav-item" onclick="switchView('view-cards', this)">📋<span>Commandes</span></button>
-<div class="nav-center" onclick="switchView('view-home', document.querySelectorAll('.nav-item')[0])">🛍️</div>
-<button class="nav-item" onclick="switchView('view-stats', this)">📊<span>Stats</span></button>
-<button class="nav-item" onclick="switchView('view-profile', this)">👤<span>Profil</span></button>
+<button class="nav-item active" onclick="switchView('view-home', this)"><i class="fa-solid fa-house"></i><span>Accueil</span></button>
+<button class="nav-item" onclick="switchView('view-orders', this)"><i class="fa-solid fa-clipboard-list"></i><span>Commandes</span></button>
+<div class="nav-center" onclick="switchView('view-home', document.querySelectorAll('.nav-item')[0])"><i class="fa-solid fa-bag-shopping"></i></div>
+<button class="nav-item" onclick="switchView('view-stats', this)"><i class="fa-solid fa-chart-simple"></i><span>Stats</span></button>
+<button class="nav-item" onclick="switchView('view-profile', this)"><i class="fa-regular fa-user"></i><span>Profil</span></button>
 </nav>
 
 <!-- MODAL GESTION COMMANDE -->
@@ -351,7 +389,7 @@ body { background-color: var(--bg); color: var(--text); display: flex; justify-c
 <option value="7">7. En livraison</option>
 <option value="8">8. Livré !</option>
 </select>
-<a href="#" id="wa-link" class="btn-wa" target="_blank">💬 Contacter le client</a>
+<a href="#" id="wa-link" class="btn-wa" target="_blank"><i class="fa-brands fa-whatsapp"></i> Contacter le client</a>
 <button class="close-modal" onclick="saveStatus()">Enregistrer & Fermer</button>
 </div>
 </div>
@@ -360,11 +398,15 @@ body { background-color: var(--bg); color: var(--text); display: flex; justify-c
 // --- SÉCURITÉ ---
 function checkCode() {
 const code = document.getElementById('admin-code').value;
-if (code === '0418') {
+// Si l'utilisateur a changé son code, on le lit depuis le localStorage, sinon c'est 0418 par défaut
+const savedCode = localStorage.getItem('lk_admin_code') || '0418';
+
+if (code === savedCode) {
 document.getElementById('login-screen').style.display = 'none';
 document.getElementById('admin-app').style.display = 'block';
 document.getElementById('bottom-nav').style.display = 'flex';
 loadData();
+loadProfile();
 } else {
 document.getElementById('error-msg').style.display = 'block';
 document.getElementById('admin-code').value = '';
@@ -382,8 +424,7 @@ switchView('view-home', document.querySelectorAll('.nav-item')[0]);
 // --- NAVIGATION ---
 function switchView(viewId, btn) {
 document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-const targetView = document.getElementById(viewId);
-if(targetView) targetView.classList.add('active');
+document.getElementById(viewId).classList.add('active');
 
 if(btn) {
 document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
@@ -391,7 +432,35 @@ btn.classList.add('active');
 }
 }
 
-// --- CHARGEMENT DES DONNÉES ---
+// --- FILTRES STATS (Cliquables) ---
+function setFilter(btn) {
+document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+btn.classList.add('active');
+// Ici on pourrait filtrer les vraies données selon le choix
+}
+
+// --- PROFIL (Sauvegarde & Chargement) ---
+function loadProfile() {
+document.getElementById('admin-email').value = localStorage.getItem('lk_admin_email') || 'contact@lowkey.com';
+document.getElementById('admin-phone').value = localStorage.getItem('lk_admin_phone') || '';
+document.getElementById('admin-password').value = localStorage.getItem('lk_admin_code') || '0418';
+}
+
+function saveProfile() {
+const email = document.getElementById('admin-email').value;
+const phone = document.getElementById('admin-phone').value;
+const pass = document.getElementById('admin-password').value;
+
+if(pass.length !== 4) { alert("Le code secret doit contenir exactement 4 chiffres."); return; }
+
+localStorage.setItem('lk_admin_email', email);
+localStorage.setItem('lk_admin_phone', phone);
+localStorage.setItem('lk_admin_code', pass);
+
+alert("Profil mis à jour avec succès !");
+}
+
+// --- CHARGEMENT DES DONNÉES COMMANDES ---
 let orders = [];
 let currentOrderIndex = -1;
 
@@ -404,102 +473,72 @@ total += Number(o.total) || 0;
 solde += Number(o.solde) || 0;
 });
 
-// Remplissage Accueil (Vue d'ensemble)
-document.getElementById('stat-total-orders').innerText = orders.length;
+document.getElementById('stat-total-orders').innerText = orders.length > 0 ? orders.length : 0;
 document.getElementById('stat-total-revenue').innerText = total.toFixed(0) + " TND";
 document.getElementById('stat-total-pending').innerText = solde.toFixed(0) + " TND";
+document.getElementById('card-balance-display').innerText = total.toFixed(0) + " TND";
 
-// Remplissage Stats
 document.getElementById('stat-box-sales').innerText = total.toFixed(0) + " TND";
-document.getElementById('stat-box-profit').innerText = (total * 0.3).toFixed(0) + " TND"; // Faux calcul pour faire joli
+document.getElementById('stat-box-profit').innerText = (total * 0.3).toFixed(0) + " TND";
 
 renderRecentActivity();
-renderPendingPayments();
+renderAllOrders();
 }
 
-// --- AFFICHAGE ACTIVITÉ RÉCENTE ---
 function renderRecentActivity() {
 const list = document.getElementById('recent-activity-list');
 list.innerHTML = '';
 
 if (orders.length === 0) {
-list.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-size:13px; padding: 20px 0;">Aucune commande pour le moment.</p>';
+list.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-size:13px; padding:20px;">Aucune commande récente.</p>';
 return;
 }
 
-// On affiche les 4 dernières commandes max
-orders.slice(-4).reverse().forEach((o) => {
+orders.slice(-3).reverse().forEach((o) => {
 const realIndex = orders.findIndex(order => order.id === o.id);
+let badgeClass = 'badge-green'; let badgeText = 'Payé'; let icon = 'fa-bag-shopping';
 
-// Gestion des badges selon l'étape
-let badgeClass = 'badge-green';
-let badgeText = 'Payé';
-let icon = '🛍️';
-
-if (o.statut >= 5 && o.statut <= 7) { badgeClass = 'badge-purple'; badgeText = 'Expédiée'; icon = '✈️'; }
-if (o.statut === 8) { badgeClass = 'badge-green'; badgeText = 'Livrée'; icon = '📦'; }
+if (o.statut >= 5 && o.statut <= 7) { badgeClass = 'badge-purple'; badgeText = 'Expédiée'; icon = 'fa-plane'; }
+if (o.statut === 8) { badgeClass = 'badge-green'; badgeText = 'Livrée'; icon = 'fa-box'; }
 
 list.innerHTML += `
 <div class="activity-item" onclick="openOrderModal(${realIndex})">
 <div class="activity-left">
-<div class="activity-img">${icon}</div>
-<div class="activity-info">
-<h4>Commande #${o.id.slice(-4)}</h4>
-<p>Client: ${o.nom}</p>
+<div class="activity-img"><i class="fa-solid ${icon}"></i></div>
+<div class="activity-info"><h4>Commande #${o.id.slice(-4)}</h4><p>Client : ${o.nom}</p></div>
 </div>
-</div>
-<div class="activity-right">
-<span class="badge ${badgeClass}">${badgeText}</span>
-<span class="activity-date">${o.date}</span>
-</div>
+<div class="activity-right"><span class="badge ${badgeClass}">${badgeText}</span><span class="activity-date">${o.date}</span></div>
 </div>
 `;
 });
 }
 
-// --- AFFICHAGE DES SOLDES À PERCEVOIR ---
-function renderPendingPayments() {
-const list = document.getElementById('pending-payments-list');
+function renderAllOrders() {
+const list = document.getElementById('all-orders-list');
 list.innerHTML = '';
+if (orders.length === 0) { list.innerHTML = '<p style="text-align:center; color:var(--text-muted); margin-top:20px;">Aucune commande.</p>'; return; }
 
-const pending = orders.filter(o => o.statut < 8);
-
-if (pending.length === 0) {
-list.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-size:13px; padding: 40px 0;">Aucun solde en attente.</p>';
-return;
-}
-
-pending.forEach((o) => {
+orders.slice().reverse().forEach((o) => {
+const realIndex = orders.findIndex(order => order.id === o.id);
 list.innerHTML += `
-<div class="order-item" style="background: var(--card); border-radius: 16px; padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
-<div class="order-left" style="display:flex; gap:12px; align-items:center;">
-<div class="order-icon" style="background:rgba(192,132,252,0.1); color:var(--neon-purple); width:40px; height:40px; border-radius:50%; display:flex; justify-content:center; align-items:center;">💵</div>
-<div class="order-info">
-<h4 style="font-size:14px; margin-bottom:4px;">${o.nom}</h4>
-<p style="font-size:11px; color:var(--text-muted);">${o.phone}</p>
+<div class="activity-item" style="margin-bottom:12px;" onclick="openOrderModal(${realIndex})">
+<div class="activity-left">
+<div class="activity-img"><i class="fa-solid fa-bag-shopping"></i></div>
+<div class="activity-info"><h4>#${o.id}</h4><p>${o.nom} | ${o.date}</p></div>
 </div>
-</div>
-<div class="order-right" style="text-align:right;">
-<div class="order-price" style="color:var(--neon-purple); font-weight:800; font-size:15px;">${Number(o.solde).toFixed(2)} TND</div>
-</div>
+<div class="activity-right"><span style="font-weight:bold; color:var(--neon-green);">${Number(o.total).toFixed(0)} TND</span></div>
 </div>
 `;
 });
 }
 
-// --- MODAL GESTION COMMANDE ---
 function openOrderModal(index) {
 currentOrderIndex = index;
 const o = orders[index];
 
 let itemsHtml = '<div class="items-list">';
 o.items.forEach(item => {
-itemsHtml += `
-<div class="item-row">
-<span>${item.qty}x ${item.title} (T: ${item.size}, C: ${item.color})</span>
-<strong>${Number(item.totalTND).toFixed(2)} TND</strong>
-</div>
-`;
+itemsHtml += `<div class="item-row"><span>${item.qty}x ${item.title} (T: ${item.size}, C: ${item.color})</span><strong>${Number(item.totalTND).toFixed(2)} TND</strong></div>`;
 });
 itemsHtml += '</div>';
 
@@ -509,8 +548,6 @@ document.getElementById('modal-order-details').innerHTML = `
 <div class="modal-info"><span>Adresse</span> <strong>${o.adresse}</strong></div>
 ${itemsHtml}
 <div class="modal-info" style="border-top:1px solid #333; padding-top:12px;"><span>Total</span> <strong>${Number(o.total).toFixed(2)} TND</strong></div>
-<div class="modal-info"><span>Acompte (70%)</span> <strong style="color:var(--neon-green)">${Number(o.acompte).toFixed(2)} TND</strong></div>
-<div class="modal-info"><span>Reste (30%)</span> <strong style="color:var(--neon-purple)">${Number(o.solde).toFixed(2)} TND</strong></div>
 `;
 
 const waMessage = encodeURIComponent(`Bonjour ${o.nom}, c'est LowkeyExpress concernant votre commande ${o.id}.`);
