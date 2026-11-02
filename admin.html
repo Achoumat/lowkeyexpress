@@ -45,7 +45,7 @@ body { background-color: var(--bg); color: var(--text); display: flex; justify-c
 .card-label { font-size: 13px; font-weight: 700; opacity: 0.8; z-index: 1; }
 .card-value { font-size: 26px; font-weight: 800; z-index: 1; }
 
-/* FAUX GRAPHIQUE (Style maquette) */
+/* GRAPHIQUE */
 .chart-container { padding: 0 20px; margin-bottom: 30px; }
 .chart { width: 100%; height: 120px; position: relative; border-bottom: 1px solid #333; margin-bottom: 10px; display: flex; align-items: flex-end; }
 .chart svg { width: 100%; height: 100%; }
@@ -68,7 +68,7 @@ body { background-color: var(--bg); color: var(--text); display: flex; justify-c
 
 .empty-msg { text-align: center; color: var(--text-muted); font-size: 13px; padding: 40px 0; }
 
-/* MODAL GESTION COMMANDE */
+/* MODALS */
 .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: flex-end; z-index: 100; backdrop-filter: blur(5px); }
 .modal.active { display: flex; }
 .modal-content { background: var(--card); width: 100%; max-width: 414px; border-radius: 30px 30px 0 0; padding: 30px 24px; animation: slideUp 0.3s; max-height: 90vh; overflow-y: auto; }
@@ -90,7 +90,7 @@ body { background-color: var(--bg); color: var(--text); display: flex; justify-c
 .nav-item { background: none; border: none; color: #555; font-size: 24px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: 0.3s; }
 .nav-item.active { color: var(--neon-green); }
 .nav-item span { font-size: 10px; font-weight: 600; }
-.nav-center { width: 50px; height: 50px; border-radius: 50%; background: var(--neon-green); display: flex; justify-content: center; align-items: center; color: #000; font-size: 24px; margin-top: -20px; box-shadow: 0 5px 15px rgba(204,255,0,0.3); }
+.nav-center { width: 50px; height: 50px; border-radius: 50%; background: var(--neon-green); display: flex; justify-content: center; align-items: center; color: #000; font-size: 24px; margin-top: -20px; box-shadow: 0 5px 15px rgba(204,255,0,0.3); cursor: pointer; }
 </style>
 </head>
 <body>
@@ -133,7 +133,6 @@ Bonjour,
 
 <div class="chart-container">
 <div class="chart">
-<!-- Faux graphique stylisé pour le design -->
 <svg viewBox="0 0 100 30" preserveAspectRatio="none">
 <path d="M0,25 C20,25 30,10 50,15 C70,20 80,5 100,10 L100,30 L0,30 Z" fill="rgba(204,255,0,0.1)" />
 <path d="M0,25 C20,25 30,10 50,15 C70,20 80,5 100,10" fill="none" stroke="var(--neon-green)" stroke-width="1.5" />
@@ -152,13 +151,13 @@ Bonjour,
 </div>
 </div>
 
-<!-- NAVIGATION BAS -->
+<!-- NAVIGATION BAS (Corrigée) -->
 <nav class="bottom-nav">
-<button class="nav-item active">🏠<span>Accueil</span></button>
-<button class="nav-item">📊<span>Stats</span></button>
+<button class="nav-item active" onclick="window.scrollTo(0,0)">🏠<span>Accueil</span></button>
+<button class="nav-item" onclick="showComingSoon('Statistiques')">📊<span>Stats</span></button>
 <div class="nav-center" onclick="logout()">🚪</div>
-<button class="nav-item">💳<span>Cartes</span></button>
-<button class="nav-item">👤<span>Profil</span></button>
+<button class="nav-item" onclick="showComingSoon('Mes Cartes')">💳<span>Cartes</span></button>
+<button class="nav-item" onclick="showComingSoon('Profil')">👤<span>Profil</span></button>
 </nav>
 
 <!-- MODAL GESTION COMMANDE -->
@@ -184,8 +183,17 @@ Bonjour,
 </div>
 </div>
 
+<!-- MODAL INFO (Bientôt disponible) -->
+<div class="modal" id="info-modal">
+<div class="modal-content" style="text-align:center; padding-bottom: 30px;">
+<div style="font-size:50px; margin-bottom:15px;">🚧</div>
+<div class="modal-title" id="info-title">Bientôt disponible</div>
+<p style="color:var(--text-muted); font-size:14px; margin-bottom:20px; line-height: 1.5;">Cette section est en cours de développement par l'équipe LowkeyExpress.</p>
+<button class="close-modal" onclick="document.getElementById('info-modal').classList.remove('active')">Fermer</button>
+</div>
+</div>
+
 <script>
-// --- SÉCURITÉ ---
 function checkCode() {
 const code = document.getElementById('admin-code').value;
 if (code === '0418') {
@@ -204,7 +212,6 @@ document.getElementById('login-screen').style.display = 'flex';
 document.getElementById('admin-code').value = '';
 }
 
-// --- GESTION DES COMMANDES ---
 let orders = [];
 let currentOrderIndex = -1;
 
@@ -230,7 +237,6 @@ list.innerHTML = '<p class="empty-msg">Aucune transaction pour le moment.</p>';
 return;
 }
 
-// Affichage de la plus récente à la plus ancienne
 orders.slice().reverse().forEach((o) => {
 const realIndex = orders.findIndex(order => order.id === o.id);
 list.innerHTML += `
@@ -277,7 +283,6 @@ ${itemsHtml}
 <div class="modal-info"><span>Reste (30%)</span> <strong style="color:var(--neon-purple)">${o.solde.toFixed(2)} TND</strong></div>
 `;
 
-// Lien WhatsApp
 const waMessage = encodeURIComponent(`Bonjour ${o.nom}, c'est LowkeyExpress concernant votre commande ${o.id}.`);
 document.getElementById('wa-link').href = `https://wa.me/${o.phone.replace(/[^0-9]/g, '')}?text=${waMessage}`;
 
@@ -293,6 +298,11 @@ localStorage.setItem('lk_orders', JSON.stringify(orders));
 document.getElementById('order-modal').classList.remove('active');
 loadOrders();
 alert("Statut mis à jour ! Le client verra le changement sur son application.");
+}
+
+function showComingSoon(section) {
+document.getElementById('info-title').innerText = section + " - Bientôt disponible";
+document.getElementById('info-modal').classList.add('active');
 }
 </script>
 </body>
