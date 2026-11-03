@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>LowkeyExpress — Import Tunis → Kinshasa</title>
 
-<!-- LOGO ET PARTAGE -->
 <link rel="icon" type="image/jpeg" href="https://i.ibb.co/Z1FxFm6v/IMG-E4687.jpg">
 <link rel="apple-touch-icon" href="https://i.ibb.co/Z1FxFm6v/IMG-E4687.jpg">
 <meta property="og:title" content="LowkeyExpress — Import Tunis → Kinshasa">
@@ -14,7 +13,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-/* VARIABLES MODE CLAIR / SOMBRE */
 :root {
 --bg-app: #f7f6f2; --bg-card: #ffffff; --bg-beige: #f0ece3;
 --text-main: #111111; --text-muted: #888888;
@@ -31,23 +29,19 @@
 body { background-color: var(--bg-app); display: flex; justify-content: center; min-height: 100vh; color: var(--text-main); }
 .app-container { width: 100%; max-width: 414px; background: var(--bg-app); min-height: 100vh; position: relative; overflow-x: hidden; padding-bottom: 100px; }
 
-/* HEADER */
 header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: var(--bg-app); position: sticky; top: 0; z-index: 10; }
 .header-logo { height: 40px; width: auto; object-fit: contain; }
 .cart-icon-btn { position: relative; background: none; border: none; font-size: 22px; cursor: pointer; color: var(--text-main); }
 .cart-badge { position: absolute; top: -4px; right: -6px; background: var(--accent); color: var(--gold); font-size: 10px; font-weight: 700; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 
-/* VUES */
 .view-section { display: none; animation: fadeIn 0.2s ease; }
 .view-section.active { display: block; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-/* SHOP */
 .hero-card { background: var(--accent); border-radius: 24px; margin: 0 20px; padding: 24px; color: var(--gold); height: 160px; display: flex; flex-direction: column; justify-content: center; }
 .hero-title { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
 .hero-sub { font-size: 13px; color: #ccc; }
 
-/* FILTRES & RECHERCHE */
 .filters { display: flex; gap: 10px; padding: 20px 20px 10px; overflow-x: auto; scrollbar-width: none; }
 .filters::-webkit-scrollbar { display: none; }
 .filter-btn { background: var(--bg-card); color: var(--text-muted); border: none; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; white-space: nowrap; cursor: pointer; }
@@ -58,7 +52,6 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 .search-box input { flex: 1; border: none; padding: 12px 16px; font-size: 14px; outline: none; background: transparent; color: var(--text-main); }
 .search-box button { background: var(--primary); color: var(--bg-app); border: none; border-radius: 12px; padding: 0 20px; font-weight: 600; cursor: pointer; }
 
-/* GRILLE PRODUITS */
 .section-title { padding: 0 20px; font-size: 18px; font-weight: 800; margin-bottom: 16px; }
 .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 0 20px; }
 .product-card { background: var(--bg-beige); border-radius: 20px; padding: 12px; cursor: pointer; }
@@ -69,7 +62,6 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 .product-price { font-size: 14px; font-weight: 800; }
 .product-price-usd { font-size: 11px; color: var(--text-muted); font-weight: 600; }
 
-/* OVERLAY PRODUIT */
 .product-view { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-app); z-index: 100; transform: translateY(100%); transition: transform 0.3s, visibility 0.3s; display: flex; flex-direction: column; overflow-y: auto; visibility: hidden; pointer-events: none; }
 .product-view.active { transform: translateY(0); visibility: visible; pointer-events: auto; }
 .product-header { display: flex; justify-content: space-between; padding: 20px; }
@@ -95,7 +87,6 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 .price-block span { font-size: 12px; color: var(--text-muted); }
 .add-to-cart-btn { background: var(--primary); color: var(--bg-app); border: none; padding: 18px; border-radius: 30px; font-size: 16px; font-weight: 600; width: calc(100% - 48px); margin: 0 24px 30px; cursor: pointer; }
 
-/* PANIER */
 .cart-header { padding: 10px 20px 20px; display: flex; justify-content: space-between; align-items: center; }
 .cart-title { font-size: 26px; font-weight: 800; }
 .cart-item { background: var(--bg-beige); border-radius: 20px; padding: 16px; margin-bottom: 16px; display: flex; gap: 16px; align-items: center; }
@@ -109,7 +100,6 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 .qty-control-sm { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; }
 .qty-btn-sm { width: 24px; height: 24px; border-radius: 50%; border: none; background: var(--bg-card); cursor: pointer; color: var(--text-main); }
 
-/* FORMULAIRE & TOTAL */
 .promo-box { display: flex; background: var(--bg-beige); border-radius: 16px; padding: 4px; margin: 20px 0; }
 .promo-box input { flex: 1; background: transparent; border: none; padding: 12px; outline: none; text-transform: uppercase; font-size: 14px; color: var(--text-main); }
 .promo-box button { background: transparent; border: none; padding: 0 16px; font-weight: 600; cursor: pointer; color: var(--text-main); }
@@ -127,7 +117,6 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 .checkout-btn { background: var(--primary); color: var(--bg-app); width: 100%; padding: 18px; border-radius: 30px; font-size: 16px; font-weight: 700; border: none; margin-top: 10px; cursor: pointer; }
 .checkout-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-/* SUIVI & PROFIL */
 .timeline { margin-top: 20px; border-left: 2px solid var(--bg-beige); padding-left: 20px; }
 .step { position: relative; margin-bottom: 24px; opacity: 0.5; }
 .step.done { opacity: 1; } .step.active { opacity: 1; }
@@ -140,7 +129,6 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--bg-beige); font-size: 14px; font-weight: 600; }
 .menu-item:last-child { border-bottom: none; }
 
-/* SWITCH MODE SOMBRE */
 .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
 .switch input { opacity: 0; width: 0; height: 0; }
 .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--text-muted); transition: .4s; border-radius: 24px; }
@@ -148,14 +136,12 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 input:checked + .slider { background-color: var(--accent); }
 input:checked + .slider:before { transform: translateX(20px); }
 
-/* NAVIGATION BAS */
 .creator-credit { text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 30px; padding-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; }
 .bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 414px; background: var(--bg-app); display: flex; justify-content: space-around; padding: 12px 0 25px; border-top: 1px solid var(--bg-beige); z-index: 50; }
 .nav-item { background: none; border: none; font-size: 20px; color: var(--text-muted); cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; }
 .nav-item span { font-size: 10px; font-weight: 600; }
 .nav-item.active { color: var(--primary); }
 
-/* POPUPS GÉNÉRIQUES & SUCCÈS */
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(4px); }
 .modal-overlay.active { display: flex; }
 .modal-content { background: var(--bg-app); width: 100%; max-width: 340px; border-radius: 24px; padding: 30px 20px; text-align: center; animation: popIn 0.3s; }
@@ -174,7 +160,6 @@ input:checked + .slider:before { transform: translateX(20px); }
 <button class="cart-icon-btn" onclick="showView('cart')">🛍️<span class="cart-badge" id="cart-count-badge" style="display:none;">0</span></button>
 </header>
 
-<!-- VUE SHOP -->
 <div id="view-shop" class="view-section active">
 <div class="hero-card">
 <div class="hero-title">Import Tunis → Kin</div>
@@ -193,6 +178,7 @@ input:checked + .slider:before { transform: translateX(20px); }
 <input type="text" id="input-ref" placeholder="Réf (Ex: 6145/109/620)...">
 <button onclick="verifyArticle()">🔍</button>
 </div>
+<div id="verify-alert" class="alert" style="display:none; margin-top:10px; padding:10px; border-radius:10px; font-size:12px; font-weight:600; text-align:center;"></div>
 </div>
 
 <div class="section-title">Sélection Populaire</div>
@@ -201,7 +187,6 @@ input:checked + .slider:before { transform: translateX(20px); }
 <div class="creator-credit" onclick="openHowItWorks()">ACHOUMAT KHALFANI</div>
 </div>
 
-<!-- VUE PRODUIT -->
 <div class="product-view" id="product-overlay">
 <div class="product-header"><button class="back-btn" onclick="closeProduct()">←</button></div>
 <img id="overlay-img" class="product-main-img" src="">
@@ -231,7 +216,6 @@ input:checked + .slider:before { transform: translateX(20px); }
 <button class="add-to-cart-btn" onclick="addToCart()">Ajouter au panier</button>
 </div>
 
-<!-- VUE PANIER -->
 <div id="view-cart" class="view-section">
 <div class="cart-header"><div class="cart-title">Mon panier</div></div>
 <div id="cart-items-container" style="padding: 0 20px;"></div>
@@ -271,14 +255,12 @@ input:checked + .slider:before { transform: translateX(20px); }
 </div>
 </div>
 
-<!-- VUE SUIVI -->
 <div id="view-tracking" class="view-section" style="padding: 20px;">
 <h2 style="font-size:24px; font-weight:800; margin-bottom:8px;">Suivi</h2>
 <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;" id="tracking-ref">Aucune commande active</p>
 <div class="timeline" id="client-timeline"></div>
 </div>
 
-<!-- VUE PROFIL -->
 <div id="view-profile" class="view-section" style="padding: 20px; text-align: center;">
 <div class="profile-avatar">LK</div>
 <h2 style="font-size:20px; font-weight:800;">Mon Compte</h2>
@@ -294,7 +276,6 @@ input:checked + .slider:before { transform: translateX(20px); }
 <div class="creator-credit">ACHOUMAT KHALFANI</div>
 </div>
 
-<!-- NAVIGATION -->
 <nav class="bottom-nav">
 <button class="nav-item active" id="nav-shop" onclick="showView('shop')">🏠<span>Boutique</span></button>
 <button class="nav-item" id="nav-cart" onclick="showView('cart')">🛒<span>Panier</span></button>
@@ -303,8 +284,6 @@ input:checked + .slider:before { transform: translateX(20px); }
 </nav>
 </div>
 
-<!-- MODALES -->
-<!-- 1. Popup d'erreur -->
 <div class="modal-overlay" id="error-modal">
 <div class="modal-content">
 <div class="modal-icon">🔍</div>
@@ -314,7 +293,6 @@ input:checked + .slider:before { transform: translateX(20px); }
 </div>
 </div>
 
-<!-- 2. Popup Comment ça marche -->
 <div class="modal-overlay" id="how-modal">
 <div class="modal-content">
 <div class="modal-icon">✨</div>
@@ -329,7 +307,6 @@ input:checked + .slider:before { transform: translateX(20px); }
 </div>
 </div>
 
-<!-- 3. Popup Choix Paiement -->
 <div class="modal-overlay" id="payment-modal">
 <div class="modal-content" style="text-align:left;">
 <div class="modal-title" style="text-align:center;">Mode de paiement</div>
@@ -363,7 +340,6 @@ input:checked + .slider:before { transform: translateX(20px); }
 </div>
 </div>
 
-<!-- 4. Popup Succès -->
 <div class="modal-overlay" id="success-modal">
 <div class="modal-content">
 <div class="modal-icon">✅</div>
@@ -374,7 +350,6 @@ input:checked + .slider:before { transform: translateX(20px); }
 </div>
 
 <script>
-// CATALOGUE
 const catalog = [
 { ref: "6145/109/620", brand: "Zara", title: "Polo rayé", priceTND: 179.00, type: "Femme", img: "https://zupimages.net/up/26/44/o1ic.jpg", sizes: ["XS","S","M","L"], colors: [{name:"Rose",hex:"#f4a4c0"}] },
 { ref: "0110/528/990", brand: "Zara", title: "Golden Decade EDP", priceTND: 119.00, type: "Femme", img: "https://zupimages.net/up/26/44/kbs5.jpeg", sizes: ["80ml", "100ml"], colors: [] },
@@ -408,6 +383,7 @@ grid.innerHTML += `
 }
 });
 }
+
 function filterProducts(category, evt) {
 document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
 if(evt) evt.target.classList.add('active');
@@ -423,11 +399,106 @@ if (viewName === 'cart') renderCart();
 if (viewName === 'tracking') renderTimeline();
 }
 
-function verifyArticle() {
+async function verifyArticle() {
 const ref = document.getElementById('input-ref').value.trim();
-const found = catalog.find(p => p.ref === ref);
-if (found) { openProduct(ref); }
-else { document.getElementById('error-modal').classList.add('active'); }
+if (!ref) return;
+
+const alertBox = document.getElementById('verify-alert');
+alertBox.className = 'alert alert-warn';
+alertBox.style.display = 'block';
+alertBox.style.background = '#fef3c7'; alertBox.style.color = '#92400e';
+alertBox.innerHTML = "🔍 Recherche dans les boutiques officielles...";
+
+try {
+const response = await fetch(`/api/search?ref=${encodeURIComponent(ref)}`);
+if (!response.ok) throw new Error("Introuvable");
+
+const data = await response.json();
+
+if (data && data.name) {
+alertBox.style.display = 'none';
+
+const liveProduct = {
+ref: data.reference || ref,
+brand: data.brand || "Boutique Officielle",
+title: data.name,
+priceTND: data.price ? Number(data.price) : 0,
+type: data.product_type || "Vêtement",
+img: data.main_image || data.image,
+sizes: data.sizes ? data.sizes.map(s => s.size) : ["S", "M", "L"],
+colors: data.colors ? data.colors.map(c => ({ name: c.name, hex: c.hex || "#000000" })) : []
+};
+
+openLiveProduct(liveProduct);
+} else {
+throw new Error("Introuvable");
+}
+} catch (error) {
+alertBox.className = 'alert alert-danger';
+alertBox.style.background = '#fef2f2'; alertBox.style.color = '#991b1b';
+alertBox.innerHTML = `
+<b>Article introuvable.</b><br>
+Vérifiez votre référence ou contactez-nous sur WhatsApp.
+<br><br>
+<button class="btn btn-primary" onclick="document.getElementById('verify-alert').style.display='none'" style="padding: 10px; font-size: 12px;">Fermer</button>
+`;
+}
+}
+
+function openLiveProduct(p) {
+activeProduct = p;
+currentQty = 1;
+
+document.getElementById('overlay-img').src = p.img;
+document.getElementById('overlay-title').innerText = p.title;
+document.getElementById('overlay-brand').innerText = p.brand;
+document.getElementById('overlay-ref').innerText = "Réf: " + p.ref;
+document.getElementById('overlay-qty').innerText = 1;
+
+document.getElementById('overlay-price').innerText = p.priceTND.toFixed(2) + " TND";
+document.getElementById('overlay-price-usd').innerText = "~ $" + (p.priceTND * TAUX_USD).toFixed(2) + " USD";
+
+const colorContainer = document.getElementById('color-container');
+const colorOptions = document.getElementById('overlay-colors');
+colorOptions.innerHTML = '';
+
+if (p.colors && p.colors.length > 0) {
+colorContainer.style.display = 'block';
+selectedColor = p.colors[0];
+p.colors.forEach((c, i) => {
+const circle = document.createElement('div');
+circle.className = 'color-circle' + (i === 0 ? ' selected' : '');
+circle.style.background = c.hex;
+circle.onclick = () => {
+document.querySelectorAll('.color-circle').forEach(el => el.classList.remove('selected'));
+circle.classList.add('selected');
+selectedColor = c;
+if(c.img) document.getElementById('overlay-img').src = c.img;
+};
+colorOptions.appendChild(circle);
+});
+} else {
+colorContainer.style.display = 'none';
+selectedColor = {name: 'Standard'};
+}
+
+const sizeContainer = document.getElementById('overlay-sizes');
+sizeContainer.innerHTML = '';
+selectedSize = p.sizes[0] || 'M';
+p.sizes.forEach((s, i) => {
+const btn = document.createElement('button');
+btn.className = 'size-btn' + (i === 0 ? ' selected' : '');
+btn.innerText = s;
+btn.onclick = (e) => {
+e.stopPropagation();
+document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+btn.classList.add('selected');
+selectedSize = s;
+};
+sizeContainer.appendChild(btn);
+});
+
+document.getElementById('product-overlay').classList.add('active');
 }
 
 function openProduct(ref) {
@@ -447,7 +518,7 @@ const colorContainer = document.getElementById('color-container');
 const colorOptions = document.getElementById('overlay-colors');
 colorOptions.innerHTML = '';
 
-if (activeProduct.colors.length > 0) {
+if (activeProduct.colors && activeProduct.colors.length > 0) {
 colorContainer.style.display = 'block';
 selectedColor = activeProduct.colors[0];
 activeProduct.colors.forEach((c, i) => {
