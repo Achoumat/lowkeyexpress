@@ -16,6 +16,9 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+/* =========================================
+1. VARIABLES ET BASES
+========================================= */
 :root {
 --bg: #f4f3f1; --surface: #ffffff; --sunken: #ebe8e4; --desk: #e6e1da;
 --ink: #17110f; --muted: #675f5a; --line: #e0dcd6;
@@ -27,11 +30,12 @@
 --font-ui: 'Hanken Grotesk', system-ui, -apple-system, sans-serif;
 color-scheme: light;
 }
+
 [data-theme="dark"] {
-/* Fond ultra transparent pour voir la 3D */
---bg: rgba(18, 11, 12, 0.35);
---surface: rgba(28, 19, 20, 0.7); --sunken: rgba(40, 27, 28, 0.7); --desk: #0a0506;
---ink: #f5efe9; --muted: #b2a59e; --line: rgba(53, 41, 42, 0.5);
+/* Opacité augmentée (0.55) pour que le fond 3D soit visible mais que le texte reste lisible */
+--bg: rgba(18, 11, 12, 0.55);
+--surface: rgba(28, 19, 20, 0.75); --sunken: rgba(40, 27, 28, 0.75); --desk: #0a0506;
+--ink: #f5efe9; --muted: #c4b8b2; --line: rgba(53, 41, 42, 0.5);
 --cta: #d4af37; --cta-ink: #2b0006;
 --focus: #d4af37; --danger: #ff8a80; --ok: #81c784;
 color-scheme: dark;
@@ -50,31 +54,50 @@ ol, ul { list-style: none; }
 .ic { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex: none; }
 .ic-sm { width: 18px; height: 18px; }
 
-/* ---------- ARRIÈRE-PLAN 3D : GLOBE DORÉ, SOCLE ET ORBES ---------- */
+/* =========================================
+2. ARRIÈRE-PLAN 3D (Globe, Orbes, Socle)
+========================================= */
 .bg-3d-container {
 position: fixed; inset: 0; z-index: 0; display: flex; flex-direction: column; justify-content: center; align-items: center;
 background: radial-gradient(circle at 50% 50%, #1a0b0e 0%, #050203 100%);
 perspective: 1200px; overflow: hidden;
 }
 
-/* Le Socle Lumineux */
-.base-glow {
-position: absolute; bottom: 15%; width: 80vw; max-width: 400px; height: 40px;
-background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.8) 0%, transparent 70%);
-border-radius: 50%; filter: blur(10px); animation: pulse-base 4s infinite alternate;
+.stars {
+position: absolute; inset: 0;
+background-image:
+radial-gradient(1px 1px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+radial-gradient(1px 1px at 40px 70px, #ffffff, rgba(0,0,0,0)),
+radial-gradient(1.5px 1.5px at 90px 40px, #d4af37, rgba(0,0,0,0)),
+radial-gradient(1px 1px at 160px 120px, #ffffff, rgba(0,0,0,0));
+background-repeat: repeat; background-size: 200px 200px;
+opacity: 0.3; animation: twinkle 5s infinite alternate;
 }
-@keyframes pulse-base {
-0% { transform: scale(0.9); opacity: 0.5; }
-100% { transform: scale(1.1); opacity: 0.9; }
-}
+@keyframes twinkle { 0% { opacity: 0.1; } 100% { opacity: 0.5; } }
 
-/* Le Globe / Carte du monde */
+.base-ring {
+position: absolute; bottom: 18%; width: 80vw; max-width: 400px; height: 80px;
+border: 2px solid rgba(212, 175, 55, 0.3); border-radius: 50%;
+transform: rotateX(75deg);
+box-shadow: 0 0 20px rgba(212, 175, 55, 0.2), inset 0 0 20px rgba(212, 175, 55, 0.2);
+animation: pulse-ring 4s infinite alternate;
+}
+.base-glow {
+position: absolute; bottom: 15%; width: 60vw; max-width: 300px; height: 40px;
+background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.8) 0%, transparent 70%);
+border-radius: 50%; filter: blur(15px); animation: pulse-base 4s infinite alternate;
+}
+@keyframes pulse-ring { 0% { transform: rotateX(75deg) scale(0.9); opacity: 0.5; } 100% { transform: rotateX(75deg) scale(1.1); opacity: 1; } }
+@keyframes pulse-base { 0% { transform: scale(0.8); opacity: 0.4; } 100% { transform: scale(1.2); opacity: 0.9; } }
+
+.globe-scene { position: relative; width: 90vw; max-width: 500px; height: 250px; transform-style: preserve-3d; }
+
 .globe-wrapper {
-position: relative; width: 90vw; max-width: 450px; height: 250px;
-transform-style: preserve-3d; animation: spin-globe 30s linear infinite;
+width: 100%; height: 100%;
+transform-style: preserve-3d;
+animation: spin-globe 25s linear infinite;
 display: grid; place-items: center;
-/* Halo doré autour du globe */
-filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.4));
+filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.6));
 }
 @keyframes spin-globe {
 0% { transform: rotateX(20deg) rotateY(0deg); }
@@ -83,37 +106,35 @@ filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.4));
 
 .world-map {
 width: 100%; height: 100%;
-fill: none; stroke: #d4af37; stroke-width: 1.5;
+fill: rgba(212, 175, 55, 0.15);
+stroke: #d4af37; stroke-width: 1.5;
 stroke-linecap: round; stroke-linejoin: round;
+filter: drop-shadow(0 0 3px rgba(212, 175, 55, 0.8));
 }
 
-/* Trajectoire Tunis -> Kinshasa */
-.flight-arc {
-stroke: #fff; stroke-width: 2;
-stroke-dasharray: 6; animation: dash-arc 3s linear infinite;
-}
-@keyframes dash-arc { to { stroke-dashoffset: -12; } }
-
-/* Les Sphères Flottantes (Orbes) */
 .orb {
 position: absolute; border-radius: 50%;
-background: radial-gradient(circle at 30% 30%, #fff 0%, #d4af37 40%, #2b0006 100%);
-box-shadow: inset 0 0 10px rgba(255,255,255,0.6), 0 0 15px rgba(212,175,55,0.5);
+background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9) 0%, rgba(212,175,55,0.6) 30%, rgba(43,0,6,0.9) 100%);
+box-shadow: inset -5px -5px 15px rgba(0,0,0,0.8), inset 5px 5px 15px rgba(255,255,255,0.4), 0 0 20px rgba(212,175,55,0.4);
 animation: float-orb 6s ease-in-out infinite alternate;
+transform-style: preserve-3d;
 }
-
-.o-1 { width: 40px; height: 40px; top: 15%; left: 15%; animation-duration: 7s; }
-.o-2 { width: 25px; height: 25px; top: 25%; right: 20%; animation-duration: 5s; animation-delay: 1s; }
-.o-3 { width: 60px; height: 60px; bottom: 30%; right: 10%; animation-duration: 8s; animation-delay: 2s; opacity: 0.8; }
-.o-4 { width: 15px; height: 15px; bottom: 20%; left: 25%; animation-duration: 4s; animation-delay: 0.5s; }
-.o-5 { width: 30px; height: 30px; top: 50%; left: 5%; animation-duration: 6s; animation-delay: 1.5s; opacity: 0.6; }
+.o-1 { width: 50px; height: 50px; top: 10%; left: 10%; animation-duration: 7s; }
+.o-2 { width: 30px; height: 30px; top: 20%; right: 15%; animation-duration: 5s; animation-delay: 1s; }
+.o-3 { width: 80px; height: 80px; bottom: 25%; right: 5%; animation-duration: 9s; animation-delay: 2s; }
+.o-4 { width: 20px; height: 20px; bottom: 15%; left: 20%; animation-duration: 4s; animation-delay: 0.5s; }
+.o-5 { width: 40px; height: 40px; top: 40%; left: 5%; animation-duration: 6s; animation-delay: 1.5s; }
+.o-6 { width: 25px; height: 25px; top: 5%; left: 50%; animation-duration: 8s; animation-delay: 3s; }
+.o-7 { width: 60px; height: 60px; bottom: 35%; left: 15%; animation-duration: 7s; animation-delay: 0.8s; }
 
 @keyframes float-orb {
-0% { transform: translateY(0) scale(1); }
-100% { transform: translateY(-30px) scale(1.1); }
+0% { transform: translateY(0) translateZ(0) scale(1); }
+100% { transform: translateY(-40px) translateZ(50px) scale(1.05); }
 }
 
-/* ---------- SPLASH SCREEN ---------- */
+/* =========================================
+3. SPLASH SCREEN
+========================================= */
 #splash-screen {
 position: fixed; inset: 0; z-index: 9999;
 background: #0a0506;
@@ -144,19 +165,21 @@ animation: fadeInName 1s ease 1.5s forwards;
 }
 @keyframes fadeInName { to { opacity: 1; } }
 
-/* ---------- COQUE DE L'APPLICATION ---------- */
+/* =========================================
+4. COQUE DE L'APPLICATION
+========================================= */
 .shell {
 position: relative; display: flex; flex-direction: column; height: 100vh; height: 100dvh;
 max-width: 430px; margin: 0 auto;
 background: var(--bg);
-backdrop-filter: blur(6px); /* Flou très léger pour la lisibilité */
--webkit-backdrop-filter: blur(6px);
+backdrop-filter: blur(12px); /* Flou augmenté pour bien séparer l'app du fond 3D */
+-webkit-backdrop-filter: blur(12px);
 overflow: hidden; overflow: clip; opacity: 0; transition: opacity 0.5s; z-index: 10;
 }
 .shell.ready { opacity: 1; }
 @media (min-width: 600px) {
 body { padding: 24px 0; }
-.shell { height: min(900px, calc(100dvh - 48px)); border-radius: 36px; border: 1px solid var(--line); box-shadow: 0 30px 80px -24px rgba(43, 0, 6, .4); }
+.shell { height: min(900px, calc(100dvh - 48px)); border-radius: 36px; border: 1px solid var(--line); box-shadow: 0 30px 80px -24px rgba(0, 0, 0, .8); }
 }
 .topbar { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; min-height: 60px; background: transparent; z-index: 10; }
 .brand-text-header { font-family: var(--font-display); font-weight: 800; font-size: 18px; color: var(--ink); letter-spacing: 1px; text-transform: uppercase; text-shadow: 0 2px 15px rgba(0,0,0,0.9); }
@@ -176,7 +199,9 @@ body { padding: 24px 0; }
 .tab[aria-current="page"]::before { content: ''; position: absolute; top: 0; width: 22px; height: 3px; border-radius: 0 0 3px 3px; background: var(--gold); }
 .tab .badge { top: 2px; right: calc(50% - 22px); }
 
-/* ---------- MENU PLEIN ÉCRAN ---------- */
+/* =========================================
+5. MENU PLEIN ÉCRAN
+========================================= */
 .full-menu { position: absolute; inset: 0; z-index: 100; background: rgba(18, 11, 12, 0.95); backdrop-filter: blur(20px); transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); display: flex; flex-direction: column; }
 .full-menu.open { transform: translateY(0); }
 .menu-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid var(--line); }
@@ -189,13 +214,14 @@ padding: 20px 0; border-bottom: 1px solid var(--line); transition: color 0.2s;
 .menu-links button:active { color: var(--gold); }
 .menu-footer { padding: 30px 20px; display: flex; justify-content: center; font-size: 11px; text-transform: uppercase; color: var(--muted); letter-spacing: 2px; border-top: 1px solid var(--line); }
 
-/* ---------- Titres et textes ---------- */
+/* =========================================
+6. TYPOGRAPHIE & CARTES
+========================================= */
 .page-title { font-family: var(--font-serif); font-weight: 700; font-size: 32px; letter-spacing: -.02em; padding: 8px 20px 16px; text-shadow: 0 2px 15px rgba(0,0,0,0.9); }
 .section-head { display: flex; justify-content: space-between; align-items: baseline; padding: 0 20px; margin-bottom: 14px; }
 .section-head h2 { font-family: var(--font-serif); font-size: 24px; font-weight: 600; letter-spacing: -.01em; text-shadow: 0 2px 15px rgba(0,0,0,0.9); }
 .muted { color: var(--muted); }
 
-/* ---------- Hero : carte d'embarquement ---------- */
 .pass { margin: 4px 20px 0; background: var(--brand); color: #f3e9d2; border-radius: 22px; position: relative; overflow: hidden; border: 1px solid rgba(212, 175, 55, .28); box-shadow: 0 10px 30px rgba(0,0,0,0.7); }
 .pass-top { padding: 22px 22px 20px; }
 .pass-route { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 14px; }
@@ -215,7 +241,6 @@ padding: 20px 0; border-bottom: 1px solid var(--line); transition: color 0.2s;
 .pass-facts dt { font-size: 12px; opacity: .7; }
 .pass-facts dd { margin-top: 2px; font-size: 13.5px; font-weight: 600; color: #fff; line-height: 1.3; }
 
-/* ---------- Recherche ---------- */
 .finder { margin: 16px 20px 0; padding: 18px; background: var(--surface); border-radius: 18px; border: 1px solid var(--line); backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 .finder h2 { font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: -.01em; }
 .finder p { margin-top: 2px; font-size: 13.5px; color: var(--muted); }
@@ -225,7 +250,6 @@ padding: 20px 0; border-bottom: 1px solid var(--line); transition: color 0.2s;
 .status { margin-top: 12px; padding: 10px 12px; border-radius: 10px; font-size: 13.5px; font-weight: 500; background: var(--sunken); }
 .status.err { color: var(--danger); background: color-mix(in srgb, var(--danger) 10%, transparent); }
 
-/* ---------- Boutons ---------- */
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 22px; border-radius: 999px; border: 0; background: var(--cta); color: var(--cta-ink); font-weight: 700; font-size: 15.5px; text-decoration: none; }
 .btn:active { transform: scale(.98); }
 .btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
@@ -233,7 +257,6 @@ padding: 20px 0; border-bottom: 1px solid var(--line); transition: color 0.2s;
 .btn-quiet { background: transparent; color: var(--ink); border: 1.5px solid var(--line); }
 .btn-text { background: none; border: 0; color: var(--muted); font-weight: 600; min-height: 44px; width: 100%; }
 
-/* ---------- Filtres et catalogue ---------- */
 .chips { display: flex; gap: 8px; padding: 0 20px; margin-bottom: 18px; overflow-x: auto; scrollbar-width: none; }
 .chips::-webkit-scrollbar { display: none; }
 .chip { flex: none; min-height: 40px; padding: 0 18px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--surface); font-weight: 600; font-size: 14px; color: var(--muted); backdrop-filter: blur(5px); }
@@ -257,7 +280,6 @@ padding: 20px 0; border-bottom: 1px solid var(--line); transition: color 0.2s;
 .empty h2 { font-family: var(--font-serif); font-size: 22px; font-weight: 700; color: var(--ink); text-shadow: 0 2px 15px rgba(0,0,0,0.9); }
 .empty p { margin: 6px 0 20px; color: var(--muted); }
 
-/* ---------- Fiche produit ---------- */
 .sheet { position: absolute; inset: 0; z-index: 30; display: flex; flex-direction: column; background: var(--bg); backdrop-filter: blur(25px); transform: translateY(100%); visibility: hidden; transition: transform .32s cubic-bezier(.2, .8, .2, 1), visibility 0s .32s; }
 .sheet.open { transform: none; visibility: visible; transition: transform .32s cubic-bezier(.2, .8, .2, 1); }
 .sheet-back { position: absolute; top: 12px; left: 14px; z-index: 2; background: var(--surface); box-shadow: 0 2px 10px rgba(0, 0, 0, .18); backdrop-filter: blur(10px); }
@@ -284,7 +306,6 @@ padding: 20px 0; border-bottom: 1px solid var(--line); transition: color 0.2s;
 .notice { margin-top: 20px; padding: 12px 14px; border-radius: 12px; background: var(--sunken); font-size: 13.5px; }
 .sheet-foot { padding: 12px 20px calc(12px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: var(--bg); }
 
-/* ---------- Panier ---------- */
 .cart-item { display: grid; grid-template-columns: 72px 1fr auto; gap: 14px; margin: 0 20px 12px; padding: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; backdrop-filter: blur(10px); box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
 .cart-item img { width: 72px; height: 90px; object-fit: cover; border-radius: 10px; background: var(--sunken); }
 .ci-name { font-weight: 600; line-height: 1.25; color: var(--ink); }
@@ -318,7 +339,6 @@ padding: 20px 0; border-bottom: 1px solid var(--line); transition: color 0.2s;
 .check input { flex: none; width: 22px; height: 22px; margin: 0; accent-color: var(--brand); }
 [data-theme="dark"] .check input { accent-color: var(--gold); }
 
-/* ---------- Suivi ---------- */
 .order-card { margin: 0 20px 20px; padding: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; backdrop-filter: blur(10px); }
 .order-card strong { font-family: var(--font-display); font-size: 18px; color: var(--ink); }
 .order-card p { margin-top: 4px; font-size: 13.5px; color: var(--muted); }
@@ -336,7 +356,6 @@ padding: 20px 0; border-bottom: 1px solid var(--line); transition: color 0.2s;
 .step.active .step-title { font-weight: 700; }
 .step.active .step-dot { border-color: var(--gold); box-shadow: 0 0 0 4px color-mix(in srgb, var(--gold) 30%, transparent); background: var(--gold); }
 
-/* ---------- Profil ---------- */
 .avatar { display: grid; place-items: center; width: 84px; height: 84px; margin: 8px auto 12px; border-radius: 50%; background: var(--brand); color: var(--gold); font-family: var(--font-display); font-weight: 700; font-size: 30px; border: 2px solid rgba(212,175,55,0.5); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
 .member-card { margin: 20px; padding: 24px; background: linear-gradient(135deg, rgba(28,19,20,0.9), rgba(10,5,6,0.9)); border-radius: 20px; border: 1px solid rgba(212,175,55,0.3); position: relative; overflow: hidden; color: #fff; box-shadow: 0 15px 35px rgba(0,0,0,0.6); backdrop-filter: blur(10px); }
 .member-card::after { content: 'LK'; position: absolute; right: -20px; bottom: -30px; font-family: var(--font-display); font-size: 140px; font-weight: 900; color: rgba(255,255,255,0.03); pointer-events: none; }
@@ -360,7 +379,6 @@ padding: 20px 0; border-bottom: 1px solid var(--line); transition: color 0.2s;
 .switch input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: 2px; }
 .credit { margin-top: 28px; text-align: center; font-size: 12.5px; color: var(--muted); }
 
-/* ---------- Modales ---------- */
 .modal { position: absolute; inset: 0; z-index: 50; display: flex; align-items: flex-end; justify-content: center; padding: 0; background: rgba(10, 4, 5, .7); backdrop-filter: blur(5px); }
 .modal-card { width: 100%; max-height: 92%; overflow-y: auto; padding: 26px 22px calc(22px + env(safe-area-inset-bottom)); border-radius: 26px 26px 0 0; background: var(--bg); backdrop-filter: blur(25px); border-top: 1px solid var(--line); animation: rise .28s cubic-bezier(.2, .8, .2, 1); }
 @keyframes rise { from { transform: translateY(30px); opacity: 0; } to { transform: none; opacity: 1; } }
@@ -376,39 +394,47 @@ padding: 20px 0; border-bottom: 1px solid var(--line); transition: color 0.2s;
 .toast { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; border-radius: 14px; background: var(--ink); color: var(--bg); font-weight: 600; font-size: 14px; box-shadow: 0 8px 24px rgba(0, 0, 0, .25); pointer-events: auto; animation: rise .25s ease-out; }
 .toast.error { background: var(--danger); color: #fff; }
 .toast button { border: 0; background: none; color: inherit; font-weight: 700; text-decoration: underline; min-height: 32px; }
+
+@media (max-width: 600px) {
+.globe-scene { height: 200px; }
+.o-3 { width: 60px; height: 60px; }
+}
 </style>
 </head>
 <body data-theme="dark">
 
-<!-- ARRIÈRE-PLAN 3D : GLOBE ET ORBES -->
+<!-- =========================================
+ARRIÈRE-PLAN 3D : GLOBE ET ORBES
+========================================= -->
 <div class="bg-3d-container">
-<!-- Le Socle Lumineux -->
+<div class="stars"></div>
+<div class="base-ring"></div>
 <div class="base-glow"></div>
 
-<!-- Les Sphères Flottantes -->
+<div class="globe-scene">
+<div class="globe-wrapper">
+<svg class="world-map" viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
+<path d="M 150 100 Q 200 50 280 80 T 350 150 Q 320 200 300 250 T 250 350 Q 200 400 220 450 L 250 460 Q 280 400 320 350 T 380 250 Q 400 200 380 150 T 300 100 Z" />
+<path d="M 380 250 Q 420 300 400 380 T 350 450 Q 380 400 420 350 T 450 250 Z" />
+<path d="M 450 100 Q 500 80 550 100 T 600 150 Q 580 200 550 250 T 500 350 Q 480 400 520 450 L 550 460 Q 580 400 600 350 T 620 250 Q 650 200 620 150 T 550 100 Z" />
+<path d="M 600 100 Q 700 50 800 80 T 900 120 Q 950 150 900 200 T 800 250 Q 750 280 700 250 T 650 200 Q 620 150 600 100 Z" />
+<path d="M 800 300 Q 850 280 900 300 T 950 350 Q 900 400 850 380 T 800 350 Q 780 320 800 300 Z" />
+</svg>
+</div>
+</div>
+
 <div class="orb o-1"></div>
 <div class="orb o-2"></div>
 <div class="orb o-3"></div>
 <div class="orb o-4"></div>
 <div class="orb o-5"></div>
-
-<!-- Le Globe / Carte du monde qui tourne -->
-<div class="globe-wrapper">
-<svg class="world-map" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
-<!-- Carte du monde simplifiée pour l'effet filaire -->
-<path d="M 150 100 Q 200 50 250 100 T 350 150 Q 400 200 350 250 T 250 300 Q 200 250 150 300 T 50 250 Q 0 200 50 150 T 150 100 Z" />
-<path d="M 400 100 Q 500 50 600 100 T 750 150 Q 700 200 750 250 T 650 300 Q 550 250 450 300 T 400 100 Z" />
-<path d="M 250 300 Q 300 350 350 300 T 450 350 Q 400 400 350 350 T 250 300 Z" />
-<!-- Lignes de connexion Tunis -> Kinshasa -->
-<path class="flight-arc" d="M 420 140 Q 450 250 380 300" />
-<!-- Points de repère -->
-<circle cx="420" cy="140" r="4" fill="#fff" />
-<circle cx="380" cy="300" r="4" fill="#fff" />
-</svg>
-</div>
+<div class="orb o-6"></div>
+<div class="orb o-7"></div>
 </div>
 
-<!-- ÉCRAN D'ENTRÉE -->
+<!-- =========================================
+ÉCRAN D'ENTRÉE
+========================================= -->
 <div id="splash-screen" onclick="enterApp()">
 <div class="splash-logo-container">
 <img class="splash-logo" src="https://i.ibb.co/Z1FxFm6v/IMG-E4687.jpg" alt="LowkeyExpress">
@@ -416,6 +442,9 @@ padding: 20px 0; border-bottom: 1px solid var(--line); transition: color 0.2s;
 <div class="splash-name">ACHOUMAT KHALFANI</div>
 </div>
 
+<!-- =========================================
+SVG ICONS
+========================================= -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
 <defs>
 <symbol id="i-bag" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></symbol>
@@ -438,6 +467,9 @@ padding: 20px 0; border-bottom: 1px solid var(--line); transition: color 0.2s;
 </defs>
 </svg>
 
+<!-- =========================================
+APPLICATION
+========================================= -->
 <div class="shell" id="shell">
 
 <header class="topbar">
@@ -1021,7 +1053,6 @@ const dot = cls === 'done' ? '<svg class="ic"><use href="#i-check"/></svg>' : ''
 return `<li class="step ${cls}"${cls === 'active' ? ' aria-current="step"' : ''}><span class="step-dot">${dot}</span><span class="step-title">${esc(label)}</span></li>`;
 }).join('');
 } catch (err) {
-// Affiche l'état vide en cas d'erreur de connexion
 $('track-empty').hidden = false;
 $('track-content').hidden = true;
 }
