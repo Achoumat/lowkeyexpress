@@ -28,11 +28,9 @@
 color-scheme: light;
 }
 [data-theme="dark"] {
-/* Fond de l'application ULTRA transparent (0.3) pour voir la 3D */
---bg: rgba(18, 11, 12, 0.3);
---surface: rgba(28, 19, 20, 0.75);
---sunken: rgba(40, 27, 28, 0.75);
---desk: #0a0506;
+/* Fond très transparent pour voir le globe */
+--bg: rgba(18, 11, 12, 0.4);
+--surface: rgba(28, 19, 20, 0.8); --sunken: rgba(40, 27, 28, 0.8); --desk: #0a0506;
 --ink: #f5efe9; --muted: #b2a59e; --line: rgba(53, 41, 42, 0.6);
 --cta: #d4af37; --cta-ink: #2b0006;
 --focus: #d4af37; --danger: #ff8a80; --ok: #81c784;
@@ -52,39 +50,48 @@ ol, ul { list-style: none; }
 .ic { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex: none; }
 .ic-sm { width: 18px; height: 18px; }
 
-/* ---------- ARRIÈRE-PLAN 3D ULTRA VISIBLE ---------- */
-.bg-3d-container {
-position: fixed; inset: 0; z-index: 0; overflow: hidden;
-background: radial-gradient(circle at 50% 50%, #3d050f 0%, #0a0506 90%);
+/* ---------- ARRIÈRE-PLAN 3D : GLOBE TERRESTRE ET TRAJECTOIRE ---------- */
+.bg-globe-container {
+position: fixed; inset: 0; z-index: 0; display: flex; justify-content: center; align-items: center;
+background: radial-gradient(circle at 50% 50%, #2b0006 0%, #0a0506 80%);
+overflow: hidden;
 }
 
-.plane {
-position: absolute;
-color: #FFD700; /* Or très vif */
-/* Halo lumineux très fort */
-filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.9));
-opacity: 0.8;
-z-index: 1;
+.globe-svg {
+width: 150%; max-width: 800px; height: auto;
+opacity: 0.6; /* Rend le globe subtil mais visible */
+filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.2));
 }
 
-.plane svg { width: 100%; height: 100%; fill: currentColor; }
-
-/* Trajectoires fluides qui restent toujours à l'écran */
-.p1 { width: 120px; height: 120px; top: -10%; left: -20%; animation: fly-diag 25s linear infinite; }
-.p2 { width: 80px; height: 80px; bottom: -10%; right: -20%; animation: fly-diag-rev 20s linear infinite 2s; }
-.p3 { width: 180px; height: 180px; top: 30%; left: -30%; animation: fly-diag 35s linear infinite 5s; opacity: 0.5; filter: blur(2px) drop-shadow(0 0 20px rgba(255, 215, 0, 0.6)); }
-.p4 { width: 50px; height: 50px; top: 80%; left: -10%; animation: fly-diag 15s linear infinite 8s; }
-
-@keyframes fly-diag {
-0% { transform: translate(0, 0) rotate(45deg) scale(0.8); }
-50% { transform: translate(80vw, 80vh) rotate(45deg) scale(1.1); }
-100% { transform: translate(120vw, 120vh) rotate(45deg) scale(0.8); }
+/* Animation de rotation du globe */
+.globe-rotate {
+transform-origin: center;
+animation: spin 40s linear infinite;
 }
 
-@keyframes fly-diag-rev {
-0% { transform: translate(0, 0) rotate(-135deg) scale(1); }
-50% { transform: translate(-80vw, -80vh) rotate(-135deg) scale(1.2); }
-100% { transform: translate(-120vw, -120vh) rotate(-135deg) scale(1); }
+@keyframes spin {
+100% { transform: rotate(-360deg); }
+}
+
+/* Animation de la trajectoire lumineuse */
+.flight-path {
+stroke-dasharray: 8;
+stroke-dashoffset: 100;
+animation: dash 8s linear infinite;
+}
+
+@keyframes dash {
+to { stroke-dashoffset: 0; }
+}
+
+/* Point lumineux qui voyage */
+.travel-dot {
+animation: pulse-dot 2s infinite alternate;
+}
+
+@keyframes pulse-dot {
+0% { transform: scale(0.8); opacity: 0.7; }
+100% { transform: scale(1.5); opacity: 1; filter: drop-shadow(0 0 10px #FFD700); }
 }
 
 /* ---------- SPLASH SCREEN ---------- */
@@ -123,7 +130,8 @@ animation: fadeInName 1s ease 1.5s forwards;
 position: relative; display: flex; flex-direction: column; height: 100vh; height: 100dvh;
 max-width: 430px; margin: 0 auto;
 background: var(--bg);
-/* Suppression du flou pour que les avions soient nets */
+backdrop-filter: blur(10px); /* Léger flou pour détacher le contenu */
+-webkit-backdrop-filter: blur(10px);
 overflow: hidden; overflow: clip; opacity: 0; transition: opacity 0.5s; z-index: 10;
 }
 .shell.ready { opacity: 1; }
@@ -353,12 +361,64 @@ padding: 20px 0; border-bottom: 1px solid var(--line); transition: color 0.2s;
 </head>
 <body data-theme="dark">
 
-<!-- ARRIÈRE-PLAN 3D ULTRA VISIBLE -->
-<div class="bg-3d-container">
-<div class="plane p1"><svg viewBox="0 0 24 24"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg></div>
-<div class="plane p2"><svg viewBox="0 0 24 24"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg></div>
-<div class="plane p3"><svg viewBox="0 0 24 24"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg></div>
-<div class="plane p4"><svg viewBox="0 0 24 24"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg></div>
+<!-- ARRIÈRE-PLAN 3D : GLOBE ET TRAJECTOIRE -->
+<div class="bg-globe-container">
+<svg class="globe-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<!-- Dégradé or pour le globe -->
+<radialGradient id="goldGrad" cx="50%" cy="50%" r="50%">
+<stop offset="0%" stop-color="#d4af37" stop-opacity="0.2"/>
+<stop offset="70%" stop-color="#d4af37" stop-opacity="0.05"/>
+<stop offset="100%" stop-color="#d4af37" stop-opacity="0"/>
+</radialGradient>
+<!-- Filtre lumineux -->
+<filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+<feGaussianBlur stdDeviation="3" result="blur" />
+<feComposite in="SourceGraphic" in2="blur" operator="over" />
+</filter>
+</defs>
+
+<!-- Fond lumineux du globe -->
+<circle cx="200" cy="200" r="150" fill="url(#goldGrad)" stroke="#d4af37" stroke-width="1" stroke-opacity="0.3" />
+
+<!-- Groupe tournant (lignes du globe) -->
+<g class="globe-rotate" fill="none" stroke="#d4af37" stroke-width="1" stroke-opacity="0.4">
+<!-- Méridiens -->
+<ellipse cx="200" cy="200" rx="150" ry="150" />
+<ellipse cx="200" cy="200" rx="100" ry="150" />
+<ellipse cx="200" cy="200" rx="50" ry="150" />
+<ellipse cx="200" cy="200" rx="0" ry="150" /> <!-- Ligne centrale -->
+<ellipse cx="200" cy="200" rx="100" ry="150" transform="rotate(45 200 200)" />
+<ellipse cx="200" cy="200" rx="100" ry="150" transform="rotate(-45 200 200)" />
+
+<!-- Parallèles -->
+<ellipse cx="200" cy="200" rx="150" ry="100" />
+<ellipse cx="200" cy="200" rx="150" ry="50" />
+<ellipse cx="200" cy="200" rx="150" ry="0" />
+<ellipse cx="200" cy="200" rx="150" ry="100" transform="rotate(90 200 200)" />
+</g>
+
+<!-- Trajectoire Tunis -> Kinshasa (Ligne courbe) -->
+<!-- Tunis (haut droite) vers Kinshasa (bas gauche) -->
+<path d="M 270 110 Q 230 250 150 290" fill="none" stroke="#d4af37" stroke-width="2" stroke-opacity="0.6" class="flight-path" filter="url(#glow)"/>
+
+<!-- Point de départ (Tunis) -->
+<circle cx="270" cy="110" r="4" fill="#d4af37" filter="url(#glow)"/>
+<text x="280" y="115" fill="#d4af37" font-family="sans-serif" font-size="10" font-weight="bold">TUNIS</text>
+
+<!-- Point d'arrivée (Kinshasa) -->
+<circle cx="150" cy="290" r="4" fill="#d4af37" filter="url(#glow)"/>
+<text x="160" y="295" fill="#d4af37" font-family="sans-serif" font-size="10" font-weight="bold">KINSHASA</text>
+
+<!-- Point lumineux qui parcourt la trajectoire -->
+<circle r="3" fill="#fff" filter="url(#glow)" class="travel-dot">
+<animateMotion
+dur="4s"
+repeatCount="indefinite"
+path="M 270 110 Q 230 250 150 290"
+/>
+</circle>
+</svg>
 </div>
 
 <!-- ÉCRAN D'ENTRÉE -->
