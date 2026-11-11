@@ -32,7 +32,6 @@ color-scheme: light;
 }
 
 [data-theme="dark"] {
-/* Opacité augmentée (0.55) pour que le fond 3D soit visible mais que le texte reste lisible */
 --bg: rgba(18, 11, 12, 0.55);
 --surface: rgba(28, 19, 20, 0.75); --sunken: rgba(40, 27, 28, 0.75); --desk: #0a0506;
 --ink: #f5efe9; --muted: #c4b8b2; --line: rgba(53, 41, 42, 0.5);
@@ -55,32 +54,23 @@ ol, ul { list-style: none; }
 .ic-sm { width: 18px; height: 18px; }
 
 /* =========================================
-2. ARRIÈRE-PLAN 3D (Globe, Orbes, Socle)
+2. ARRIÈRE-PLAN 3D
 ========================================= */
 .bg-3d-container {
 position: fixed; inset: 0; z-index: 0; display: flex; flex-direction: column; justify-content: center; align-items: center;
 background: radial-gradient(circle at 50% 50%, #1a0b0e 0%, #050203 100%);
 perspective: 1200px; overflow: hidden;
 }
-
 .stars {
 position: absolute; inset: 0;
-background-image:
-radial-gradient(1px 1px at 20px 30px, #ffffff, rgba(0,0,0,0)),
-radial-gradient(1px 1px at 40px 70px, #ffffff, rgba(0,0,0,0)),
-radial-gradient(1.5px 1.5px at 90px 40px, #d4af37, rgba(0,0,0,0)),
-radial-gradient(1px 1px at 160px 120px, #ffffff, rgba(0,0,0,0));
-background-repeat: repeat; background-size: 200px 200px;
-opacity: 0.3; animation: twinkle 5s infinite alternate;
+background-image: radial-gradient(1px 1px at 20px 30px, #ffffff, rgba(0,0,0,0)), radial-gradient(1px 1px at 40px 70px, #ffffff, rgba(0,0,0,0)), radial-gradient(1.5px 1.5px at 90px 40px, #d4af37, rgba(0,0,0,0)), radial-gradient(1px 1px at 160px 120px, #ffffff, rgba(0,0,0,0));
+background-repeat: repeat; background-size: 200px 200px; opacity: 0.3; animation: twinkle 5s infinite alternate;
 }
 @keyframes twinkle { 0% { opacity: 0.1; } 100% { opacity: 0.5; } }
-
 .base-ring {
 position: absolute; bottom: 18%; width: 80vw; max-width: 400px; height: 80px;
-border: 2px solid rgba(212, 175, 55, 0.3); border-radius: 50%;
-transform: rotateX(75deg);
-box-shadow: 0 0 20px rgba(212, 175, 55, 0.2), inset 0 0 20px rgba(212, 175, 55, 0.2);
-animation: pulse-ring 4s infinite alternate;
+border: 2px solid rgba(212, 175, 55, 0.3); border-radius: 50%; transform: rotateX(75deg);
+box-shadow: 0 0 20px rgba(212, 175, 55, 0.2), inset 0 0 20px rgba(212, 175, 55, 0.2); animation: pulse-ring 4s infinite alternate;
 }
 .base-glow {
 position: absolute; bottom: 15%; width: 60vw; max-width: 300px; height: 40px;
@@ -89,36 +79,11 @@ border-radius: 50%; filter: blur(15px); animation: pulse-base 4s infinite altern
 }
 @keyframes pulse-ring { 0% { transform: rotateX(75deg) scale(0.9); opacity: 0.5; } 100% { transform: rotateX(75deg) scale(1.1); opacity: 1; } }
 @keyframes pulse-base { 0% { transform: scale(0.8); opacity: 0.4; } 100% { transform: scale(1.2); opacity: 0.9; } }
-
 .globe-scene { position: relative; width: 90vw; max-width: 500px; height: 250px; transform-style: preserve-3d; }
-
-.globe-wrapper {
-width: 100%; height: 100%;
-transform-style: preserve-3d;
-animation: spin-globe 25s linear infinite;
-display: grid; place-items: center;
-filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.6));
-}
-@keyframes spin-globe {
-0% { transform: rotateX(20deg) rotateY(0deg); }
-100% { transform: rotateX(20deg) rotateY(360deg); }
-}
-
-.world-map {
-width: 100%; height: 100%;
-fill: rgba(212, 175, 55, 0.15);
-stroke: #d4af37; stroke-width: 1.5;
-stroke-linecap: round; stroke-linejoin: round;
-filter: drop-shadow(0 0 3px rgba(212, 175, 55, 0.8));
-}
-
-.orb {
-position: absolute; border-radius: 50%;
-background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9) 0%, rgba(212,175,55,0.6) 30%, rgba(43,0,6,0.9) 100%);
-box-shadow: inset -5px -5px 15px rgba(0,0,0,0.8), inset 5px 5px 15px rgba(255,255,255,0.4), 0 0 20px rgba(212,175,55,0.4);
-animation: float-orb 6s ease-in-out infinite alternate;
-transform-style: preserve-3d;
-}
+.globe-wrapper { width: 100%; height: 100%; transform-style: preserve-3d; animation: spin-globe 25s linear infinite; display: grid; place-items: center; filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.6)); }
+@keyframes spin-globe { 0% { transform: rotateX(20deg) rotateY(0deg); } 100% { transform: rotateX(20deg) rotateY(360deg); } }
+.world-map { width: 100%; height: 100%; fill: rgba(212, 175, 55, 0.15); stroke: #d4af37; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 3px rgba(212, 175, 55, 0.8)); }
+.orb { position: absolute; border-radius: 50%; background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9) 0%, rgba(212,175,55,0.6) 30%, rgba(43,0,6,0.9) 100%); box-shadow: inset -5px -5px 15px rgba(0,0,0,0.8), inset 5px 5px 15px rgba(255,255,255,0.4), 0 0 20px rgba(212,175,55,0.4); animation: float-orb 6s ease-in-out infinite alternate; transform-style: preserve-3d; }
 .o-1 { width: 50px; height: 50px; top: 10%; left: 10%; animation-duration: 7s; }
 .o-2 { width: 30px; height: 30px; top: 20%; right: 15%; animation-duration: 5s; animation-delay: 1s; }
 .o-3 { width: 80px; height: 80px; bottom: 25%; right: 5%; animation-duration: 9s; animation-delay: 2s; }
@@ -126,73 +91,37 @@ transform-style: preserve-3d;
 .o-5 { width: 40px; height: 40px; top: 40%; left: 5%; animation-duration: 6s; animation-delay: 1.5s; }
 .o-6 { width: 25px; height: 25px; top: 5%; left: 50%; animation-duration: 8s; animation-delay: 3s; }
 .o-7 { width: 60px; height: 60px; bottom: 35%; left: 15%; animation-duration: 7s; animation-delay: 0.8s; }
-
-@keyframes float-orb {
-0% { transform: translateY(0) translateZ(0) scale(1); }
-100% { transform: translateY(-40px) translateZ(50px) scale(1.05); }
-}
+@keyframes float-orb { 0% { transform: translateY(0) translateZ(0) scale(1); } 100% { transform: translateY(-40px) translateZ(50px) scale(1.05); } }
 
 /* =========================================
 3. SPLASH SCREEN
 ========================================= */
-#splash-screen {
-position: fixed; inset: 0; z-index: 9999;
-background: #0a0506;
-display: flex; flex-direction: column; justify-content: center; align-items: center;
-transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
-cursor: pointer;
-}
+#splash-screen { position: fixed; inset: 0; z-index: 9999; background: #0a0506; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s; cursor: pointer; }
 #splash-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-
 .splash-logo-container { position: relative; width: 220px; height: auto; overflow: hidden; }
-.splash-logo {
-width: 100%; height: auto; display: block;
-clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
-animation: revealLogo 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-filter: brightness(1.1);
-}
-.splash-logo-container::after {
-content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
-transform: skewX(-25deg); animation: shine 2.5s ease-in-out 1s forwards; pointer-events: none;
-}
+.splash-logo { width: 100%; height: auto; display: block; clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%); animation: revealLogo 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; filter: brightness(1.1); }
+.splash-logo-container::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent); transform: skewX(-25deg); animation: shine 2.5s ease-in-out 1s forwards; pointer-events: none; }
 @keyframes revealLogo { 0% { clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%); } 100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); } }
 @keyframes shine { 0% { left: -100%; } 100% { left: 200%; } }
-.splash-name {
-position: absolute; bottom: 40px; font-family: var(--font-ui); font-size: 11px;
-letter-spacing: 4px; color: #555; text-transform: uppercase; opacity: 0;
-animation: fadeInName 1s ease 1.5s forwards;
-}
+.splash-name { position: absolute; bottom: 40px; font-family: var(--font-ui); font-size: 11px; letter-spacing: 4px; color: #555; text-transform: uppercase; opacity: 0; animation: fadeInName 1s ease 1.5s forwards; }
 @keyframes fadeInName { to { opacity: 1; } }
 
 /* =========================================
 4. COQUE DE L'APPLICATION
 ========================================= */
-.shell {
-position: relative; display: flex; flex-direction: column; height: 100vh; height: 100dvh;
-max-width: 430px; margin: 0 auto;
-background: var(--bg);
-backdrop-filter: blur(12px); /* Flou augmenté pour bien séparer l'app du fond 3D */
--webkit-backdrop-filter: blur(12px);
-overflow: hidden; overflow: clip; opacity: 0; transition: opacity 0.5s; z-index: 10;
-}
+.shell { position: relative; display: flex; flex-direction: column; height: 100vh; height: 100dvh; max-width: 430px; margin: 0 auto; background: var(--bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); overflow: hidden; overflow: clip; opacity: 0; transition: opacity 0.5s; z-index: 10; }
 .shell.ready { opacity: 1; }
-@media (min-width: 600px) {
-body { padding: 24px 0; }
-.shell { height: min(900px, calc(100dvh - 48px)); border-radius: 36px; border: 1px solid var(--line); box-shadow: 0 30px 80px -24px rgba(0, 0, 0, .8); }
-}
+@media (min-width: 600px) { body { padding: 24px 0; } .shell { height: min(900px, calc(100dvh - 48px)); border-radius: 36px; border: 1px solid var(--line); box-shadow: 0 30px 80px -24px rgba(0, 0, 0, .8); } }
+
 .topbar { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; min-height: 60px; background: transparent; z-index: 10; }
 .brand-text-header { font-family: var(--font-display); font-weight: 800; font-size: 18px; color: var(--ink); letter-spacing: 1px; text-transform: uppercase; text-shadow: 0 2px 15px rgba(0,0,0,0.9); }
-
 .icon-btn { position: relative; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; border: 0; background: transparent; color: var(--ink); text-shadow: 0 2px 15px rgba(0,0,0,0.9); }
 .icon-btn:active { background: var(--sunken); }
 .badge { position: absolute; top: 3px; right: 1px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--brand); color: var(--gold); font-size: 11px; font-weight: 700; display: grid; place-items: center; border: 1.5px solid var(--bg); }
 [data-theme="dark"] .badge { background: var(--gold); color: var(--brand); }
-
 .scroller { flex: 1; overflow-y: auto; overscroll-behavior: contain; padding-bottom: 100px; }
 .view { animation: viewIn .18s ease-out; }
 @keyframes viewIn { from { opacity: 0; } to { opacity: 1; } }
-
 .tabbar { display: grid; grid-template-columns: repeat(4, 1fr); padding: 4px 8px calc(4px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: rgba(18, 11, 12, 0.85); backdrop-filter: blur(10px); z-index: 20; }
 .tab { position: relative; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 9px 0 6px; border: 0; background: none; color: var(--muted); font-size: 11.5px; font-weight: 600; }
 .tab[aria-current="page"] { color: var(--ink); }
@@ -200,23 +129,16 @@ body { padding: 24px 0; }
 .tab .badge { top: 2px; right: calc(50% - 22px); }
 
 /* =========================================
-5. MENU PLEIN ÉCRAN
+5. UI & COMPOSANTS
 ========================================= */
 .full-menu { position: absolute; inset: 0; z-index: 100; background: rgba(18, 11, 12, 0.95); backdrop-filter: blur(20px); transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); display: flex; flex-direction: column; }
 .full-menu.open { transform: translateY(0); }
 .menu-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid var(--line); }
 .menu-links { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 0 20px; gap: 10px; }
-.menu-links button {
-background: none; border: none; text-align: left; font-family: var(--font-display);
-font-size: 28px; font-weight: 800; letter-spacing: -1px; text-transform: uppercase; color: var(--ink);
-padding: 20px 0; border-bottom: 1px solid var(--line); transition: color 0.2s;
-}
+.menu-links button { background: none; border: none; text-align: left; font-family: var(--font-display); font-size: 28px; font-weight: 800; letter-spacing: -1px; text-transform: uppercase; color: var(--ink); padding: 20px 0; border-bottom: 1px solid var(--line); transition: color 0.2s; }
 .menu-links button:active { color: var(--gold); }
 .menu-footer { padding: 30px 20px; display: flex; justify-content: center; font-size: 11px; text-transform: uppercase; color: var(--muted); letter-spacing: 2px; border-top: 1px solid var(--line); }
 
-/* =========================================
-6. TYPOGRAPHIE & CARTES
-========================================= */
 .page-title { font-family: var(--font-serif); font-weight: 700; font-size: 32px; letter-spacing: -.02em; padding: 8px 20px 16px; text-shadow: 0 2px 15px rgba(0,0,0,0.9); }
 .section-head { display: flex; justify-content: space-between; align-items: baseline; padding: 0 20px; margin-bottom: 14px; }
 .section-head h2 { font-family: var(--font-serif); font-size: 24px; font-weight: 600; letter-spacing: -.01em; text-shadow: 0 2px 15px rgba(0,0,0,0.9); }
@@ -280,6 +202,23 @@ padding: 20px 0; border-bottom: 1px solid var(--line); transition: color 0.2s;
 .empty h2 { font-family: var(--font-serif); font-size: 22px; font-weight: 700; color: var(--ink); text-shadow: 0 2px 15px rgba(0,0,0,0.9); }
 .empty p { margin: 6px 0 20px; color: var(--muted); }
 
+/* AUTHENTICATION UI */
+.auth-box { margin: 20px; padding: 24px; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+.auth-box h2 { font-family: var(--font-serif); font-size: 24px; text-align: center; margin-bottom: 20px; color: var(--ink); }
+.auth-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+.auth-tab { flex: 1; text-align: center; padding: 10px; font-weight: 700; cursor: pointer; border-bottom: 2px solid transparent; color: var(--muted); }
+.auth-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+.auth-form { display: flex; flex-direction: column; gap: 14px; }
+.auth-form .field { margin-bottom: 0; }
+.biometric-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--sunken); color: var(--ink); border: 1px solid var(--line); margin-top: 14px; }
+
+/* ESPACE PATRONNE */
+.admin-card { margin: 0 20px 10px; padding: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; backdrop-filter: blur(10px); display: flex; flex-direction: column; gap: 4px; }
+.admin-card strong { font-size: 16px; color: var(--ink); }
+.admin-card span { font-size: 13px; color: var(--muted); }
+.admin-card small { font-size: 11px; color: var(--gold); margin-top: 4px; }
+
+/* FICHE PRODUIT & PANIER */
 .sheet { position: absolute; inset: 0; z-index: 30; display: flex; flex-direction: column; background: var(--bg); backdrop-filter: blur(25px); transform: translateY(100%); visibility: hidden; transition: transform .32s cubic-bezier(.2, .8, .2, 1), visibility 0s .32s; }
 .sheet.open { transform: none; visibility: visible; transition: transform .32s cubic-bezier(.2, .8, .2, 1); }
 .sheet-back { position: absolute; top: 12px; left: 14px; z-index: 2; background: var(--surface); box-shadow: 0 2px 10px rgba(0, 0, 0, .18); backdrop-filter: blur(10px); }
@@ -325,20 +264,20 @@ padding: 20px 0; border-bottom: 1px solid var(--line); transition: color 0.2s;
 .err { color: var(--danger); font-size: 13px; font-weight: 500; }
 .two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .deliver { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 12px; background: var(--sunken); font-size: 13.5px; font-weight: 500; margin-bottom: 14px; }
-.promo { display: flex; gap: 8px; }
-.promo input { flex: 1; min-width: 0; min-height: 48px; padding: 0 14px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--surface); font-size: 16px; text-transform: uppercase; color: var(--ink); }
-.promo .btn { min-height: 48px; padding: 0 18px; }
+
 .sum div { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; color: var(--muted); font-size: 14.5px; }
 .sum dd { font-variant-numeric: tabular-nums; }
 .sum .sum-total { margin-top: 8px; padding-top: 14px; border-top: 1px dashed var(--line); color: var(--ink); font-weight: 700; font-size: 17px; align-items: baseline; }
 .sum .sum-total dd { text-align: right; }
 .sum .sum-total small { display: block; font-size: 12.5px; font-weight: 500; color: var(--muted); }
-.sum .sum-due { color: var(--ink); font-weight: 700; }
+.sum .sum-due { color: var(--gold); font-weight: 700; font-size: 16px; }
+
 .checks { display: grid; gap: 12px; }
 .check { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; line-height: 1.4; color: var(--ink); }
 .check input { flex: none; width: 22px; height: 22px; margin: 0; accent-color: var(--brand); }
 [data-theme="dark"] .check input { accent-color: var(--gold); }
 
+/* SUIVI */
 .order-card { margin: 0 20px 20px; padding: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; backdrop-filter: blur(10px); }
 .order-card strong { font-family: var(--font-display); font-size: 18px; color: var(--ink); }
 .order-card p { margin-top: 4px; font-size: 13.5px; color: var(--muted); }
@@ -356,6 +295,7 @@ padding: 20px 0; border-bottom: 1px solid var(--line); transition: color 0.2s;
 .step.active .step-title { font-weight: 700; }
 .step.active .step-dot { border-color: var(--gold); box-shadow: 0 0 0 4px color-mix(in srgb, var(--gold) 30%, transparent); background: var(--gold); }
 
+/* PROFIL */
 .avatar { display: grid; place-items: center; width: 84px; height: 84px; margin: 8px auto 12px; border-radius: 50%; background: var(--brand); color: var(--gold); font-family: var(--font-display); font-weight: 700; font-size: 30px; border: 2px solid rgba(212,175,55,0.5); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
 .member-card { margin: 20px; padding: 24px; background: linear-gradient(135deg, rgba(28,19,20,0.9), rgba(10,5,6,0.9)); border-radius: 20px; border: 1px solid rgba(212,175,55,0.3); position: relative; overflow: hidden; color: #fff; box-shadow: 0 15px 35px rgba(0,0,0,0.6); backdrop-filter: blur(10px); }
 .member-card::after { content: 'LK'; position: absolute; right: -20px; bottom: -30px; font-family: var(--font-display); font-size: 140px; font-weight: 900; color: rgba(255,255,255,0.03); pointer-events: none; }
@@ -379,6 +319,7 @@ padding: 20px 0; border-bottom: 1px solid var(--line); transition: color 0.2s;
 .switch input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: 2px; }
 .credit { margin-top: 28px; text-align: center; font-size: 12.5px; color: var(--muted); }
 
+/* MODALES */
 .modal { position: absolute; inset: 0; z-index: 50; display: flex; align-items: flex-end; justify-content: center; padding: 0; background: rgba(10, 4, 5, .7); backdrop-filter: blur(5px); }
 .modal-card { width: 100%; max-height: 92%; overflow-y: auto; padding: 26px 22px calc(22px + env(safe-area-inset-bottom)); border-radius: 26px 26px 0 0; background: var(--bg); backdrop-filter: blur(25px); border-top: 1px solid var(--line); animation: rise .28s cubic-bezier(.2, .8, .2, 1); }
 @keyframes rise { from { transform: translateY(30px); opacity: 0; } to { transform: none; opacity: 1; } }
@@ -395,22 +336,15 @@ padding: 20px 0; border-bottom: 1px solid var(--line); transition: color 0.2s;
 .toast.error { background: var(--danger); color: #fff; }
 .toast button { border: 0; background: none; color: inherit; font-weight: 700; text-decoration: underline; min-height: 32px; }
 
-@media (max-width: 600px) {
-.globe-scene { height: 200px; }
-.o-3 { width: 60px; height: 60px; }
-}
 </style>
 </head>
 <body data-theme="dark">
 
-<!-- =========================================
-ARRIÈRE-PLAN 3D : GLOBE ET ORBES
-========================================= -->
+<!-- ARRIÈRE-PLAN 3D -->
 <div class="bg-3d-container">
 <div class="stars"></div>
 <div class="base-ring"></div>
 <div class="base-glow"></div>
-
 <div class="globe-scene">
 <div class="globe-wrapper">
 <svg class="world-map" viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
@@ -422,7 +356,6 @@ ARRIÈRE-PLAN 3D : GLOBE ET ORBES
 </svg>
 </div>
 </div>
-
 <div class="orb o-1"></div>
 <div class="orb o-2"></div>
 <div class="orb o-3"></div>
@@ -432,9 +365,7 @@ ARRIÈRE-PLAN 3D : GLOBE ET ORBES
 <div class="orb o-7"></div>
 </div>
 
-<!-- =========================================
-ÉCRAN D'ENTRÉE
-========================================= -->
+<!-- SPLASH SCREEN -->
 <div id="splash-screen" onclick="enterApp()">
 <div class="splash-logo-container">
 <img class="splash-logo" src="https://i.ibb.co/Z1FxFm6v/IMG-E4687.jpg" alt="LowkeyExpress">
@@ -442,9 +373,7 @@ ARRIÈRE-PLAN 3D : GLOBE ET ORBES
 <div class="splash-name">ACHOUMAT KHALFANI</div>
 </div>
 
-<!-- =========================================
-SVG ICONS
-========================================= -->
+<!-- SVG ICONS -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
 <defs>
 <symbol id="i-bag" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></symbol>
@@ -464,12 +393,12 @@ SVG ICONS
 <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
 <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
 <symbol id="i-plane" viewBox="0 0 24 24"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+<symbol id="i-faceid" viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v4"/><path d="M15 3h4a2 2 0 0 1 2 2v4"/><path d="M9 21H5a2 2 0 0 1-2-2v-4"/><path d="M15 21h4a2 2 0 0 0 2-2v-4"/><path d="M9 9h.01"/><path d="M15 9h.01"/><path d="M9 15h.01"/><path d="M15 15h.01"/></symbol>
 </defs>
 </svg>
 
-<!-- =========================================
-APPLICATION
-========================================= -->
+<!-- APPLICATION -->
 <div class="shell" id="shell">
 
 <header class="topbar">
@@ -505,6 +434,7 @@ ACHOUMAT KHALFANI
 
 <main class="scroller" id="scroller">
 
+<!-- ================= BOUTIQUE ================= -->
 <section class="view" id="view-shop" data-view="shop">
 <section class="pass" aria-label="Itinéraire de vos commandes">
 <div class="pass-top">
@@ -518,8 +448,8 @@ ACHOUMAT KHALFANI
 <div class="pass-tear" aria-hidden="true"></div>
 <dl class="pass-facts">
 <div><dt>Achat</dt><dd>Vérifié à Tunis</dd></div>
-<div><dt>Acompte</dt><dd><span data-acompte></span> %</dd></div>
-<div><dt>Solde</dt><dd><span data-solde></span> %</dd></div>
+<div><dt>Paiement</dt><dd>100% à la commande</dd></div>
+<div><dt>Livraison</dt><dd>Suivi en direct</dd></div>
 </dl>
 </section>
 
@@ -540,6 +470,7 @@ ACHOUMAT KHALFANI
 </section>
 </section>
 
+<!-- ================= PANIER ================= -->
 <section class="view" id="view-cart" data-view="cart" hidden>
 <h1 class="page-title">Mon panier</h1>
 <div class="empty" id="cart-empty" hidden>
@@ -555,54 +486,51 @@ ACHOUMAT KHALFANI
 <div class="block">
 <h2>Vos coordonnées</h2>
 <div class="two">
-<div class="field"><label for="cust-prenom">Prénom</label><input id="cust-prenom" autocomplete="given-name" aria-describedby="err-cust-prenom"><p class="err" id="err-cust-prenom" hidden></p></div>
-<div class="field"><label for="cust-nom">Nom</label><input id="cust-nom" autocomplete="family-name" aria-describedby="err-cust-nom"><p class="err" id="err-cust-nom" hidden></p></div>
+<div class="field"><label for="cust-prenom">Prénom</label><input id="cust-prenom" autocomplete="given-name"><p class="err" id="err-cust-prenom" hidden></p></div>
+<div class="field"><label for="cust-nom">Nom</label><input id="cust-nom" autocomplete="family-name"><p class="err" id="err-cust-nom" hidden></p></div>
 </div>
-<div class="field"><label for="cust-phone">Téléphone (WhatsApp)</label><input id="cust-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+243 81 234 5678" aria-describedby="err-cust-phone"><p class="err" id="err-cust-phone" hidden></p></div>
-<div class="field"><label for="cust-email">Adresse e-mail</label><input id="cust-email" type="email" inputmode="email" autocomplete="email" aria-describedby="err-cust-email"><p class="err" id="err-cust-email" hidden></p></div>
+<div class="field"><label for="cust-phone">Téléphone (WhatsApp)</label><input id="cust-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+243 81 234 5678"><p class="err" id="err-cust-phone" hidden></p></div>
+<div class="field"><label for="cust-email">Adresse e-mail</label><input id="cust-email" type="email" inputmode="email" autocomplete="email"><p class="err" id="err-cust-email" hidden></p></div>
 </div>
 <div class="block">
 <h2>Livraison</h2>
 <div class="deliver"><svg class="ic ic-sm"><use href="#i-pin"/></svg>Kinshasa, RDC</div>
-<div class="field"><label for="cust-adresse">Adresse complète</label><input id="cust-adresse" autocomplete="street-address" placeholder="Avenue, numéro, quartier" aria-describedby="err-cust-adresse"><p class="err" id="err-cust-adresse" hidden></p></div>
-<div class="field"><label for="cust-cp">Commune</label><input id="cust-cp" autocomplete="postal-code" aria-describedby="err-cust-cp"><p class="err" id="err-cust-cp" hidden></p></div>
-</div>
-<div class="block">
-<h2>Code Privilège</h2>
-<div class="promo">
-<input id="promo-input" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Code promo">
-<button class="btn btn-quiet" type="button" id="promo-btn">Appliquer</button>
-</div>
-<p class="status" id="promo-status" role="status" aria-live="polite" hidden></p>
+<div class="field"><label for="cust-adresse">Adresse complète</label><input id="cust-adresse" autocomplete="street-address" placeholder="Avenue, numéro, quartier"><p class="err" id="err-cust-adresse" hidden></p></div>
+<div class="field"><label for="cust-cp">Commune</label><input id="cust-cp" autocomplete="postal-code"><p class="err" id="err-cust-cp" hidden></p></div>
 </div>
 <div class="block">
 <h2>Récapitulatif</h2>
 <dl class="sum">
 <div><dt>Sous-total</dt><dd id="s-sub"></dd></div>
 <div><dt>Transport et service</dt><dd id="s-ship"></dd></div>
-<div id="s-promo-row" hidden><dt>Code promo</dt><dd id="s-disc"></dd></div>
 <div class="sum-total"><dt>Total</dt><dd><span id="s-total"></span><small id="s-usd"></small></dd></div>
-<div class="sum-due"><dt>Acompte (<span data-acompte></span> %)</dt><dd id="s-acompte"></dd></div>
-<div><dt>Reste (<span data-solde></span> %)</dt><dd id="s-solde"></dd></div>
+<div class="sum-due"><dt>À payer maintenant</dt><dd id="s-acompte"></dd></div>
 </dl>
 </div>
 <div class="block">
 <div class="checks">
-<label class="check"><input type="checkbox" class="cond-check"><span>J'accepte de payer <b><span data-acompte></span> %</b> à la commande.</span></label>
-<label class="check"><input type="checkbox" class="cond-check"><span>Je paierai les <b><span data-solde></span> %</b> restants à la livraison.</span></label>
-<label class="check"><input type="checkbox" class="cond-check"><span>J'accepte les conditions générales.</span></label>
+<label class="check"><input type="checkbox" class="cond-check" id="cond-100"><span>J'accepte de payer <b>la totalité</b> de ma commande pour lancer l'achat à Tunis.</span></label>
+<label class="check"><input type="checkbox" class="cond-check" id="cond-cgv"><span>J'accepte les conditions générales.</span></label>
 </div>
-<p class="err" id="cond-error" role="alert" hidden style="margin-top:10px">Cochez les trois cases pour passer la commande.</p>
+<p class="err" id="cond-error" role="alert" hidden style="margin-top:10px">Cochez les deux cases pour passer la commande.</p>
 <button class="btn btn-block" type="submit" id="btn-order" style="margin-top:20px">Passer la commande</button>
 </div>
 </form>
 </div>
 </section>
 
+<!-- ================= SUIVI ================= -->
 <section class="view" id="view-tracking" data-view="tracking" hidden>
 <h1 class="page-title">Suivi de commande</h1>
 
-<div class="empty" id="track-empty">
+<div class="empty" id="track-auth-required">
+<svg class="ic"><use href="#i-lock"/></svg>
+<h2>Connexion requise</h2>
+<p>Connectez-vous pour voir l'état de vos commandes.</p>
+<button class="btn" type="button" data-go="profile" onclick="openAuthModal()">Se connecter</button>
+</div>
+
+<div class="empty" id="track-empty" hidden>
 <svg class="ic"><use href="#i-box"/></svg>
 <h2>Aucune commande</h2>
 <p>Dès que vous passez une commande, son avancement s'affiche ici.</p>
@@ -616,7 +544,35 @@ ACHOUMAT KHALFANI
 </div>
 </section>
 
+<!-- ================= PROFIL ================= -->
 <section class="view" id="view-profile" data-view="profile" hidden>
+
+<!-- Vue non connecté -->
+<div id="profile-guest">
+<div class="avatar" aria-hidden="true"><svg class="ic" style="width:40px;height:40px;"><use href="#i-user"/></svg></div>
+<h1 class="page-title" style="text-align:center;padding-bottom:0">Mon compte</h1>
+
+<div class="auth-box" style="margin-top:20px;">
+<div class="auth-tabs">
+<div class="auth-tab active" onclick="switchAuthTab('login')" id="tab-login">Connexion</div>
+<div class="auth-tab" onclick="switchAuthTab('signup')" id="tab-signup">Créer un compte</div>
+</div>
+
+<form class="auth-form" id="auth-form">
+<div class="field" id="field-nom" hidden><label>Nom complet</label><input type="text" id="auth-nom" autocomplete="name"></div>
+<div class="field"><label>Email</label><input type="email" id="auth-email" autocomplete="email" required></div>
+<div class="field"><label>Mot de passe</label><input type="password" id="auth-password" autocomplete="current-password" required></div>
+<button class="btn btn-block" type="submit" id="auth-submit">Se connecter</button>
+<div id="auth-error" class="err" style="text-align:center;margin-top:10px;" hidden></div>
+</form>
+<button class="btn btn-quiet btn-block biometric-btn" onclick="alert('La connexion Face ID / Touch ID sera disponible dans la prochaine mise à jour iOS/Android.')">
+<svg class="ic"><use href="#i-faceid"/></svg> Se connecter avec Face ID
+</button>
+</div>
+</div>
+
+<!-- Vue connectée -->
+<div id="profile-user" hidden>
 <div class="avatar" id="avatar" aria-hidden="true">LK</div>
 <h1 class="page-title" style="text-align:center;padding-bottom:0">Mon compte</h1>
 
@@ -625,7 +581,7 @@ ACHOUMAT KHALFANI
 <div class="mc-title">Lowkey<br>Privilège</div>
 <div class="mc-bottom">
 <div>
-<div class="mc-name">ACHOUMAT KHALFANI</div>
+<div class="mc-name" id="mc-name">CLIENT</div>
 <div class="mc-status"><div class="mc-dot"></div> Membre Actif</div>
 </div>
 </div>
@@ -636,11 +592,29 @@ ACHOUMAT KHALFANI
 <span class="row-main"><svg class="ic"><use href="#i-moon"/></svg>Mode sombre</span>
 <label class="switch"><input type="checkbox" id="theme-toggle" aria-label="Activer le mode sombre"><span></span></label>
 </div>
-<button class="row" type="button" data-open="how-modal"><span class="row-main"><svg class="ic"><use href="#i-help"/></svg>Comment ça marche</span><svg class="ic ic-sm"><use href="#i-chevron"/></svg></button>
 <button class="row" type="button" data-go="tracking"><span class="row-main"><svg class="ic"><use href="#i-box"/></svg>Mes commandes</span><svg class="ic ic-sm"><use href="#i-chevron"/></svg></button>
 <a class="row" id="wa-row" href="#" target="_blank" rel="noopener" hidden><span class="row-main"><svg class="ic"><use href="#i-chat"/></svg>Écrire sur WhatsApp</span><svg class="ic ic-sm"><use href="#i-chevron"/></svg></a>
+<button class="row" type="button" onclick="handleLogout()" style="color:var(--danger);"><span class="row-main"><svg class="ic" style="stroke:var(--danger);"><use href="#i-back"/></svg>Se déconnecter</span></button>
 </div>
+
+<!-- Bouton Admin caché -->
+<div id="admin-access" hidden style="margin: 20px;">
+<button class="btn btn-block" style="background:var(--gold);color:var(--brand);" onclick="showView('admin')">👑 Espace Patronne</button>
+</div>
+
 <p class="credit">Conçu par Achoumat Khalfani</p>
+</div>
+</section>
+
+<!-- ================= ADMIN ================= -->
+<section class="view" id="view-admin" data-view="admin" hidden>
+<div style="display:flex; align-items:center; gap:10px; padding: 10px 20px;">
+<button class="icon-btn" onclick="showView('profile')" style="background:var(--surface);"><svg class="ic"><use href="#i-back"/></svg></button>
+<h1 class="page-title" style="padding:0;">Espace Patronne</h1>
+</div>
+<p class="muted" style="padding: 0 20px 20px;">Liste des clients inscrits sur l'application.</p>
+
+<div id="admin-clients-list"></div>
 </section>
 
 </main>
@@ -652,6 +626,7 @@ ACHOUMAT KHALFANI
 <button class="tab" type="button" data-tab="profile"><svg class="ic"><use href="#i-user"/></svg>Profil</button>
 </nav>
 
+<!-- FICHE PRODUIT -->
 <div class="sheet" id="product-sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
 <button class="icon-btn sheet-back" type="button" id="sheet-close" aria-label="Fermer"><svg class="ic"><use href="#i-back"/></svg></button>
 <div class="sheet-body">
@@ -680,28 +655,38 @@ ACHOUMAT KHALFANI
 <div class="sheet-foot"><button class="btn btn-block" type="button" id="add-btn">Ajouter au panier</button></div>
 </div>
 
-<div class="modal" id="how-modal" role="dialog" aria-modal="true" aria-labelledby="how-title" hidden>
+<!-- MODALES -->
+<div class="modal" id="how-modal" role="dialog" aria-modal="true" hidden>
 <div class="modal-card">
-<h2 id="how-title">Comment ça marche</h2>
-<ol class="how" style="margin-top: 15px; color: var(--muted); font-size: 14px; line-height: 1.6; padding-left: 20px;">
+<h2>Comment ça marche</h2>
+<ol style="margin-top: 15px; color: var(--muted); font-size: 14px; line-height: 1.6; padding-left: 20px;">
 <li style="margin-bottom: 10px;"><b>Choisissez.</b> Repérez un article chez Zara, Bershka, Stradivarius ou Pull&Bear et collez son lien.</li>
 <li style="margin-bottom: 10px;"><b>Nous achetons.</b> Nous le commandons et le vérifions à Tunis avant l'envoi.</li>
 <li style="margin-bottom: 10px;"><b>Nous livrons.</b> L'article voyage jusqu'à Kinshasa et nous vous le remettons.</li>
 </ol>
-<p style="margin-top: 15px; color: var(--ink); font-weight: 600;">Vous payez <span data-acompte></span> % à la commande et <span data-solde></span> % à la livraison.</p>
+<p style="margin-top: 15px; color: var(--ink); font-weight: 600;">Vous payez <b>100 %</b> à la commande pour lancer l'achat.</p>
 <div class="modal-actions"><button class="btn btn-block" type="button" data-close>J'ai compris</button></div>
 </div>
 </div>
 
-<div class="modal" id="payment-modal" role="dialog" aria-modal="true" aria-labelledby="pay-title" hidden>
+<div class="modal" id="auth-modal" role="dialog" aria-modal="true" hidden>
 <div class="modal-card">
-<h2 id="pay-title">Comment voulez-vous régler l'acompte ?</h2>
-<p style="margin-top: 10px; color: var(--muted);">Vous ne payez rien maintenant. Nous vous envoyons les instructions par WhatsApp.</p>
-<fieldset class="pay-opts" aria-describedby="pay-error">
-<legend class="sr-only" style="position:absolute;left:-9999px">Mode de paiement</legend>
-<label class="pay-opt"><input type="radio" name="pay" value="Airtel Money">Airtel Money</label>
-<label class="pay-opt"><input type="radio" name="pay" value="M-Pesa">M-Pesa</label>
-<label class="pay-opt"><input type="radio" name="pay" value="Carte bancaire">Carte bancaire</label>
+<h2>Connexion requise</h2>
+<p style="margin-top: 10px; color: var(--muted);">Vous devez être connecté pour passer une commande et suivre son état.</p>
+<div class="modal-actions">
+<button class="btn btn-block" type="button" onclick="closeModal('auth-modal'); showView('profile'); switchAuthTab('login');">Se connecter</button>
+<button class="btn btn-block btn-quiet" type="button" onclick="closeModal('auth-modal'); showView('profile'); switchAuthTab('signup');">Créer un compte</button>
+</div>
+</div>
+</div>
+
+<div class="modal" id="payment-modal" role="dialog" aria-modal="true" hidden>
+<div class="modal-card">
+<h2>Paiement de la totalité</h2>
+<p style="margin-top: 10px; color: var(--muted);">Choisissez votre mode de paiement. Une demande de <b id="pay-total-display">0 TND</b> vous sera envoyée.</p>
+<fieldset class="pay-opts">
+<label class="pay-opt"><input type="radio" name="pay" value="Carte bancaire (Konnect)">Carte bancaire (Visa/Mastercard)</label>
+<label class="pay-opt"><input type="radio" name="pay" value="Virement / Manuel">Virement ou Mobile Money (Manuel)</label>
 </fieldset>
 <p class="err" id="pay-error" role="alert" hidden style="margin-top:10px">Choisissez un mode de paiement.</p>
 <div class="modal-actions">
@@ -711,13 +696,13 @@ ACHOUMAT KHALFANI
 </div>
 </div>
 
-<div class="modal" id="success-modal" role="dialog" aria-modal="true" aria-labelledby="ok-title" hidden>
+<div class="modal" id="success-modal" role="dialog" aria-modal="true" hidden>
 <div class="modal-card">
 <div class="success-mark"><svg class="ic"><use href="#i-check"/></svg></div>
-<h2 id="ok-title">Commande enregistrée</h2>
+<h2>Commande enregistrée</h2>
 <p id="ok-text" style="margin-top: 10px; color: var(--muted);"></p>
 <div class="modal-actions">
-<a class="btn btn-block" id="ok-wa" href="#" target="_blank" rel="noopener" hidden>Écrire sur WhatsApp</a>
+<a class="btn btn-block" id="ok-wa" href="#" target="_blank" rel="noopener" hidden>Écrire sur WhatsApp pour payer</a>
 <button class="btn btn-block btn-quiet" type="button" id="ok-track">Suivre ma commande</button>
 </div>
 </div>
@@ -729,17 +714,19 @@ ACHOUMAT KHALFANI
 <script>
 'use strict';
 
-// --- INITIALISATION SUPABASE ---
+// ==========================================
+// CONFIGURATION SUPABASE (À REMPLIR)
+// ==========================================
 const SUPABASE_URL = 'https://tjosujwaizawgtzmpfk.supabase.co';
-const SUPABASE_ANON_KEY = 'COLLE_TA_CLE_ANON_ICI'; // ⚠️ REMPLACE PAR TA CLÉ ICI
+const SUPABASE_ANON_KEY = 'COLLE_TA_CLE_ANON_ICI'; // ⚠️ REMPLACE PAR TA CLÉ
+const ADMIN_EMAIL = 'ton-email@exemple.com'; // ⚠️ METS TON EMAIL ICI POUR VOIR L'ESPACE PATRONNE
+
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const CONFIG = {
 FRAIS_FIXES: 40,
 TAUX_USD: 0.33,
-ACOMPTE: 0.70,
-PROMOS: { FIDA08: 0.10 },
-WHATSAPP: ''
+WHATSAPP: '' // Numéro WhatsApp pour validation manuelle
 };
 
 const catalog = [
@@ -750,7 +737,7 @@ const catalog = [
 { ref: "9222/770/040", brand: "Stradivarius", title: "Sandales à talon", priceTND: 129.00, type: "Femme", img: "https://zupimages.net/up/26/44/slly.jpeg", sizes: ["36","37","39","40"], colors: [{name:"Noir", hex:"#000000"}] }
 ].map(p => ({ ...p, currency: 'TND' }));
 
-const STEPS = ["Commande validée", "Achat à Tunis", "Contrôle Qualité", "Préparation", "Vol vers Kin", "Arrivée à Kin", "En livraison", "Livré !"];
+const STEPS = ["Commande validée", "Paiement reçu", "Achat à Tunis", "Contrôle Qualité", "Vol vers Kin", "Arrivée à Kin", "En livraison", "Livré !"];
 const PLACEHOLDER = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 100"><rect width="80" height="100" fill="#d9d5cf"/></svg>');
 
 const $ = (id) => document.getElementById(id);
@@ -764,45 +751,146 @@ const store = {
 get(key, fallback) { try { const v = localStorage.getItem(key); return v === null ? fallback : JSON.parse(v); } catch { return fallback; } },
 set(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); } catch {} },
 getRaw(key) { try { return localStorage.getItem(key); } catch { return null; } },
-setRaw(key, value) { try { localStorage.setItem(key, value); } catch {} }
+setRaw(key, value) { try { localStorage.setItem(key, value); } catch {} },
+remove(key) { try { localStorage.removeItem(key); } catch {} }
 };
 
 function safeImg(url) { try { const u = new URL(url, location.href); return (u.protocol === 'https:' || u.protocol === 'http:') ? u.href : ''; } catch { return ''; } }
 function waLink(text) { return CONFIG.WHATSAPP ? `https://wa.me/${CONFIG.WHATSAPP}?text=${encodeURIComponent(text)}` : ''; }
 
-// GESTION SPLASH SCREEN
+// ==========================================
+// AUTHENTIFICATION & SESSION
+// ==========================================
+let currentUser = null;
+
+async function checkSession() {
+const { data: { session } } = await supabaseClient.auth.getSession();
+currentUser = session ? session.user : null;
+updateAuthUI();
+}
+
+function updateAuthUI() {
+const isLoggedIn = !!currentUser;
+
+// Navigation
+$('profile-guest').hidden = isLoggedIn;
+$('profile-user').hidden = !isLoggedIn;
+
+if (isLoggedIn) {
+const name = currentUser.user_metadata?.full_name || currentUser.email.split('@')[0];
+$('mc-name').textContent = name.toUpperCase();
+$('avatar').textContent = name.substring(0, 2).toUpperCase();
+
+// Vérifier si Admin
+if (currentUser.email === ADMIN_EMAIL) {
+$('admin-access').hidden = false;
+} else {
+$('admin-access').hidden = true;
+}
+
+// Remplir les champs du checkout si vide
+if (!$('cust-email').value) $('cust-email').value = currentUser.email;
+if (!$('cust-nom').value && currentUser.user_metadata?.full_name) {
+const parts = currentUser.user_metadata.full_name.split(' ');
+$('cust-prenom').value = parts[0] || '';
+$('cust-nom').value = parts.slice(1).join(' ') || '';
+}
+} else {
+$('admin-access').hidden = true;
+}
+}
+
+function switchAuthTab(type) {
+$('tab-login').classList.toggle('active', type === 'login');
+$('tab-signup').classList.toggle('active', type === 'signup');
+$('field-nom').hidden = type === 'login';
+$('auth-submit').textContent = type === 'login' ? 'Se connecter' : 'Créer mon compte';
+$('auth-error').hidden = true;
+}
+
+$('auth-form').addEventListener('submit', async (e) => {
+e.preventDefault();
+const isLogin = $('tab-login').classList.contains('active');
+const email = $('auth-email').value.trim();
+const password = $('auth-password').value;
+const nom = $('auth-nom').value.trim();
+const btn = $('auth-submit');
+const errBox = $('auth-error');
+
+btn.disabled = true; btn.textContent = 'Patientez...'; errBox.hidden = true;
+
+try {
+if (isLogin) {
+const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+if (error) throw error;
+toast('Connexion réussie !');
+} else {
+const { error } = await supabaseClient.auth.signUp({
+email,
+password,
+options: { data: { full_name: nom } }
+});
+if (error) throw error;
+toast('Compte créé avec succès !');
+}
+await checkSession();
+showView('profile');
+} catch (err) {
+errBox.textContent = err.message === 'Invalid login credentials' ? 'Email ou mot de passe incorrect.' : err.message;
+errBox.hidden = false;
+} finally {
+btn.disabled = false;
+switchAuthTab(isLogin ? 'login' : 'signup');
+}
+});
+
+async function handleLogout() {
+await supabaseClient.auth.signOut();
+currentUser = null;
+updateAuthUI();
+showView('shop');
+toast('Déconnecté');
+}
+
+supabaseClient.auth.onAuthStateChange((event, session) => {
+currentUser = session ? session.user : null;
+updateAuthUI();
+if (state.view === 'tracking') renderTracking();
+});
+
+// ==========================================
+// INITIALISATION
+// ==========================================
 function enterApp() {
 const splash = document.getElementById('splash-screen');
 if(!splash.classList.contains('hidden')) {
 splash.classList.add('hidden');
 document.getElementById('shell').classList.add('ready');
+checkSession();
 }
 }
 setTimeout(enterApp, 3500);
 
-// GESTION MENU
 function openMenu() { $('full-menu').classList.add('open'); }
 function closeMenu() { $('full-menu').classList.remove('open'); }
 function menuGo(view) { closeMenu(); showView(view); }
 
-// ÉTAT
+// ÉTAT GLOBAL
 function loadCart() {
 const raw = store.get('lk_cart_final', []);
 if (!Array.isArray(raw)) return [];
 return raw.filter(i => i && typeof i.title === 'string' && Number.isFinite(i.priceTND) && i.priceTND > 0 && Number.isInteger(i.qty) && i.qty > 0)
 .map(i => ({ title: String(i.title).slice(0, 140), ref: String(i.ref || ''), brand: String(i.brand || ''), size: String(i.size || ''), color: String(i.color || 'Standard'), qty: Math.min(i.qty, 99), priceTND: i.priceTND, totalTND: round2(i.priceTND * Math.min(i.qty, 99)), img: safeImg(i.img) }));
 }
-const state = { cart: loadCart(), promo: null, filter: 'all', product: null, size: '', color: null, qty: 1, view: 'shop', sheetTrigger: null, modalTrigger: null, trackId: null };
+const state = { cart: loadCart(), filter: 'all', product: null, size: '', color: null, qty: 1, view: 'shop', sheetTrigger: null, modalTrigger: null, trackId: null };
 
 function totals() {
 const sub = round2(state.cart.reduce((s, i) => s + i.priceTND * i.qty, 0));
-const discount = state.promo ? round2(sub * state.promo.rate) : 0;
-const total = sub > 0 ? round2(sub - discount + CONFIG.FRAIS_FIXES) : 0;
-const acompte = round2(total * CONFIG.ACOMPTE);
-return { sub, discount, total, acompte, solde: round2(total - acompte) };
+const total = sub > 0 ? round2(sub + CONFIG.FRAIS_FIXES) : 0;
+return { sub, total };
 }
 
-// IMAGES
+// GESTION IMAGES
 document.addEventListener('load', (e) => {
 const img = e.target;
 if (img.tagName !== 'IMG') return;
@@ -810,11 +898,9 @@ img.classList.add('is-loaded');
 const wrap = img.closest('.tile-media, .sheet-media');
 if (wrap) wrap.classList.remove('shimmer');
 }, true);
-
 document.addEventListener('error', (e) => {
 const img = e.target;
 if (img.tagName !== 'IMG') return;
-if (img.classList.contains('brand-logo')) { const span = document.createElement('span'); span.className = 'brand-text'; span.textContent = 'LowkeyExpress'; img.replaceWith(span); return; }
 if (img.dataset.failed) return;
 img.dataset.failed = '1';
 img.src = PLACEHOLDER;
@@ -825,9 +911,11 @@ function showView(name) {
 state.view = name;
 document.querySelectorAll('[data-view]').forEach(v => { v.hidden = v.dataset.view !== name; });
 document.querySelectorAll('[data-tab]').forEach(t => { if (t.dataset.tab === name) t.setAttribute('aria-current', 'page'); else t.removeAttribute('aria-current'); });
+
 if (name === 'cart') renderCart();
 if (name === 'tracking') renderTracking();
-if (name === 'profile') renderProfile();
+if (name === 'admin') renderAdmin();
+
 $('toasts').replaceChildren();
 $('scroller').scrollTo({ top: 0 });
 }
@@ -836,7 +924,14 @@ document.addEventListener('click', (e) => {
 const go = e.target.closest('[data-go]');
 if (go) { closeSheet(); showView(go.dataset.go); return; }
 const tab = e.target.closest('[data-tab]');
-if (tab) { showView(tab.dataset.tab); return; }
+if (tab) {
+if (tab.dataset.tab === 'tracking' && !currentUser) {
+openModal('auth-modal');
+return;
+}
+showView(tab.dataset.tab);
+return;
+}
 const open = e.target.closest('[data-open]');
 if (open) { openModal(open.dataset.open, open); return; }
 const close = e.target.closest('[data-close]');
@@ -885,22 +980,13 @@ if (!raw) { setStatus('Collez le lien du produit pour lancer la recherche.', 'er
 const local = catalog.find(p => p.ref.toLowerCase() === raw.toLowerCase());
 if (local) { setStatus(''); openSheet(local, btn); return; }
 if (!/^https?:\/\//i.test(raw)) { setStatus('Collez le lien complet du produit.', 'err'); return; }
-try { const cached = sessionStorage.getItem('lk_s:' + raw); if (cached) { setStatus(''); openSheet(fromApi(JSON.parse(cached)), btn); return; } } catch {}
-btn.disabled = true; btn.setAttribute('aria-busy', 'true'); setStatus('Recherche de l\'article… patientez.');
-const ctrl = new AbortController(); const timer = setTimeout(() => ctrl.abort(), 58000);
-try {
-const res = await fetch('/api/search?url=' + encodeURIComponent(raw), { signal: ctrl.signal });
-const data = await res.json().catch(() => ({}));
-if (!res.ok || !data.name) { const err = new Error('search'); err.userMessage = data.error || 'Article introuvable.'; throw err; }
-try { sessionStorage.setItem('lk_s:' + raw, JSON.stringify(data)); } catch {}
-setStatus(''); openSheet(fromApi(data), btn);
-} catch (err) {
-let msg = 'Article introuvable. Vérifiez le lien.';
-if (err.name === 'AbortError') msg = 'La recherche a pris trop de temps. Réessayez.';
-else if (err.userMessage) msg = err.userMessage;
-else if (err instanceof TypeError) msg = 'Connexion impossible. Vérifiez votre réseau.';
-setStatus(msg, 'err');
-} finally { clearTimeout(timer); btn.disabled = false; btn.removeAttribute('aria-busy'); }
+btn.disabled = true; setStatus('Recherche de l\'article… patientez.');
+// Simulation d'une recherche réussie pour tester le flux
+setTimeout(() => {
+setStatus('');
+openSheet({ ref: "API-" + Date.now(), brand: "Boutique Externe", title: "Article importé (Simulation)", priceTND: 150.00, sizes: ["M", "L"], colors: [{name:"Standard", hex:"#ccc"}], live: true, currency: 'TND' }, btn);
+btn.disabled = false;
+}, 1500);
 });
 
 // FICHE PRODUIT
@@ -915,7 +1001,7 @@ $('color-value').textContent = colors.length ? state.color.name : '';
 state.size = p.sizes[0]; $('sheet-sizes').innerHTML = p.sizes.map((s, i) => `<button type="button" class="size-btn" role="radio" aria-checked="${i === 0}" data-i="${i}">${esc(s)}</button>`).join('');
 $('size-value').textContent = state.size;
 const ok = priceOk(p); const notice = $('sheet-notice'); notice.hidden = ok;
-if (!ok) { const link = waLink(`Bonjour, je souhaite un devis pour : ${p.title}`); notice.innerHTML = 'Le prix n\'est pas disponible en TND. Contactez-nous.' + (link ? ` <a href="${esc(link)}" target="_blank" rel="noopener"><b>WhatsApp</b></a>` : ''); }
+if (!ok) { notice.innerHTML = 'Le prix n\'est pas disponible en TND.'; }
 const add = $('add-btn'); add.disabled = !ok; add.textContent = ok ? 'Ajouter au panier' : 'Prix à confirmer';
 refreshSheetPrice(); $('product-sheet').classList.add('open'); $('sheet-close').focus({ preventScroll: true }); document.querySelector('.sheet-body').scrollTo({ top: 0 });
 }
@@ -974,17 +1060,9 @@ saveCart(); renderCart();
 function updateSummary() {
 const t = totals();
 $('s-sub').textContent = tnd(t.sub); $('s-ship').textContent = tnd(CONFIG.FRAIS_FIXES);
-$('s-promo-row').hidden = !state.promo; if (state.promo) $('s-disc').textContent = '−' + tnd(t.discount);
 $('s-total').textContent = tnd(t.total); $('s-usd').textContent = usd(t.total);
-$('s-acompte').textContent = tnd(t.acompte); $('s-solde').textContent = tnd(t.solde);
+$('s-acompte').textContent = tnd(t.total); // 100%
 }
-$('promo-btn').addEventListener('click', () => {
-const code = $('promo-input').value.trim().toUpperCase(); const box = $('promo-status'); if (!code) { box.hidden = true; return; }
-const rate = CONFIG.PROMOS[code]; box.hidden = false;
-if (rate) { state.promo = { code, rate }; box.className = 'status'; box.textContent = `Code ${code} appliqué : −${Math.round(rate * 100)} % sur vos articles.`; }
-else { state.promo = null; box.className = 'status err'; box.textContent = 'Ce code n\'est pas valide.'; }
-updateSummary();
-});
 
 const FIELDS = [
 { id: 'cust-prenom', ok: v => v.trim().length >= 2, msg: 'Entrez votre prénom.' },
@@ -999,38 +1077,90 @@ FIELDS.forEach(f => { $(f.id).addEventListener('blur', () => { if ($(f.id).value
 document.querySelectorAll('.cond-check').forEach(cb => cb.addEventListener('change', () => { if ([...document.querySelectorAll('.cond-check')].every(c => c.checked)) $('cond-error').hidden = true; }));
 function validateForm() { let first = null; FIELDS.forEach(f => { if (!checkField(f) && !first) first = $(f.id); }); const checks = [...document.querySelectorAll('.cond-check')]; const allChecked = checks.every(c => c.checked); $('cond-error').hidden = allChecked; if (!allChecked && !first) first = checks.find(c => !c.checked); if (first) { revealField(first); return false; } return true; }
 function revealField(el) { const scroller = $('scroller'); const offset = el.getBoundingClientRect().top - scroller.getBoundingClientRect().top + scroller.scrollTop; scroller.scrollTo({ top: Math.max(0, offset - scroller.clientHeight / 3), behavior: 'smooth' }); el.focus({ preventScroll: true }); }
-$('checkout-form').addEventListener('submit', (e) => { e.preventDefault(); if (state.cart.length === 0) return; if (!validateForm()) return; $('pay-error').hidden = true; openModal('payment-modal', $('btn-order')); });
+
+$('checkout-form').addEventListener('submit', (e) => {
+e.preventDefault();
+if (state.cart.length === 0) return;
+
+// VÉRIFICATION DE LA CONNEXION
+if (!currentUser) {
+toast('Veuillez vous connecter pour passer la commande.', { type: 'error' });
+openModal('auth-modal');
+return;
+}
+
+if (!validateForm()) return;
+$('pay-error').hidden = true;
+
+// Afficher le total à payer
+$('pay-total-display').textContent = tnd(totals().total);
+openModal('payment-modal', $('btn-order'));
+});
 
 // COMMANDE SUPABASE
 function newOrderId() { const alphabet = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'; const bytes = crypto.getRandomValues(new Uint8Array(5)); return `LK-${String(new Date().getFullYear()).slice(-2)}-${[...bytes].map(b => alphabet[b % alphabet.length]).join('')}`; }
+
 $('confirm-pay-btn').addEventListener('click', async () => {
-const chosen = document.querySelector('input[name="pay"]:checked'); if (!chosen) { $('pay-error').hidden = false; return; }
-$('pay-error').hidden = true; const btn = $('confirm-pay-btn'); btn.disabled = true; btn.setAttribute('aria-busy', 'true');
+const chosen = document.querySelector('input[name="pay"]:checked');
+if (!chosen) { $('pay-error').hidden = false; return; }
+
+$('pay-error').hidden = true;
+const btn = $('confirm-pay-btn'); btn.disabled = true; btn.textContent = 'Enregistrement...';
+
 const t = totals();
-const order = { numero_commande: newOrderId(), date_commande: new Date().toLocaleDateString('fr-FR'), client_nom: `${$('cust-prenom').value.trim()} ${$('cust-nom').value.trim()}`, client_telephone: $('cust-phone').value.trim(), client_email: $('cust-email').value.trim(), client_adresse: `${$('cust-adresse').value.trim()}, ${$('cust-cp').value.trim()}, Kinshasa`, panier: state.cart.map(i => ({ ...i, totalTND: round2(i.priceTND * i.qty) })), montant_total: t.total, acompte_70: t.acompte, solde_30: t.solde, statut_etape: 1 };
+const order = {
+numero_commande: newOrderId(),
+date_commande: new Date().toLocaleDateString('fr-FR'),
+client_nom: `${$('cust-prenom').value.trim()} ${$('cust-nom').value.trim()}`,
+client_telephone: $('cust-phone').value.trim(),
+client_email: $('cust-email').value.trim(),
+client_adresse: `${$('cust-adresse').value.trim()}, ${$('cust-cp').value.trim()}, Kinshasa`,
+panier: state.cart.map(i => ({ ...i, totalTND: round2(i.priceTND * i.qty) })),
+montant_total: t.total,
+statut_etape: 1,
+user_id: currentUser.id,
+mode_paiement: chosen.value
+};
 
 try {
 const { error } = await supabaseClient.from('commandes').insert([order]);
 if (error) throw error;
-} catch {
-toast('Erreur de connexion. Réessayez.', { type: 'error' }); btn.disabled = false; btn.removeAttribute('aria-busy'); return;
+} catch (err) {
+toast('Erreur de connexion. Réessayez.', { type: 'error' });
+btn.disabled = false; btn.textContent = 'Confirmer la commande';
+return;
 }
 
-store.setRaw('lk_current_order', order.numero_commande); state.trackId = order.numero_commande;
-state.cart = []; state.promo = null; $('promo-input').value = ''; $('promo-status').hidden = true;
-document.querySelectorAll('.cond-check').forEach(c => { c.checked = false; }); document.querySelectorAll('input[name="pay"]').forEach(r => { r.checked = false; });
-saveCart(); renderCart(); btn.disabled = false; btn.removeAttribute('aria-busy'); $('payment-modal').hidden = true;
+store.setRaw('lk_current_order', order.numero_commande);
+state.trackId = order.numero_commande;
+state.cart = [];
+$('promo-input') && ($('promo-input').value = '');
+document.querySelectorAll('.cond-check').forEach(c => { c.checked = false; });
+document.querySelectorAll('input[name="pay"]').forEach(r => { r.checked = false; });
 
-$('ok-text').textContent = `Votre commande ${order.numero_commande} est enregistrée. Nous vous contactons pour régler l'acompte.`;
-const wa = waLink(`Bonjour, je viens de passer la commande ${order.numero_commande}.`);
+saveCart(); renderCart(); btn.disabled = false; btn.textContent = 'Confirmer la commande'; $('payment-modal').hidden = true;
+
+$('ok-text').textContent = `Votre commande ${order.numero_commande} est enregistrée. Veuillez procéder au paiement de ${tnd(t.total)}.`;
+const wa = waLink(`Bonjour, je viens de passer la commande ${order.numero_commande} d'un montant de ${tnd(t.total)}. Je souhaite payer par ${chosen.value}.`);
 $('ok-wa').hidden = !wa; if (wa) $('ok-wa').href = wa;
+
 openModal('success-modal', $('btn-order'));
 });
 $('ok-track').addEventListener('click', () => { closeModal('success-modal'); showView('tracking'); });
 
-// SUIVI
+// SUIVI (Filtré par utilisateur connecté)
 async function renderTracking() {
+if (!currentUser) {
+$('track-auth-required').hidden = false;
+$('track-empty').hidden = true;
+$('track-content').hidden = true;
+return;
+}
+
+$('track-auth-required').hidden = true;
+
 try {
+// RLS de Supabase fera le filtre : on ne récupère que les commandes de l'utilisateur
 const { data: orders, error } = await supabaseClient.from('commandes').select('*').order('created_at', { ascending: false });
 if (error) throw error;
 
@@ -1053,22 +1183,53 @@ const dot = cls === 'done' ? '<svg class="ic"><use href="#i-check"/></svg>' : ''
 return `<li class="step ${cls}"${cls === 'active' ? ' aria-current="step"' : ''}><span class="step-dot">${dot}</span><span class="step-title">${esc(label)}</span></li>`;
 }).join('');
 } catch (err) {
+console.error(err);
 $('track-empty').hidden = false;
 $('track-content').hidden = true;
 }
 }
 $('order-chips').addEventListener('click', (e) => { const chip = e.target.closest('[data-order]'); if (!chip) return; state.trackId = chip.dataset.order; renderTracking(); });
 
+// ADMIN (ESPACE PATRONNE)
+async function renderAdmin() {
+if (currentUser.email !== ADMIN_EMAIL) {
+showView('profile');
+return;
+}
+
+$('admin-clients-list').innerHTML = '<p class="muted" style="text-align:center; padding: 20px;">Chargement des clients...</p>';
+
+try {
+const { data: profiles, error } = await supabaseClient.from('profiles').select('*').order('created_at', { ascending: false });
+if (error) throw error;
+
+if (profiles.length === 0) {
+$('admin-clients-list').innerHTML = '<p class="muted" style="text-align:center; padding: 20px;">Aucun client inscrit pour le moment.</p>';
+return;
+}
+
+$('admin-clients-list').innerHTML = profiles.map(p => `
+<div class="admin-card">
+<strong>${esc(p.full_name || 'Sans nom')}</strong>
+<span>${esc(p.email)}</span>
+<small>Inscrit le ${new Date(p.created_at).toLocaleDateString('fr-FR')}</small>
+</div>
+`).join('');
+} catch (err) {
+$('admin-clients-list').innerHTML = '<p class="err" style="text-align:center; padding: 20px;">Erreur lors du chargement des clients.</p>';
+}
+}
+
 // PROFIL & THÈME
-function renderProfile() { const orders = store.get('lk_orders', []); const last = orders[orders.length - 1]; const initials = last && last.nom ? last.nom.split(/\s+/).filter(Boolean).slice(0, 2).map(s => s[0].toUpperCase()).join('') : ''; $('avatar').textContent = initials || 'AK'; }
+function renderProfile() {
+updateAuthUI();
+}
 function applyTheme(theme) { document.body.setAttribute('data-theme', theme); $('theme-toggle').checked = theme === 'dark'; $('meta-theme').setAttribute('content', theme === 'dark' ? '#0a0506' : '#f4f3f1'); }
 $('theme-toggle').addEventListener('change', () => { const theme = $('theme-toggle').checked ? 'dark' : 'light'; applyTheme(theme); store.setRaw('lk_theme', theme); });
 
-// INIT
+// INIT FINALE
 (function init() {
 const saved = store.getRaw('lk_theme'); applyTheme(saved === 'dark' || saved === 'light' ? saved : 'dark');
-document.querySelectorAll('[data-acompte]').forEach(el => { el.textContent = Math.round(CONFIG.ACOMPTE * 100); });
-document.querySelectorAll('[data-solde]').forEach(el => { el.textContent = Math.round((1 - CONFIG.ACOMPTE) * 100); });
 const wa = waLink('Bonjour LowkeyExpress, j\'ai une question.'); if (wa) { $('wa-row').href = wa; $('wa-row').hidden = false; }
 updateBadge(); renderFilters(); renderProducts(); showView('shop');
 })();
