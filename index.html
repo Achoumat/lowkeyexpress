@@ -28,10 +28,10 @@
 color-scheme: light;
 }
 [data-theme="dark"] {
-/* Fond très transparent pour voir le globe */
---bg: rgba(18, 11, 12, 0.4);
---surface: rgba(28, 19, 20, 0.8); --sunken: rgba(40, 27, 28, 0.8); --desk: #0a0506;
---ink: #f5efe9; --muted: #b2a59e; --line: rgba(53, 41, 42, 0.6);
+/* Fond ultra transparent pour voir la 3D */
+--bg: rgba(18, 11, 12, 0.35);
+--surface: rgba(28, 19, 20, 0.7); --sunken: rgba(40, 27, 28, 0.7); --desk: #0a0506;
+--ink: #f5efe9; --muted: #b2a59e; --line: rgba(53, 41, 42, 0.5);
 --cta: #d4af37; --cta-ink: #2b0006;
 --focus: #d4af37; --danger: #ff8a80; --ok: #81c784;
 color-scheme: dark;
@@ -50,48 +50,67 @@ ol, ul { list-style: none; }
 .ic { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex: none; }
 .ic-sm { width: 18px; height: 18px; }
 
-/* ---------- ARRIÈRE-PLAN 3D : GLOBE TERRESTRE ET TRAJECTOIRE ---------- */
-.bg-globe-container {
-position: fixed; inset: 0; z-index: 0; display: flex; justify-content: center; align-items: center;
-background: radial-gradient(circle at 50% 50%, #2b0006 0%, #0a0506 80%);
-overflow: hidden;
+/* ---------- ARRIÈRE-PLAN 3D : GLOBE DORÉ, SOCLE ET ORBES ---------- */
+.bg-3d-container {
+position: fixed; inset: 0; z-index: 0; display: flex; flex-direction: column; justify-content: center; align-items: center;
+background: radial-gradient(circle at 50% 50%, #1a0b0e 0%, #050203 100%);
+perspective: 1200px; overflow: hidden;
 }
 
-.globe-svg {
-width: 150%; max-width: 800px; height: auto;
-opacity: 0.6; /* Rend le globe subtil mais visible */
-filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.2));
+/* Le Socle Lumineux */
+.base-glow {
+position: absolute; bottom: 15%; width: 80vw; max-width: 400px; height: 40px;
+background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.8) 0%, transparent 70%);
+border-radius: 50%; filter: blur(10px); animation: pulse-base 4s infinite alternate;
+}
+@keyframes pulse-base {
+0% { transform: scale(0.9); opacity: 0.5; }
+100% { transform: scale(1.1); opacity: 0.9; }
 }
 
-/* Animation de rotation du globe */
-.globe-rotate {
-transform-origin: center;
-animation: spin 40s linear infinite;
+/* Le Globe / Carte du monde */
+.globe-wrapper {
+position: relative; width: 90vw; max-width: 450px; height: 250px;
+transform-style: preserve-3d; animation: spin-globe 30s linear infinite;
+display: grid; place-items: center;
+/* Halo doré autour du globe */
+filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.4));
+}
+@keyframes spin-globe {
+0% { transform: rotateX(20deg) rotateY(0deg); }
+100% { transform: rotateX(20deg) rotateY(360deg); }
 }
 
-@keyframes spin {
-100% { transform: rotate(-360deg); }
+.world-map {
+width: 100%; height: 100%;
+fill: none; stroke: #d4af37; stroke-width: 1.5;
+stroke-linecap: round; stroke-linejoin: round;
 }
 
-/* Animation de la trajectoire lumineuse */
-.flight-path {
-stroke-dasharray: 8;
-stroke-dashoffset: 100;
-animation: dash 8s linear infinite;
+/* Trajectoire Tunis -> Kinshasa */
+.flight-arc {
+stroke: #fff; stroke-width: 2;
+stroke-dasharray: 6; animation: dash-arc 3s linear infinite;
+}
+@keyframes dash-arc { to { stroke-dashoffset: -12; } }
+
+/* Les Sphères Flottantes (Orbes) */
+.orb {
+position: absolute; border-radius: 50%;
+background: radial-gradient(circle at 30% 30%, #fff 0%, #d4af37 40%, #2b0006 100%);
+box-shadow: inset 0 0 10px rgba(255,255,255,0.6), 0 0 15px rgba(212,175,55,0.5);
+animation: float-orb 6s ease-in-out infinite alternate;
 }
 
-@keyframes dash {
-to { stroke-dashoffset: 0; }
-}
+.o-1 { width: 40px; height: 40px; top: 15%; left: 15%; animation-duration: 7s; }
+.o-2 { width: 25px; height: 25px; top: 25%; right: 20%; animation-duration: 5s; animation-delay: 1s; }
+.o-3 { width: 60px; height: 60px; bottom: 30%; right: 10%; animation-duration: 8s; animation-delay: 2s; opacity: 0.8; }
+.o-4 { width: 15px; height: 15px; bottom: 20%; left: 25%; animation-duration: 4s; animation-delay: 0.5s; }
+.o-5 { width: 30px; height: 30px; top: 50%; left: 5%; animation-duration: 6s; animation-delay: 1.5s; opacity: 0.6; }
 
-/* Point lumineux qui voyage */
-.travel-dot {
-animation: pulse-dot 2s infinite alternate;
-}
-
-@keyframes pulse-dot {
-0% { transform: scale(0.8); opacity: 0.7; }
-100% { transform: scale(1.5); opacity: 1; filter: drop-shadow(0 0 10px #FFD700); }
+@keyframes float-orb {
+0% { transform: translateY(0) scale(1); }
+100% { transform: translateY(-30px) scale(1.1); }
 }
 
 /* ---------- SPLASH SCREEN ---------- */
@@ -130,8 +149,8 @@ animation: fadeInName 1s ease 1.5s forwards;
 position: relative; display: flex; flex-direction: column; height: 100vh; height: 100dvh;
 max-width: 430px; margin: 0 auto;
 background: var(--bg);
-backdrop-filter: blur(10px); /* Léger flou pour détacher le contenu */
--webkit-backdrop-filter: blur(10px);
+backdrop-filter: blur(6px); /* Flou très léger pour la lisibilité */
+-webkit-backdrop-filter: blur(6px);
 overflow: hidden; overflow: clip; opacity: 0; transition: opacity 0.5s; z-index: 10;
 }
 .shell.ready { opacity: 1; }
@@ -140,9 +159,9 @@ body { padding: 24px 0; }
 .shell { height: min(900px, calc(100dvh - 48px)); border-radius: 36px; border: 1px solid var(--line); box-shadow: 0 30px 80px -24px rgba(43, 0, 6, .4); }
 }
 .topbar { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; min-height: 60px; background: transparent; z-index: 10; }
-.brand-text-header { font-family: var(--font-display); font-weight: 800; font-size: 18px; color: var(--ink); letter-spacing: 1px; text-transform: uppercase; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
+.brand-text-header { font-family: var(--font-display); font-weight: 800; font-size: 18px; color: var(--ink); letter-spacing: 1px; text-transform: uppercase; text-shadow: 0 2px 15px rgba(0,0,0,0.9); }
 
-.icon-btn { position: relative; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; border: 0; background: transparent; color: var(--ink); text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
+.icon-btn { position: relative; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; border: 0; background: transparent; color: var(--ink); text-shadow: 0 2px 15px rgba(0,0,0,0.9); }
 .icon-btn:active { background: var(--sunken); }
 .badge { position: absolute; top: 3px; right: 1px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--brand); color: var(--gold); font-size: 11px; font-weight: 700; display: grid; place-items: center; border: 1.5px solid var(--bg); }
 [data-theme="dark"] .badge { background: var(--gold); color: var(--brand); }
@@ -171,13 +190,13 @@ padding: 20px 0; border-bottom: 1px solid var(--line); transition: color 0.2s;
 .menu-footer { padding: 30px 20px; display: flex; justify-content: center; font-size: 11px; text-transform: uppercase; color: var(--muted); letter-spacing: 2px; border-top: 1px solid var(--line); }
 
 /* ---------- Titres et textes ---------- */
-.page-title { font-family: var(--font-serif); font-weight: 700; font-size: 32px; letter-spacing: -.02em; padding: 8px 20px 16px; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
+.page-title { font-family: var(--font-serif); font-weight: 700; font-size: 32px; letter-spacing: -.02em; padding: 8px 20px 16px; text-shadow: 0 2px 15px rgba(0,0,0,0.9); }
 .section-head { display: flex; justify-content: space-between; align-items: baseline; padding: 0 20px; margin-bottom: 14px; }
-.section-head h2 { font-family: var(--font-serif); font-size: 24px; font-weight: 600; letter-spacing: -.01em; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
+.section-head h2 { font-family: var(--font-serif); font-size: 24px; font-weight: 600; letter-spacing: -.01em; text-shadow: 0 2px 15px rgba(0,0,0,0.9); }
 .muted { color: var(--muted); }
 
 /* ---------- Hero : carte d'embarquement ---------- */
-.pass { margin: 4px 20px 0; background: var(--brand); color: #f3e9d2; border-radius: 22px; position: relative; overflow: hidden; border: 1px solid rgba(212, 175, 55, .28); box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
+.pass { margin: 4px 20px 0; background: var(--brand); color: #f3e9d2; border-radius: 22px; position: relative; overflow: hidden; border: 1px solid rgba(212, 175, 55, .28); box-shadow: 0 10px 30px rgba(0,0,0,0.7); }
 .pass-top { padding: 22px 22px 20px; }
 .pass-route { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 14px; }
 .pass-code { display: block; font-family: var(--font-display); font-weight: 700; font-size: 46px; line-height: .9; letter-spacing: -.02em; color: var(--gold); }
@@ -197,11 +216,11 @@ padding: 20px 0; border-bottom: 1px solid var(--line); transition: color 0.2s;
 .pass-facts dd { margin-top: 2px; font-size: 13.5px; font-weight: 600; color: #fff; line-height: 1.3; }
 
 /* ---------- Recherche ---------- */
-.finder { margin: 16px 20px 0; padding: 18px; background: var(--surface); border-radius: 18px; border: 1px solid var(--line); backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+.finder { margin: 16px 20px 0; padding: 18px; background: var(--surface); border-radius: 18px; border: 1px solid var(--line); backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 .finder h2 { font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: -.01em; }
 .finder p { margin-top: 2px; font-size: 13.5px; color: var(--muted); }
 .finder-row { display: flex; gap: 8px; margin-top: 14px; }
-.finder-row input { flex: 1; min-width: 0; min-height: 48px; padding: 0 14px; border-radius: 12px; border: 1.5px solid var(--line); background: rgba(0,0,0,0.3); font-size: 16px; color: var(--ink); }
+.finder-row input { flex: 1; min-width: 0; min-height: 48px; padding: 0 14px; border-radius: 12px; border: 1.5px solid var(--line); background: rgba(0,0,0,0.4); font-size: 16px; color: var(--ink); }
 .finder-row input::placeholder { color: var(--muted); }
 .status { margin-top: 12px; padding: 10px 12px; border-radius: 10px; font-size: 13.5px; font-weight: 500; background: var(--sunken); }
 .status.err { color: var(--danger); background: color-mix(in srgb, var(--danger) 10%, transparent); }
@@ -229,13 +248,13 @@ padding: 20px 0; border-bottom: 1px solid var(--line); transition: color 0.2s;
 .shimmer { background: linear-gradient(100deg, var(--sunken) 30%, var(--surface) 50%, var(--sunken) 70%); background-size: 200% 100%; animation: shimmer 1.4s linear infinite; }
 @keyframes shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
 .tile-brand { font-size: 12.5px; font-weight: 600; color: var(--muted); }
-.tile-name { font-size: 15px; font-weight: 600; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: var(--ink); text-shadow: 0 1px 5px rgba(0,0,0,0.8); }
-.tile-price { margin-top: 4px; font-family: var(--font-display); font-weight: 700; font-size: 16px; font-variant-numeric: tabular-nums; color: var(--gold); text-shadow: 0 1px 5px rgba(0,0,0,0.8); }
+.tile-name { font-size: 15px; font-weight: 600; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: var(--ink); text-shadow: 0 1px 5px rgba(0,0,0,0.9); }
+.tile-price { margin-top: 4px; font-family: var(--font-display); font-weight: 700; font-size: 16px; font-variant-numeric: tabular-nums; color: var(--gold); text-shadow: 0 1px 5px rgba(0,0,0,0.9); }
 .tile-price small { display: block; font-family: var(--font-ui); font-weight: 500; font-size: 12px; color: var(--muted); text-shadow: none; }
 
 .empty { text-align: center; padding: 56px 32px; }
 .empty .ic { width: 40px; height: 40px; color: var(--muted); margin-bottom: 12px; }
-.empty h2 { font-family: var(--font-serif); font-size: 22px; font-weight: 700; color: var(--ink); }
+.empty h2 { font-family: var(--font-serif); font-size: 22px; font-weight: 700; color: var(--ink); text-shadow: 0 2px 15px rgba(0,0,0,0.9); }
 .empty p { margin: 6px 0 20px; color: var(--muted); }
 
 /* ---------- Fiche produit ---------- */
@@ -277,7 +296,7 @@ padding: 20px 0; border-bottom: 1px solid var(--line); transition: color 0.2s;
 .stepper-sm output { min-width: 22px; font-size: 14px; }
 
 .block { margin: 24px 20px 0; }
-.block > h2 { font-family: var(--font-display); font-size: 19px; font-weight: 700; letter-spacing: -.01em; margin-bottom: 12px; color: var(--ink); text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
+.block > h2 { font-family: var(--font-display); font-size: 19px; font-weight: 700; letter-spacing: -.01em; margin-bottom: 12px; color: var(--ink); text-shadow: 0 2px 5px rgba(0,0,0,0.9); }
 .field { display: grid; gap: 6px; margin-bottom: 14px; }
 .field label { font-size: 13px; font-weight: 600; color: var(--muted); }
 .field input { width: 100%; min-height: 48px; padding: 0 14px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--surface); font-size: 16px; color: var(--ink); }
@@ -308,7 +327,7 @@ padding: 20px 0; border-bottom: 1px solid var(--line); transition: color 0.2s;
 .step::before { content: ''; position: absolute; left: 8px; top: 20px; bottom: -2px; width: 2px; background: var(--line); }
 .step:last-child::before { display: none; }
 .step-dot { position: absolute; left: 0; top: 2px; width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--line); background: var(--bg); display: grid; place-items: center; }
-.step-title { font-weight: 600; text-shadow: 0 1px 5px rgba(0,0,0,0.8); }
+.step-title { font-weight: 600; text-shadow: 0 1px 5px rgba(0,0,0,0.9); }
 .step.done { color: var(--ink); }
 .step.done::before { background: var(--ok); }
 .step.done .step-dot { background: var(--ok); border-color: var(--ok); color: #fff; }
@@ -361,64 +380,32 @@ padding: 20px 0; border-bottom: 1px solid var(--line); transition: color 0.2s;
 </head>
 <body data-theme="dark">
 
-<!-- ARRIÈRE-PLAN 3D : GLOBE ET TRAJECTOIRE -->
-<div class="bg-globe-container">
-<svg class="globe-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-<defs>
-<!-- Dégradé or pour le globe -->
-<radialGradient id="goldGrad" cx="50%" cy="50%" r="50%">
-<stop offset="0%" stop-color="#d4af37" stop-opacity="0.2"/>
-<stop offset="70%" stop-color="#d4af37" stop-opacity="0.05"/>
-<stop offset="100%" stop-color="#d4af37" stop-opacity="0"/>
-</radialGradient>
-<!-- Filtre lumineux -->
-<filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-<feGaussianBlur stdDeviation="3" result="blur" />
-<feComposite in="SourceGraphic" in2="blur" operator="over" />
-</filter>
-</defs>
+<!-- ARRIÈRE-PLAN 3D : GLOBE ET ORBES -->
+<div class="bg-3d-container">
+<!-- Le Socle Lumineux -->
+<div class="base-glow"></div>
 
-<!-- Fond lumineux du globe -->
-<circle cx="200" cy="200" r="150" fill="url(#goldGrad)" stroke="#d4af37" stroke-width="1" stroke-opacity="0.3" />
+<!-- Les Sphères Flottantes -->
+<div class="orb o-1"></div>
+<div class="orb o-2"></div>
+<div class="orb o-3"></div>
+<div class="orb o-4"></div>
+<div class="orb o-5"></div>
 
-<!-- Groupe tournant (lignes du globe) -->
-<g class="globe-rotate" fill="none" stroke="#d4af37" stroke-width="1" stroke-opacity="0.4">
-<!-- Méridiens -->
-<ellipse cx="200" cy="200" rx="150" ry="150" />
-<ellipse cx="200" cy="200" rx="100" ry="150" />
-<ellipse cx="200" cy="200" rx="50" ry="150" />
-<ellipse cx="200" cy="200" rx="0" ry="150" /> <!-- Ligne centrale -->
-<ellipse cx="200" cy="200" rx="100" ry="150" transform="rotate(45 200 200)" />
-<ellipse cx="200" cy="200" rx="100" ry="150" transform="rotate(-45 200 200)" />
-
-<!-- Parallèles -->
-<ellipse cx="200" cy="200" rx="150" ry="100" />
-<ellipse cx="200" cy="200" rx="150" ry="50" />
-<ellipse cx="200" cy="200" rx="150" ry="0" />
-<ellipse cx="200" cy="200" rx="150" ry="100" transform="rotate(90 200 200)" />
-</g>
-
-<!-- Trajectoire Tunis -> Kinshasa (Ligne courbe) -->
-<!-- Tunis (haut droite) vers Kinshasa (bas gauche) -->
-<path d="M 270 110 Q 230 250 150 290" fill="none" stroke="#d4af37" stroke-width="2" stroke-opacity="0.6" class="flight-path" filter="url(#glow)"/>
-
-<!-- Point de départ (Tunis) -->
-<circle cx="270" cy="110" r="4" fill="#d4af37" filter="url(#glow)"/>
-<text x="280" y="115" fill="#d4af37" font-family="sans-serif" font-size="10" font-weight="bold">TUNIS</text>
-
-<!-- Point d'arrivée (Kinshasa) -->
-<circle cx="150" cy="290" r="4" fill="#d4af37" filter="url(#glow)"/>
-<text x="160" y="295" fill="#d4af37" font-family="sans-serif" font-size="10" font-weight="bold">KINSHASA</text>
-
-<!-- Point lumineux qui parcourt la trajectoire -->
-<circle r="3" fill="#fff" filter="url(#glow)" class="travel-dot">
-<animateMotion
-dur="4s"
-repeatCount="indefinite"
-path="M 270 110 Q 230 250 150 290"
-/>
-</circle>
+<!-- Le Globe / Carte du monde qui tourne -->
+<div class="globe-wrapper">
+<svg class="world-map" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+<!-- Carte du monde simplifiée pour l'effet filaire -->
+<path d="M 150 100 Q 200 50 250 100 T 350 150 Q 400 200 350 250 T 250 300 Q 200 250 150 300 T 50 250 Q 0 200 50 150 T 150 100 Z" />
+<path d="M 400 100 Q 500 50 600 100 T 750 150 Q 700 200 750 250 T 650 300 Q 550 250 450 300 T 400 100 Z" />
+<path d="M 250 300 Q 300 350 350 300 T 450 350 Q 400 400 350 350 T 250 300 Z" />
+<!-- Lignes de connexion Tunis -> Kinshasa -->
+<path class="flight-arc" d="M 420 140 Q 450 250 380 300" />
+<!-- Points de repère -->
+<circle cx="420" cy="140" r="4" fill="#fff" />
+<circle cx="380" cy="300" r="4" fill="#fff" />
 </svg>
+</div>
 </div>
 
 <!-- ÉCRAN D'ENTRÉE -->
